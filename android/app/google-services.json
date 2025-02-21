@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "765939599786",
+    "project_id": "unishare-e85ad",
+    "storage_bucket": "unishare-e85ad.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765939599786:android:d5fd3ee23d4e88dbd883d3",
+        "android_client_info": {
+          "package_name": "com.example.unishare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoqT7ta7AOuRAtztW321Tm7Imd4WjGBJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
