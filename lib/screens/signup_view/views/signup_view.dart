@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/login_view/widgets/auth_button.dart';
 import 'package:unishare/screens/login_view/widgets/auth_info.dart';
 import 'package:unishare/screens/login_view/widgets/auth_question.dart';
 import 'package:unishare/screens/login_view/widgets/auth_textfield.dart';
 import 'package:unishare/screens/login_view/widgets/auth_title.dart';
+import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
 
 import 'package:unishare/screens/signup_view/widgets/drop_down_menu.dart';
 
@@ -60,7 +62,12 @@ class SignupView extends StatelessWidget {
                 SizedBox(height: height * 0.032),
                 AuthDropdown(width: width, height: height),
                 SizedBox(height: height * 0.05),
-                AuthButton(height: height, width: width, text: 'Next'),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, SignupView2.id);
+                  },
+                  child: AuthButton(height: height, width: width, text: 'Next'),
+                ),
                 SizedBox(height: height * 0.03),
                 AuthQuestion(
                   width: width,
