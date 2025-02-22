@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:unishare/constants.dart';
 
 class AuthDropdown extends StatefulWidget {
-  AuthDropdown({required this.width, required this.height});
+  AuthDropdown({
+    required this.width,
+    required this.height,
+    required this.fieldValidation,
+  });
 
   final double width;
   final double height;
+  final FormFieldValidator<String> fieldValidation;
 
   @override
   State<AuthDropdown> createState() => _AuthDropdownState();
@@ -24,7 +29,7 @@ class _AuthDropdownState extends State<AuthDropdown> {
     'المنيا',
     'بنها',
     'سوهاج',
-    'الإسكندرية',
+
     'طنطا',
     'أسيوط',
     'شبين الكوم',
@@ -46,6 +51,7 @@ class _AuthDropdownState extends State<AuthDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+      validator: widget.fieldValidation,
       decoration: InputDecoration(
         hintText: 'Location',
         hintStyle: const TextStyle(color: Color.fromARGB(255, 102, 101, 101)),
@@ -54,11 +60,19 @@ class _AuthDropdownState extends State<AuthDropdown> {
           horizontal: widget.width * 0.05,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black),
+          borderSide: const BorderSide(color: Colors.black, width: 1.5),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: kPrimaryColor),
+          borderSide: const BorderSide(color: kPrimaryColor, width: 1.5),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
           borderRadius: BorderRadius.circular(10),
         ),
       ),

@@ -6,6 +6,8 @@ class AuthTextField extends StatefulWidget {
     required this.height,
     required this.width,
     required this.hintText,
+    required this.fieldValidation,
+    this.fieldController,
     this.isThisAPassword = false,
     this.textFieldWidth = double.infinity,
   });
@@ -15,6 +17,8 @@ class AuthTextField extends StatefulWidget {
   final String hintText;
   final bool isThisAPassword;
   final double textFieldWidth;
+  final FormFieldValidator<String> fieldValidation;
+  final TextEditingController? fieldController;
 
   @override
   State<AuthTextField> createState() => _AuthTextFieldState();
@@ -28,6 +32,8 @@ class _AuthTextFieldState extends State<AuthTextField> {
     return SizedBox(
       width: widget.textFieldWidth,
       child: TextFormField(
+        controller: widget.fieldController,
+        validator: widget.fieldValidation,
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Color.fromARGB(255, 102, 101, 101)),
@@ -36,11 +42,19 @@ class _AuthTextFieldState extends State<AuthTextField> {
             horizontal: widget.width * 0.05,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
+            borderSide: BorderSide(color: Colors.black, width: 1.5),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: kPrimaryColor),
+            borderSide: const BorderSide(color: kPrimaryColor, width: 1.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.red, width: 1.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.red, width: 1.5),
             borderRadius: BorderRadius.circular(10),
           ),
           suffixIcon:

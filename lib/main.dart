@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: LoginView.id,
       routes: {
