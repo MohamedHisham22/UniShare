@@ -27,15 +27,12 @@ class SignupView extends StatelessWidget {
         key: _formKey,
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.only(
-              top: height * 0.12,
-              right: width * 0.085,
-              left: width * 0.085,
-            ),
+            padding: EdgeInsets.only(right: width * 0.085, left: width * 0.085),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: height * 0.12),
                   AuthTitle(width: width, title: 'Sign up'),
                   SizedBox(height: height * 0.032),
                   AuthInfo(
