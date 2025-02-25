@@ -28,6 +28,8 @@ class LoginView extends StatelessWidget {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+        } else if (state is LoginSuccess) {
+          cubit.clearFields();
         }
       },
       builder: (context, state) {
@@ -82,7 +84,6 @@ class LoginView extends StatelessWidget {
                                 email: cubit.emailController.text,
                                 password: cubit.passwordController.text,
                               );
-                              cubit.clearFields();
                             }
                           },
                           child: AuthButton(
