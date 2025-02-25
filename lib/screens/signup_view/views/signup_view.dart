@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/login_view/widgets/auth_button.dart';
@@ -6,6 +7,7 @@ import 'package:unishare/screens/login_view/widgets/auth_info.dart';
 import 'package:unishare/screens/login_view/widgets/auth_question.dart';
 import 'package:unishare/screens/login_view/widgets/auth_textfield.dart';
 import 'package:unishare/screens/login_view/widgets/auth_title.dart';
+import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
 
 import 'package:unishare/screens/signup_view/widgets/drop_down_menu.dart';
@@ -14,14 +16,12 @@ class SignupView extends StatelessWidget {
   SignupView({super.key});
   static String id = '/signup';
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final cubit = context.read<SignupViewCubit>();
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -47,7 +47,7 @@ class SignupView extends StatelessWidget {
                         width: width,
                         hintText: 'First Name',
                         textFieldWidth: width * 0.38,
-                        fieldController: _firstNameController,
+                        fieldController: cubit.firstNameController,
                         fieldValidation: (value) {
                           if (value == null || value.isEmpty) {
                             return "Enter a first name";
@@ -63,7 +63,7 @@ class SignupView extends StatelessWidget {
                         width: width,
                         hintText: 'Last Name',
                         textFieldWidth: width * 0.38,
-                        fieldController: _lastNameController,
+                        fieldController: cubit.lastNameController,
                         fieldValidation: (value) {
                           if (value == null || value.isEmpty) {
                             return "Enter a Last name";
@@ -80,7 +80,7 @@ class SignupView extends StatelessWidget {
                     height: height,
                     width: width,
                     hintText: 'Phone Number',
-                    fieldController: _phoneNumberController,
+                    fieldController: cubit.phoneNumberController,
                     fieldValidation: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter a phone number";

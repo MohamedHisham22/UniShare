@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 
 class AuthDropdown extends StatefulWidget {
   AuthDropdown({
@@ -50,6 +52,7 @@ class _AuthDropdownState extends State<AuthDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<SignupViewCubit>();
     return DropdownButtonFormField(
       validator: widget.fieldValidation,
       decoration: InputDecoration(
@@ -86,9 +89,7 @@ class _AuthDropdownState extends State<AuthDropdown> {
             );
           }).toList(),
       onChanged: (value) {
-        setState(() {
-          selectedValue = value;
-        });
+        cubit.setLocation(value!); // Save the selected location in the cubit
       },
     );
   }
