@@ -62,16 +62,7 @@ class LoginView extends StatelessWidget {
                           hintText: 'Email',
                           isThisAPassword: false,
                           fieldController: cubit.emailController,
-                          fieldValidation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter your email";
-                            } else if (!RegExp(
-                              r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-                            ).hasMatch(value)) {
-                              return "Please enter a valid email";
-                            }
-                            return null;
-                          },
+                          fieldValidation: cubit.validateEmail,
                         ),
                         SizedBox(height: height * 0.032),
                         AuthTextField(
@@ -80,12 +71,7 @@ class LoginView extends StatelessWidget {
                           hintText: 'Password',
                           isThisAPassword: true,
                           fieldController: cubit.passwordController,
-                          fieldValidation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
+                          fieldValidation: cubit.validatePassword,
                         ),
                         SizedBox(height: height * 0.05),
                         GestureDetector(
@@ -96,6 +82,7 @@ class LoginView extends StatelessWidget {
                                 email: cubit.emailController.text,
                                 password: cubit.passwordController.text,
                               );
+                              cubit.clearFields();
                             }
                           },
                           child: AuthButton(

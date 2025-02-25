@@ -59,4 +59,65 @@ class SignupViewCubit extends Cubit<SignupViewState> {
       );
     }
   }
+
+  String? validateFirstName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Enter a first name";
+    } else if (!RegExp(r"^[a-zA-Z]+$").hasMatch(value)) {
+      return "Enter a valid name";
+    }
+    return null;
+  }
+
+  String? validateLastName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Enter a Last name";
+    } else if (!RegExp(r"^[a-zA-Z]+$").hasMatch(value)) {
+      return "Enter a valid name";
+    }
+    return null;
+  }
+
+  String? validatePhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a phone number";
+    } else if (!RegExp(r"^[0-9]{11}$").hasMatch(value)) {
+      return "Please enter a valid phone number";
+    }
+    return null;
+  }
+
+  String? validateLocation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please select your location';
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter an email";
+    } else if (!RegExp(
+      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    ).hasMatch(value)) {
+      return "Please enter a valid email";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a password";
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter the same password";
+    } else if (value != passwordController.text) {
+      return "Passwords does not match";
+    }
+    return null;
+  }
 }

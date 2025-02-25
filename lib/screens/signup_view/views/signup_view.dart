@@ -48,14 +48,7 @@ class SignupView extends StatelessWidget {
                         hintText: 'First Name',
                         textFieldWidth: width * 0.38,
                         fieldController: cubit.firstNameController,
-                        fieldValidation: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Enter a first name";
-                          } else if (!RegExp(r"^[a-zA-Z]+$").hasMatch(value)) {
-                            return "Enter a valid name";
-                          }
-                          return null;
-                        },
+                        fieldValidation: cubit.validateFirstName,
                       ),
                       Spacer(),
                       AuthTextField(
@@ -64,14 +57,7 @@ class SignupView extends StatelessWidget {
                         hintText: 'Last Name',
                         textFieldWidth: width * 0.38,
                         fieldController: cubit.lastNameController,
-                        fieldValidation: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Enter a Last name";
-                          } else if (!RegExp(r"^[a-zA-Z]+$").hasMatch(value)) {
-                            return "Enter a valid name";
-                          }
-                          return null;
-                        },
+                        fieldValidation: cubit.validateLastName,
                       ),
                     ],
                   ),
@@ -81,25 +67,13 @@ class SignupView extends StatelessWidget {
                     width: width,
                     hintText: 'Phone Number',
                     fieldController: cubit.phoneNumberController,
-                    fieldValidation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a phone number";
-                      } else if (!RegExp(r"^[0-9]{11}$").hasMatch(value)) {
-                        return "Please enter a valid phone number";
-                      }
-                      return null;
-                    },
+                    fieldValidation: cubit.validatePhoneNumber,
                   ),
                   SizedBox(height: height * 0.032),
                   AuthDropdown(
                     width: width,
                     height: height,
-                    fieldValidation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select your location';
-                      }
-                      return null;
-                    },
+                    fieldValidation: cubit.validateLocation,
                   ),
                   SizedBox(height: height * 0.05),
                   GestureDetector(

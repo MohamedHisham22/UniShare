@@ -51,4 +51,27 @@ class LoginViewCubit extends Cubit<LoginViewState> {
     emit(SigningOutSuccess());
     Navigator.pushNamedAndRemoveUntil(context, LoginView.id, (route) => false);
   }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your email";
+    } else if (!RegExp(
+      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    ).hasMatch(value)) {
+      return "Please enter a valid email";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    return null;
+  }
+
+  void clearFields() {
+    emailController.clear();
+    passwordController.clear();
+  }
 }

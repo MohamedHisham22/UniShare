@@ -57,16 +57,7 @@ class SignupView2 extends StatelessWidget {
                           width: width,
                           hintText: 'Email',
                           fieldController: cubit.emailController,
-                          fieldValidation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter an email";
-                            } else if (!RegExp(
-                              r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-                            ).hasMatch(value)) {
-                              return "Please enter a valid email";
-                            }
-                            return null;
-                          },
+                          fieldValidation: cubit.validateEmail,
                         ),
 
                         SizedBox(height: height * 0.032),
@@ -76,12 +67,7 @@ class SignupView2 extends StatelessWidget {
                           hintText: 'Password',
                           isThisAPassword: true,
                           fieldController: cubit.passwordController,
-                          fieldValidation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter a password";
-                            }
-                            return null;
-                          },
+                          fieldValidation: cubit.validatePassword,
                         ),
                         SizedBox(height: height * 0.032),
                         AuthTextField(
@@ -89,14 +75,7 @@ class SignupView2 extends StatelessWidget {
                           width: width,
                           hintText: 'Confirm Pasword',
                           isThisAPassword: true,
-                          fieldValidation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter the same password";
-                            } else if (value != cubit.passwordController.text) {
-                              return "Passwords does not match";
-                            }
-                            return null;
-                          },
+                          fieldValidation: cubit.validateConfirmPassword,
                         ),
 
                         SizedBox(height: height * 0.05),
