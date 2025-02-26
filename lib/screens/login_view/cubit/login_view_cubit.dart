@@ -74,12 +74,13 @@ class LoginViewCubit extends Cubit<LoginViewState> {
 
         if (!userDoc.exists) {
           await firestore.collection('users').doc(user.uid).set({
+            'uid': user.uid,
             'firstName': user.displayName?.split(" ").first ?? "",
             'lastName': user.displayName?.split(" ").last ?? "",
-            'email': user.email,
-            'phoneNumber': "",
+            'phone': "",
             'location': "",
-            'type': "google",
+            'email': user.email,
+            'type': "google account",
             'createdAt': FieldValue.serverTimestamp(),
           });
         }

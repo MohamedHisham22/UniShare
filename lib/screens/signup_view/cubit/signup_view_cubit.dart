@@ -43,8 +43,8 @@ class SignupViewCubit extends Cubit<SignupViewState> {
         'phone': phone,
         'location': location,
         'email': email,
-        'type': "default",
-        'createdAt': DateTime.now().toIso8601String(),
+        'type': "default account",
+        'createdAt': FieldValue.serverTimestamp(),
       });
       emit(SignupSuccess());
       Navigator.pushNamedAndRemoveUntil(context, MainView.id, (route) => false);
