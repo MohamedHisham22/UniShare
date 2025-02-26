@@ -43,6 +43,7 @@ class SignupViewCubit extends Cubit<SignupViewState> {
         'phone': phone,
         'location': location,
         'email': email,
+        'type': "default",
         'createdAt': DateTime.now().toIso8601String(),
       });
       emit(SignupSuccess());

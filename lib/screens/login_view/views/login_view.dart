@@ -56,7 +56,12 @@ class LoginView extends StatelessWidget {
                           text: 'Sign in with one of the following options',
                         ),
                         SizedBox(height: height * 0.032),
-                        GoogleSignIn(height: height, width: width),
+                        GestureDetector(
+                          onTap: () {
+                            cubit.signInWithGoogle(context: context);
+                          },
+                          child: GoogleSignIn(height: height, width: width),
+                        ),
                         AuthDivider(height: height),
                         AuthTextField(
                           height: height,
