@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/firebase_options.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LoginViewCubit()),
         BlocProvider(create: (context) => SignupViewCubit()),
         BlocProvider(create: (context) => MainViewCubit()),
+        BlocProvider(create: (context) => AddItemsCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -7,9 +7,10 @@ class NewTools extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      width: 268,
-      height: 246,
+      width: width * 0.65,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -24,7 +25,13 @@ class NewTools extends StatelessWidget {
       ),
       child: Column(
         children: [
-          NewToolsImageContainer(),
+          NewToolsImageContainer(
+            height: height * 0.21,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(15),
+              topLeft: Radius.circular(15),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(12),
             child: Row(

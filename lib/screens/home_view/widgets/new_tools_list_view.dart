@@ -6,8 +6,9 @@ class NewToolsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return SizedBox(
-      height: 246,
+      height: height * 0.3,
       child: ListView.separated(
         itemBuilder: (c, i) => NewTools(),
         separatorBuilder: (c, i) => SizedBox(width: 17),

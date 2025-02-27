@@ -97,7 +97,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
+import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
+import 'package:unishare/screens/saved_view/views/saved_view.dart';
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
@@ -107,8 +109,8 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       const HomeView(),
-      Center(child: Text('Listings')),
-      Center(child: Text('Liked')),
+      ListingView(),
+      SavedView(),
       Center(child: Text('Chat')),
     ];
 
