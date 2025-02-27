@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/widgets/custom_app_bar.dart';
 import 'package:unishare/screens/home_view/widgets/custom_text_field.dart';
 import 'package:unishare/screens/home_view/widgets/new_tools_list_view.dart';
@@ -20,11 +21,11 @@ class HomeViewBody extends StatelessWidget {
             SizedBox(height: 30),
             CustomTextField(),
             SizedBox(height: 10),
-            ToolsTitle(text: 'New Tools'),
+            ToolsTitle(text: 'New Tools', route: ExploreView.id),
             SizedBox(height: 13),
             NewToolsListView(),
             SizedBox(height: 15),
-            ToolsTitle(text: 'Recently viewed'),
+            ToolsTitle(text: 'Recently viewed', route: ''),
             SizedBox(height: 10),
             RecentlyViewedListView(),
             SizedBox(height: 10),

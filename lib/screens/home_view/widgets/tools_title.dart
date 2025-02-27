@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:unishare/screens/explore_view/views/explore_view.dart';
 
 class ToolsTitle extends StatelessWidget {
   final String text;
-  const ToolsTitle({super.key, required this.text});
+  final String route;
+  const ToolsTitle({super.key, required this.text, required this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +13,7 @@ class ToolsTitle extends StatelessWidget {
         Spacer(),
         GestureDetector(
           onTap: () {
-            Get.to(ExploreView());
+            Navigator.pushNamed(context, route);
           },
           child: Text(
             'View more',

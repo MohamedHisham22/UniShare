@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFieldItemName extends StatelessWidget {
-  const CustomTextFieldItemName({
-    super.key,
-  });
+  const CustomTextFieldItemName({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +12,9 @@ class CustomTextFieldItemName extends StatelessWidget {
           FocusScope.of(context).unfocus();
         },
         decoration: InputDecoration(
-          hintText: 'Ruler',
+          hintText: 'Item Name',
           hintStyle: TextStyle(fontSize: 18, color: Color(0xff656565)),
-    
+
           fillColor: Color(0xffEAEAEA),
           filled: true,
           enabledBorder: OutlineInputBorder(

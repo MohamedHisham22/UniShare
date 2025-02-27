@@ -4,7 +4,7 @@ import 'package:unishare/screens/saved_view/widgets/saved_view_body.dart';
 
 class SavedView extends StatelessWidget {
   const SavedView({super.key});
-
+  static String id = '/saved';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

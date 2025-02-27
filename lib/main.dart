@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
+import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
+import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
+import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
+import 'package:unishare/screens/saved_view/views/saved_view.dart';
 import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 import 'package:unishare/screens/signup_view/views/signup_view.dart';
 import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
@@ -39,6 +43,10 @@ class MyApp extends StatelessWidget {
           SignupView2.id: (context) => SignupView2(),
           MainView.id: (context) => MainView(),
           HomeView.id: (context) => HomeView(),
+          ExploreView.id: (context) => ExploreView(),
+          ListingView.id: (context) => ListingView(),
+          AddItemView.id: (context) => AddItemView(),
+          SavedView.id: (context) => SavedView(),
         },
       ),
     );

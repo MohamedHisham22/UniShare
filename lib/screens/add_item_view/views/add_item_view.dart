@@ -4,7 +4,7 @@ import 'package:unishare/screens/add_item_view/widgets/add_item_view_body.dart';
 
 class AddItemView extends StatelessWidget {
   const AddItemView({super.key});
-
+  static String id = '/addItem';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +21,10 @@ class AddItemView extends StatelessWidget {
       //   centerTitle: true,
       // ),
       body: AddItemViewBody(),
-       bottomNavigationBar: Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
         child: AddItemButton(),
-       ),
+      ),
     );
   }
 }

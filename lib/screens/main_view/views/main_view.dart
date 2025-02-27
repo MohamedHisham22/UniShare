@@ -96,6 +96,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
@@ -147,7 +148,7 @@ class MainView extends StatelessWidget {
                       icon: Padding(
                         padding: EdgeInsets.only(top: 13),
                         child: Padding(
-                          padding: EdgeInsets.only(right: 20),
+                          padding: EdgeInsets.only(right: 30),
                           child: Icon(Icons.list, size: 34),
                         ),
                       ),
@@ -157,7 +158,7 @@ class MainView extends StatelessWidget {
                       icon: Padding(
                         padding: EdgeInsets.only(top: 13),
                         child: Padding(
-                          padding: EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 30),
                           child: Icon(CupertinoIcons.heart, size: 34),
                         ),
                       ),
@@ -183,7 +184,9 @@ class MainView extends StatelessWidget {
         child: FittedBox(
           child: FloatingActionButton(
             backgroundColor: kPrimaryColor,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, AddItemView.id);
+            },
             shape: const CircleBorder(),
             child: const Icon(Icons.add, color: Colors.white, size: 30),
           ),

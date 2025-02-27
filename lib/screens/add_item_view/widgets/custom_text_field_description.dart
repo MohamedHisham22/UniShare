@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFieldDescription extends StatelessWidget {
-  const CustomTextFieldDescription({
-    super.key,
-  });
+  const CustomTextFieldDescription({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +13,9 @@ class CustomTextFieldDescription extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       decoration: InputDecoration(
-        hintText: 'Description item',
+        hintText: 'Item Description',
         hintStyle: TextStyle(fontSize: 18, color: Color(0xff656565)),
-    
+
         fillColor: Color(0xffEAEAEA),
         filled: true,
         enabledBorder: OutlineInputBorder(
