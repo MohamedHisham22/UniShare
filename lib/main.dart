@@ -15,6 +15,7 @@ import 'package:unishare/screens/saved_view/views/saved_view.dart';
 import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 import 'package:unishare/screens/signup_view/views/signup_view.dart';
 import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
+import 'package:unishare/screens/splash_view/views/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,8 +37,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: LoginView.id,
+        initialRoute: SplashView.id,
         routes: {
+          SplashView.id: (context) => SplashView(),
           LoginView.id: (context) => LoginView(),
           SignupView.id: (context) => SignupView(),
           SignupView2.id: (context) => SignupView2(),

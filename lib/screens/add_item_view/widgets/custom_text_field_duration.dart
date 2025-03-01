@@ -11,20 +11,7 @@ class CustomTextFieldDuration extends StatefulWidget {
 class _CustomTextFieldDurationState extends State<CustomTextFieldDuration> {
   String? selectedMonth;
 
-  final List<String> months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
+  final List<String> months = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +38,7 @@ class _CustomTextFieldDurationState extends State<CustomTextFieldDuration> {
           ),
         ),
         hint: Text(
-          'Month',
+          'Weekly',
           style: TextStyle(fontSize: 16, color: Color(0xff656565)),
         ),
         items:

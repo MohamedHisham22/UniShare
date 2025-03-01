@@ -16,16 +16,6 @@ class LoginViewCubit extends Cubit<LoginViewState> {
   final TextEditingController passwordController = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  void checkingIfSignedIn({required BuildContext context}) {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        Navigator.pushReplacementNamed(context, LoginView.id);
-      } else {
-        Navigator.pushReplacementNamed(context, MainView.id);
-      }
-    });
-  }
-
   void signIn({
     required BuildContext context,
     required String email,
