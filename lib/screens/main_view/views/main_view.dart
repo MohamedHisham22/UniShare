@@ -97,6 +97,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
+import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
@@ -112,7 +113,7 @@ class MainView extends StatelessWidget {
       const HomeView(),
       ListingView(),
       SavedView(),
-      Center(child: Text('Chat')),
+      AllChatsView(),
     ];
 
     return Scaffold(

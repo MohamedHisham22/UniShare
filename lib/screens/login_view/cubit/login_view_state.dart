@@ -17,3 +17,8 @@ final class LoginFailed extends LoginViewState {
 final class SigningOutLoading extends LoginViewState {}
 
 final class SigningOutSuccess extends LoginViewState {}
+
+final class SigningOutFailed extends LoginViewState {
+  String errorMessage;
+  SigningOutFailed({required this.errorMessage});
+}

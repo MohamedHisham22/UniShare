@@ -66,6 +66,7 @@ class SignupView extends StatelessWidget {
                     height: height,
                     width: width,
                     hintText: 'Phone Number',
+                    isThisAPhoneNumber: true,
                     fieldController: cubit.phoneNumberController,
                     fieldValidation: cubit.validatePhoneNumber,
                   ),

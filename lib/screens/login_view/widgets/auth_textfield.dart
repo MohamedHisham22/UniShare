@@ -9,6 +9,7 @@ class AuthTextField extends StatefulWidget {
     required this.fieldValidation,
     this.fieldController,
     this.isThisAPassword = false,
+    this.isThisAPhoneNumber = false,
     this.textFieldWidth = double.infinity,
   });
 
@@ -16,6 +17,7 @@ class AuthTextField extends StatefulWidget {
   final double width;
   final String hintText;
   final bool isThisAPassword;
+  final bool isThisAPhoneNumber;
   final double textFieldWidth;
   final FormFieldValidator<String> fieldValidation;
   final TextEditingController? fieldController;
@@ -32,6 +34,10 @@ class _AuthTextFieldState extends State<AuthTextField> {
     return SizedBox(
       width: widget.textFieldWidth,
       child: TextFormField(
+        keyboardType:
+            widget.isThisAPhoneNumber
+                ? TextInputType.numberWithOptions()
+                : null,
         controller: widget.fieldController,
         validator: widget.fieldValidation,
         decoration: InputDecoration(
