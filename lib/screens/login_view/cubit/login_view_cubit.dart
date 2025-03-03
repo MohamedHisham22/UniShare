@@ -89,8 +89,8 @@ class LoginViewCubit extends Cubit<LoginViewState> {
 
   void signOut({required BuildContext context}) async {
     emit(SigningOutLoading());
-    await GoogleSignIn().disconnect();
-    await FirebaseAuth.instance.signOut();
+    GoogleSignIn().disconnect();
+    FirebaseAuth.instance.signOut();
     emit(SigningOutSuccess());
     Navigator.pushNamedAndRemoveUntil(context, LoginView.id, (route) => false);
   }

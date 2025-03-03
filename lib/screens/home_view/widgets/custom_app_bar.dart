@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<LoginViewCubit>();
     final width = MediaQuery.of(context).size.width;
     return Row(
       children: [
@@ -37,7 +40,12 @@ class CustomAppBar extends StatelessWidget {
           ],
         ),
         Spacer(),
-        Icon(Icons.menu, size: 33),
+        GestureDetector(
+          onTap: () {
+            cubit.signOut(context: context);
+          },
+          child: Icon(Icons.logout_outlined, size: 33),
+        ),
       ],
     );
   }
