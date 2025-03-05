@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
 import 'package:unishare/screens/home_view/widgets/new_tools_image_container.dart';
 
 class ExploreTools extends StatelessWidget {
-  const ExploreTools({super.key});
-
+  const ExploreTools({super.key, required this.item});
+final GetItemsModel item;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -37,7 +38,9 @@ class ExploreTools extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10),
-          NewToolsImageContainer(height: height * 0.25),
+          NewToolsImageContainer(
+            imageUrl: item.imageUrl??'assets/images/tools.png',
+            height: height * 0.25),
           Padding(
             padding: const EdgeInsets.all(12),
             child: Row(
@@ -46,14 +49,14 @@ class ExploreTools extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Tool Name',
+                      item.itemName??'Unnamed Item',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
                       ),
                     ),
                     Text(
-                      '2018 | FunSkool',
+                      '${item.itemYear ?? "Unknown Year"} | ${item.itemBrand ?? "Unknown Brand"}',
                       style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],

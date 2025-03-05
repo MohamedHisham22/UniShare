@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-  });
+  const CustomTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +12,10 @@ class CustomTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: 'Search for tools and more...',
-        hintStyle: TextStyle(
-          fontSize: 18,
-          color: Color(0xff828282),
-        ),
+        hintStyle: TextStyle(fontSize: 18, color: Color(0xff828282)),
         suffixIcon: Padding(
           padding: const EdgeInsets.only(right: 10.0),
-          child: Icon(
-            CupertinoIcons.search,
-            color: Color(0xff999999),
-          ),
+          child: Icon(CupertinoIcons.search, color: Color(0xff999999)),
         ),
         fillColor: Color(0xffDEDEDE),
         filled: true,

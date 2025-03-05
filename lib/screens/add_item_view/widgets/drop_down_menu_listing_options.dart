@@ -1,19 +1,23 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+
 const List<String> list = <String>['Donate', 'Sell', 'Rent'];
 
 class DropDownMenuListingOptions extends StatefulWidget {
-final Function(String) onOptionSelected;
-  const DropDownMenuListingOptions({super.key, required this.onOptionSelected, });
+  final Function(String) onOptionSelected;
+  const DropDownMenuListingOptions({super.key, required this.onOptionSelected});
 
   @override
-  State<DropDownMenuListingOptions> createState() => _DropDownMenuListingOptionsState();
+  State<DropDownMenuListingOptions> createState() =>
+      _DropDownMenuListingOptionsState();
 }
+
 typedef MenuEntry = DropdownMenuEntry<String>;
 
-class _DropDownMenuListingOptionsState extends State<DropDownMenuListingOptions> {
-   static final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
+class _DropDownMenuListingOptionsState
+    extends State<DropDownMenuListingOptions> {
+  static final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
     list.map<MenuEntry>((String name) => MenuEntry(value: name, label: name)),
   );
   String dropdownValue = list.first;
@@ -47,7 +51,7 @@ class _DropDownMenuListingOptionsState extends State<DropDownMenuListingOptions>
         ),
       ),
       initialSelection: list.first,
-       onSelected: (String? value) {
+      onSelected: (String? value) {
         if (value != null) {
           setState(() {
             dropdownValue = value;

@@ -28,7 +28,11 @@ class ExploreViewBody extends StatelessWidget {
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(
-                children: [CustomTextField(), ExploreToolsListView()],
+                children: [
+                  SizedBox(height: 20),
+                  CustomTextField(),
+                  ExploreToolsListView(),
+                ],
               ),
             ),
           ),

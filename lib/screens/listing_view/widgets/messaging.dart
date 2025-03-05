@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Messaging extends StatelessWidget {
-  const Messaging({
-    super.key,
-  });
+  const Messaging({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class Messaging extends StatelessWidget {
           children: [
             Icon(Icons.mail_outline, size: 18),
             SizedBox(width: 8),
-        
+
             Text('3'),
           ],
         ),

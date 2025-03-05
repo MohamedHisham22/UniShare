@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UploadImageBotton extends StatelessWidget {
-  const UploadImageBotton({
-    super.key,
-  });
+  const UploadImageBotton({super.key});
 
   @override
   Widget build(BuildContext context) {

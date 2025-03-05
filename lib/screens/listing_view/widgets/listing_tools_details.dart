@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unishare/screens/listing_view/widgets/messaging.dart';
 
 class ListingToolsDetails extends StatelessWidget {
-  const ListingToolsDetails({
-    super.key,
-  });
+  const ListingToolsDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +44,7 @@ class ListingToolsDetails extends StatelessWidget {
                 Messaging(),
                 Text(
                   '03 May 2021',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xffC1839F),
-                  ),
+                  style: TextStyle(fontSize: 18, color: Color(0xffC1839F)),
                 ),
               ],
             ),
@@ -59,5 +54,3 @@ class ListingToolsDetails extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BackBotton extends StatelessWidget {
-  const BackBotton({
-    super.key,
-  });
+  const BackBotton({super.key});
 
   @override
   Widget build(BuildContext context) {
