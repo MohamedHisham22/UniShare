@@ -2,7 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
+import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
 
 part 'signup_view_state.dart';
@@ -46,6 +48,13 @@ class SignupViewCubit extends Cubit<SignupViewState> {
         'type': "default account",
         'createdAt': FieldValue.serverTimestamp(),
       });
+      //! send user id to the backend database
+      FormData formData = FormData.fromMap({"UserId": uid});
+      await DioHelper.postFormData(
+        path: 'http://unishare.runasp.net/api/users',
+        body: formData,
+      );
+      //! sent user id to backend complete normally...
       emit(SignupSuccess());
       Navigator.pushNamedAndRemoveUntil(context, MainView.id, (route) => false);
     } on FirebaseAuthException catch (e) {
