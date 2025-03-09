@@ -18,6 +18,9 @@ import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 import 'package:unishare/screens/signup_view/views/signup_view.dart';
 import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
 import 'package:unishare/screens/splash_view/views/splash_view.dart';
+import 'package:unishare/screens/tool_details_client_view/cubit/carousel_slider_cubit.dart';
+import 'package:unishare/screens/tool_details_client_view/views/tool_details_view_client.dart';
+import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +41,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => MainViewCubit()),
         BlocProvider(create: (context) => AddItemsCubit()),
         BlocProvider(create: (context) => GetItemsCubit()..getItems()),
+        BlocProvider(create: (context) => CarouselSliderCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -53,6 +57,8 @@ class MyApp extends StatelessWidget {
           ListingView.id: (context) => ListingView(),
           AddItemView.id: (context) => AddItemView(),
           SavedView.id: (context) => SavedView(),
+         ToolDetailsViewClient.id:(context)=>ToolDetailsViewClient(),
+         ToolDetailsViewUser.id: (context)=>ToolDetailsViewUser(),
         },
       ),
     );
