@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
+import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
 
@@ -73,6 +75,13 @@ class LoginViewCubit extends Cubit<LoginViewState> {
             'type': "google account",
             'createdAt': FieldValue.serverTimestamp(),
           });
+          //! send user id to the backend database
+          FormData formData = FormData.fromMap({"UserId": user.uid});
+          await DioHelper.postFormData(
+            path: 'http://unishare.runasp.net/api/users',
+            body: formData,
+          );
+          //! sent user id to backend complete normally...
         }
 
         emit(LoginSuccess());

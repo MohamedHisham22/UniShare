@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:unishare/constants.dart';
 
 class DioHelper {
   static late Dio _dio;
@@ -7,9 +6,7 @@ class DioHelper {
   DioHelper._();
 
   static inint() {
-    _dio = Dio(
-      BaseOptions(baseUrl: kUrl, receiveTimeout: const Duration(seconds: 60)),
-    );
+    _dio = Dio(BaseOptions(receiveTimeout: const Duration(seconds: 60)));
   }
 
   //-------------------Get-----------------------//
@@ -40,6 +37,19 @@ class DioHelper {
       data: body,
     );
     return response;
+  }
+
+  //-------------------postForm-----------------------//
+
+  static Future<Response> postFormData({
+    required String path,
+    required dynamic body,
+  }) async {
+    return await _dio.post(
+      path,
+      data: body,
+      options: Options(headers: {"Content-Type": "multipart/form-data"}),
+    );
   }
 
   //-------------------Delete-----------------------//
