@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
-import 'package:unishare/screens/chat_view/cubit/chatting_view_cubit.dart';
+import 'package:unishare/screens/chat_view/service/chat_service.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/chat_view/views/chatting_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
@@ -37,7 +38,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SignupViewCubit()),
         BlocProvider(create: (context) => MainViewCubit()),
         BlocProvider(create: (context) => AddItemsCubit()),
-        BlocProvider(create: (context) => ChattingViewCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
           AddItemView.id: (context) => AddItemView(),
           SavedView.id: (context) => SavedView(),
           AllChatsView.id: (context) => AllChatsView(),
-          ChattingView.id: (context) => ChattingView(),
         },
       ),
     );
