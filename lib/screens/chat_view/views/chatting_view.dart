@@ -90,6 +90,13 @@ class _ChattingViewState extends State<ChattingView> {
                   primaryColor: Colors.blue,
                   secondaryColor: Colors.white,
                   sendButtonIcon: Icon(Icons.send),
+                  sendingIcon: Icon(
+                    Icons.access_time,
+                    size: 18,
+                    color: Colors.grey,
+                  ),
+                  deliveredIcon: Icon(Icons.done, size: 18, color: Colors.grey),
+                  seenIcon: Icon(Icons.done_all, size: 18, color: Colors.blue),
                 ),
                 inputOptions: const InputOptions(
                   sendButtonVisibilityMode: SendButtonVisibilityMode.always,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:meta/meta.dart';
@@ -14,6 +15,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
   final String? chatId;
   final String? otherUserId;
   List<types.Message> messages = [];
+  final Map<String, bool> _sendingMessages = {};
   final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
   StreamSubscription? _messagesSubscription;
   bool _isFirstLoad = true;
@@ -36,6 +38,21 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         await FirebaseFirestore.instance.collection('chats').doc(chatId).update(
           {'unreadCount_$currentUserId': 0},
         );
+        var batch = FirebaseFirestore.instance.batch();
+        var unreadMessages =
+            await FirebaseFirestore.instance
+                .collection('chats')
+                .doc(chatId)
+                .collection('messages')
+                .where('senderId', isEqualTo: otherUserId)
+                .where('status', isEqualTo: 'sent')
+                .get();
+
+        for (var doc in unreadMessages.docs) {
+          batch.update(doc.reference, {'status': 'seen'});
+        }
+
+        await batch.commit();
       }
     } catch (e) {
       print('Error marking messages as read: $e');
@@ -52,6 +69,10 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
     final messageId = FirebaseFirestore.instance.collection('chats').doc().id;
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
+    // Mark this message as currently sending
+    _sendingMessages[messageId] = true;
+
+    // Create message with sending status
     var message = types.TextMessage(
       id: messageId,
       text: text,
@@ -60,10 +81,27 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
       status: types.Status.sending,
     );
 
+    // Add to UI immediately with sending status
     messages.insert(0, message);
     emit(ChatLoaded(List.from(messages)));
 
+    var connectivityResult = await Connectivity().checkConnectivity();
+    bool isConnected = connectivityResult != ConnectivityResult.none;
+
+    if (!isConnected) {
+      // Update to error status if no connection
+      _sendingMessages.remove(messageId);
+      final errorMessage = message.copyWith(status: types.Status.error);
+      final messageIndex = messages.indexWhere((msg) => msg.id == messageId);
+      if (messageIndex != -1) {
+        messages[messageIndex] = errorMessage;
+        emit(ChatLoaded(List.from(messages)));
+      }
+      return;
+    }
+
     try {
+      // Proceed with sending to Firebase
       final batch = FirebaseFirestore.instance.batch();
 
       final messageRef = FirebaseFirestore.instance
@@ -78,7 +116,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         "senderId": currentUserId,
         "receiverId": otherUserId,
         "timestamp": timestamp,
-        "status": "sent",
+        "status": "sending", // Store as sending in Firebase initially
       });
 
       final chatRef = FirebaseFirestore.instance
@@ -92,19 +130,25 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
 
       await batch.commit();
 
-      final updatedMessage = message.copyWith(status: types.Status.sent);
-      final messageIndex = messages.indexWhere((msg) => msg.id == messageId);
-      if (messageIndex != -1) {
-        messages[messageIndex] = updatedMessage;
-        emit(ChatLoaded(List.from(messages)));
-      }
+      // Now update the status to sent in Firebase
+      await messageRef.update({'status': 'sent'});
+
+      // Remove from sending messages
+      _sendingMessages.remove(messageId);
     } catch (e) {
-      final errorMessage = message.copyWith(status: types.Status.error);
+      // Update to error status if Firebase operation fails
+      _sendingMessages.remove(messageId);
+
+      // Only update if the message is still in our list
       final messageIndex = messages.indexWhere((msg) => msg.id == messageId);
       if (messageIndex != -1) {
+        final errorMessage = messages[messageIndex].copyWith(
+          status: types.Status.error,
+        );
         messages[messageIndex] = errorMessage;
         emit(ChatLoaded(List.from(messages)));
       }
+
       emit(ChatError("Failed to send message: ${e.toString()}"));
     }
   }
@@ -134,7 +178,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
                     text: data['text'],
                     author: _getCachedUser(data['senderId']),
                     createdAt: data['timestamp'],
-                    status: _mapStatus(data['status']),
+                    status: _mapStatus(data['status'], data['id']),
                   );
                 }).toList();
 
@@ -176,7 +220,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
                 text: data['text'],
                 author: _getCachedUser(data['senderId']),
                 createdAt: data['timestamp'],
-                status: _mapStatus(data['status']),
+                status: _mapStatus(data['status'], data['id']),
               );
             }).toList();
 
@@ -201,14 +245,25 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
     return super.close();
   }
 
-  types.Status _mapStatus(String status) {
+  types.Status _mapStatus(String status, String messageId) {
+    // If message is actively sending and status is not 'sent' or 'seen', show as sending
+    // This change allows Firebase updates to override local sending state
+    if (_sendingMessages.containsKey(messageId) &&
+        _sendingMessages[messageId] == true &&
+        status != 'sent' &&
+        status != 'seen') {
+      return types.Status.sending;
+    }
+
     switch (status) {
       case "sent":
         return types.Status.sent;
-      case "delivered":
-        return types.Status.delivered;
       case "seen":
         return types.Status.seen;
+      case "error":
+        return types.Status.error;
+      case "sending":
+        return types.Status.sending;
       default:
         return types.Status.sending;
     }
