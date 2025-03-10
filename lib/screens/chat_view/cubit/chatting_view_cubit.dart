@@ -18,7 +18,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
   StreamSubscription? _messagesSubscription;
   bool _isFirstLoad = true;
 
-  // Cache to prevent unnecessary Firestore reads
   final Map<String, types.User> _userCache = {};
 
   Future<void> initialize() async {
@@ -27,10 +26,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
       return;
     }
 
-    // Mark messages as read on entering the chat
     _markMessagesAsRead();
-
-    // Start listening to messages
     listenToMessages();
   }
 
@@ -56,7 +52,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
     final messageId = FirebaseFirestore.instance.collection('chats').doc().id;
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
-    // Create local message first for immediate UI update
     var message = types.TextMessage(
       id: messageId,
       text: text,
@@ -65,15 +60,12 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
       status: types.Status.sending,
     );
 
-    // Update UI optimistically
     messages.insert(0, message);
     emit(ChatLoaded(List.from(messages)));
 
     try {
-      // Batch write to reduce Firebase operations
       final batch = FirebaseFirestore.instance.batch();
 
-      // Add message to subcollection
       final messageRef = FirebaseFirestore.instance
           .collection('chats')
           .doc(chatId)
@@ -89,7 +81,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         "status": "sent",
       });
 
-      // Update chat metadata in a single operation
       final chatRef = FirebaseFirestore.instance
           .collection('chats')
           .doc(chatId);
@@ -99,10 +90,8 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         'unreadCount_$otherUserId': FieldValue.increment(1),
       });
 
-      // Commit the batch
       await batch.commit();
 
-      // Update local message status
       final updatedMessage = message.copyWith(status: types.Status.sent);
       final messageIndex = messages.indexWhere((msg) => msg.id == messageId);
       if (messageIndex != -1) {
@@ -110,7 +99,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         emit(ChatLoaded(List.from(messages)));
       }
     } catch (e) {
-      // Revert status to error in case of failure
       final errorMessage = message.copyWith(status: types.Status.error);
       final messageIndex = messages.indexWhere((msg) => msg.id == messageId);
       if (messageIndex != -1) {
@@ -129,8 +117,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
 
     emit(ChatLoading());
 
-    // Use a limit to reduce data usage and costs
-    // Fetch 30 messages at a time, which is enough for most chat sessions
     _messagesSubscription = FirebaseFirestore.instance
         .collection('chats')
         .doc(chatId)
@@ -152,7 +138,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
                   );
                 }).toList();
 
-            // Only mark as read on first load or when entering chat
             if (_isFirstLoad) {
               _isFirstLoad = false;
               _markMessagesAsRead();
@@ -166,12 +151,10 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         );
   }
 
-  // Load more messages (pagination) to reduce initial data load
   Future<void> loadMoreMessages() async {
     if (chatId == null || messages.isEmpty) return;
 
     try {
-      // Get the timestamp of the oldest message we have
       final lastTimestamp = messages.last.createdAt;
 
       final snapshot =
@@ -205,7 +188,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
     }
   }
 
-  // User caching to reduce duplicated objects
   types.User _getCachedUser(String userId) {
     if (!_userCache.containsKey(userId)) {
       _userCache[userId] = types.User(id: userId);

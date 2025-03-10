@@ -47,7 +47,9 @@ class _ChattingViewState extends State<ChattingView> {
       value: _cubit,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.otherUserName ?? "Chat"),
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          title: Text(widget.otherUserName ?? "User"),
           elevation: 1,
         ),
         body: GestureDetector(
@@ -82,17 +84,16 @@ class _ChattingViewState extends State<ChattingView> {
                     (partialText) => _cubit.sendMessage(partialText.text),
                 user: types.User(id: _cubit.currentUserId),
                 theme: const DefaultChatTheme(
-                  backgroundColor: Colors.white,
-                  inputBackgroundColor: Colors.grey,
+                  backgroundColor: Color.fromARGB(212, 223, 222, 222),
+                  inputBackgroundColor: Colors.white,
                   inputTextColor: Colors.black87,
                   primaryColor: Colors.blue,
-                  secondaryColor: Colors.grey,
+                  secondaryColor: Colors.white,
                   sendButtonIcon: Icon(Icons.send),
                 ),
                 inputOptions: const InputOptions(
                   sendButtonVisibilityMode: SendButtonVisibilityMode.always,
                 ),
-                // Add load more capability to reduce initial data transfer
                 onEndReached: () => _cubit.loadMoreMessages(),
               );
             },

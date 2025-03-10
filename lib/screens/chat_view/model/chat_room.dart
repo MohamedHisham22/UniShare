@@ -18,7 +18,6 @@ class ChatRoom {
   factory ChatRoom.fromMap(Map<String, dynamic> map, String documentId) {
     Map<String, int> unreadCounts = {};
 
-    // Extract unread counts for all participants
     map.forEach((key, value) {
       if (key.startsWith('unreadCount_')) {
         String userId = key.substring('unreadCount_'.length);

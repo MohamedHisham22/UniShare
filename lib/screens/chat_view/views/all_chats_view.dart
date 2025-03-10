@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:unishare/constants.dart';
 import 'package:unishare/screens/chat_view/model/chat_room.dart';
 import 'package:unishare/screens/chat_view/views/chatting_view.dart';
 
@@ -14,10 +15,22 @@ class AllChatsView extends StatelessWidget {
     final currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Chats"), elevation: 1),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        toolbarHeight: 85,
+        title: Text(
+          'Chats',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+            color: kPrimaryColor,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: StreamBuilder(
-        // Only get chats where the current user is a participant
-        // This minimizes unnecessary Firebase reads
         stream:
             FirebaseFirestore.instance
                 .collection('chats')
@@ -47,16 +60,13 @@ class AllChatsView extends StatelessWidget {
               final chat = chats[index].data() as Map<String, dynamic>;
               final chatRoom = ChatRoom.fromMap(chat, chats[index].id);
 
-              // Find the other user in the participants list
               final otherUserId = chatRoom.participants.firstWhere(
                 (id) => id != currentUserId,
                 orElse: () => 'Unknown User',
               );
 
-              // Get unread count for the current user
               final unreadCount = chatRoom.unreadCounts[currentUserId] ?? 0;
 
-              // Format timestamp
               final messageTime =
                   chatRoom.latestMessageTimestamp != null
                       ? _formatTimestamp(chatRoom.latestMessageTimestamp!)
@@ -68,7 +78,6 @@ class AllChatsView extends StatelessWidget {
                   child: Text(otherUserId.substring(0, 1).toUpperCase()),
                 ),
                 title: FutureBuilder(
-                  // Use a more efficient approach to get user details
                   future: _getUserName(otherUserId),
                   builder: (context, AsyncSnapshot<String> snapshot) {
                     return Text(snapshot.data ?? "Loading...");
@@ -130,11 +139,9 @@ class AllChatsView extends StatelessWidget {
     );
   }
 
-  // Cache user names to reduce Firebase reads
   final Map<String, String> _userNameCache = {};
 
   Future<String> _getUserName(String userId) async {
-    // Check cache first
     if (_userNameCache.containsKey(userId)) {
       return _userNameCache[userId]!;
     }
@@ -149,7 +156,6 @@ class AllChatsView extends StatelessWidget {
       if (userDoc.exists) {
         final userData = userDoc.data();
         final name = userData?['name'] ?? userData?['displayName'] ?? "User";
-        // Cache the result
         _userNameCache[userId] = name;
         return name;
       }
@@ -170,17 +176,13 @@ class AllChatsView extends StatelessWidget {
     );
 
     if (messageDate == today) {
-      // Today, just show time
       return "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
     } else if (messageDate == today.subtract(const Duration(days: 1))) {
-      // Yesterday
       return "Yesterday";
     } else if (now.difference(messageDate).inDays < 7) {
-      // Within the last week
       const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       return days[timestamp.weekday - 1];
     } else {
-      // Older messages
       return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
     }
   }
