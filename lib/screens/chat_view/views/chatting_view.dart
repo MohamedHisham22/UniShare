@@ -63,7 +63,7 @@ class _ChattingViewState extends State<ChattingView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Error: ${state.message}"),
+                      Text("Error Loading Chat"),
                       TextButton(
                         onPressed: () => _cubit.listenToMessages(),
                         child: const Text("Retry"),

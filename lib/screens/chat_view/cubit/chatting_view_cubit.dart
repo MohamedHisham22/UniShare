@@ -54,9 +54,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
 
         await batch.commit();
       }
-    } catch (e) {
-      print('Error marking messages as read: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> sendMessage(String text) async {
@@ -69,10 +67,8 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
     final messageId = FirebaseFirestore.instance.collection('chats').doc().id;
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
-    // Mark this message as currently sending
     _sendingMessages[messageId] = true;
 
-    // Create message with sending status
     var message = types.TextMessage(
       id: messageId,
       text: text,
@@ -81,7 +77,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
       status: types.Status.sending,
     );
 
-    // Add to UI immediately with sending status
     messages.insert(0, message);
     emit(ChatLoaded(List.from(messages)));
 
@@ -89,7 +84,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
     bool isConnected = connectivityResult != ConnectivityResult.none;
 
     if (!isConnected) {
-      // Update to error status if no connection
       _sendingMessages.remove(messageId);
       final errorMessage = message.copyWith(status: types.Status.error);
       final messageIndex = messages.indexWhere((msg) => msg.id == messageId);
@@ -101,7 +95,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
     }
 
     try {
-      // Proceed with sending to Firebase
       final batch = FirebaseFirestore.instance.batch();
 
       final messageRef = FirebaseFirestore.instance
@@ -116,7 +109,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         "senderId": currentUserId,
         "receiverId": otherUserId,
         "timestamp": timestamp,
-        "status": "sending", // Store as sending in Firebase initially
+        "status": "sending",
       });
 
       final chatRef = FirebaseFirestore.instance
@@ -130,16 +123,12 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
 
       await batch.commit();
 
-      // Now update the status to sent in Firebase
       await messageRef.update({'status': 'sent'});
 
-      // Remove from sending messages
       _sendingMessages.remove(messageId);
     } catch (e) {
-      // Update to error status if Firebase operation fails
       _sendingMessages.remove(messageId);
 
-      // Only update if the message is still in our list
       final messageIndex = messages.indexWhere((msg) => msg.id == messageId);
       if (messageIndex != -1) {
         final errorMessage = messages[messageIndex].copyWith(
@@ -246,8 +235,6 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
   }
 
   types.Status _mapStatus(String status, String messageId) {
-    // If message is actively sending and status is not 'sent' or 'seen', show as sending
-    // This change allows Firebase updates to override local sending state
     if (_sendingMessages.containsKey(messageId) &&
         _sendingMessages[messageId] == true &&
         status != 'sent' &&
