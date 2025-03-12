@@ -29,48 +29,72 @@ class SingleChatBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      isThreeLine: true,
       leading: CircleAvatar(
+        radius: 28,
         backgroundColor: Colors.blue,
-        child: Text(otherUserId.substring(0, 1).toUpperCase()),
-      ),
-      title: FutureBuilder(
-        future: cubit.getUserName(otherUserId),
-        builder: (context, AsyncSnapshot<String> snapshot) {
-          return Text(snapshot.data ?? "Loading...");
-        },
-      ),
-      subtitle: Text(
-        chatRoom.latestMessage ?? "No messages yet",
-        style: TextStyle(
-          color: unreadCount > 0 ? Colors.black : Colors.grey,
-          fontWeight: unreadCount > 0 ? FontWeight.bold : FontWeight.normal,
+        child: Text(
+          otherUserId.substring(0, 1).toUpperCase(),
+          style: const TextStyle(fontSize: 22, color: Colors.white),
         ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
       ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
+      title: Row(
         children: [
-          Text(
-            messageTime,
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          Expanded(
+            child: FutureBuilder(
+              future: cubit.getUserName(otherUserId),
+              builder: (context, AsyncSnapshot<String> snapshot) {
+                return Text(
+                  snapshot.data ?? "Loading...",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                );
+              },
+            ),
           ),
           const SizedBox(width: 8),
+          Text(
+            messageTime,
+            style: const TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+        ],
+      ),
+      subtitle: Row(
+        children: [
+          Expanded(
+            child: Text(
+              chatRoom.latestMessage ?? "No messages yet",
+              style: TextStyle(
+                fontSize: 16,
+                color: unreadCount > 0 ? Colors.black : Colors.grey,
+                fontWeight:
+                    unreadCount > 0 ? FontWeight.bold : FontWeight.normal,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           if (unreadCount > 0)
             Container(
-              padding: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle,
               ),
               child: Text(
                 unreadCount.toString(),
-                style: const TextStyle(color: Colors.white, fontSize: 12),
+                style: const TextStyle(color: Colors.white, fontSize: 14),
               ),
             ),
         ],
       ),
-      onTap: () {
+      onTap: () async {
+        final userName = await cubit.getUserName(otherUserId);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -78,7 +102,7 @@ class SingleChatBar extends StatelessWidget {
                 (context) => ChattingView(
                   chatId: chats[index].id,
                   otherUserId: otherUserId,
-                  otherUserName: chat['otherUserName'] ?? "Chat",
+                  otherUserName: userName,
                 ),
           ),
         );

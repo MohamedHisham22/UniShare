@@ -92,9 +92,11 @@ class AllChatsViewCubit extends Cubit<AllChatsViewState> {
 
       if (userDoc.exists) {
         final userData = userDoc.data();
-        final name = userData?['name'] ?? userData?['displayName'] ?? "User";
-        _userNameCache[userId] = name;
-        return name;
+        final firstName = userData?['firstName'] ?? "User";
+        final lastName = userData?['lastName'] ?? "";
+        final fullName = "$firstName ${lastName.trim()}".trim();
+        _userNameCache[userId] = fullName;
+        return fullName;
       }
     } catch (e) {
       emit(DisplayingChatsFailed(errorMessage: 'Error fetching user data'));
