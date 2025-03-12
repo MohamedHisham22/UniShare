@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:unishare/screens/chat_view/cubit/chatting_view_cubit.dart';
+import 'package:unishare/screens/chat_view/widgets/chat_view_body.dart';
 
-class ChattingView extends StatefulWidget {
+class ChattingView extends StatelessWidget {
   const ChattingView({
     Key? key,
     required this.chatId,
@@ -19,94 +18,17 @@ class ChattingView extends StatefulWidget {
   static String id = '/chatting';
 
   @override
-  State<ChattingView> createState() => _ChattingViewState();
-}
-
-class _ChattingViewState extends State<ChattingView> {
-  late final ChattingViewCubit _cubit;
-
-  @override
-  void initState() {
-    super.initState();
-    _cubit = ChattingViewCubit(
-      chatId: widget.chatId,
-      otherUserId: widget.otherUserId,
-    );
-    _cubit.initialize();
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _cubit,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-          title: Text(widget.otherUserName ?? "User"),
-          elevation: 1,
-        ),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: BlocBuilder<ChattingViewCubit, ChattingViewState>(
-            builder: (context, state) {
-              if (state is ChatLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is ChatError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Error Loading Chat"),
-                      TextButton(
-                        onPressed: () => _cubit.listenToMessages(),
-                        child: const Text("Retry"),
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              List<types.Message> messages = [];
-              if (state is ChatLoaded) {
-                messages = state.messages;
-              }
-
-              return Chat(
-                messages: messages,
-                onSendPressed:
-                    (partialText) => _cubit.sendMessage(partialText.text),
-                user: types.User(id: _cubit.currentUserId),
-                theme: const DefaultChatTheme(
-                  backgroundColor: Color.fromARGB(212, 223, 222, 222),
-                  inputBackgroundColor: Colors.white,
-                  inputTextColor: Colors.black87,
-                  primaryColor: Colors.blue,
-                  secondaryColor: Colors.white,
-                  sendButtonIcon: Icon(Icons.send),
-                  sendingIcon: Icon(
-                    Icons.access_time,
-                    size: 18,
-                    color: Colors.grey,
-                  ),
-                  deliveredIcon: Icon(Icons.done, size: 18, color: Colors.grey),
-                  seenIcon: Icon(Icons.done_all, size: 18, color: Colors.blue),
-                ),
-                inputOptions: const InputOptions(
-                  sendButtonVisibilityMode: SendButtonVisibilityMode.always,
-                ),
-                onEndReached: () => _cubit.loadMoreMessages(),
-              );
-            },
-          ),
-        ),
-      ),
+    return BlocProvider(
+      create: (context) {
+        final cubit = ChattingViewCubit(
+          chatId: chatId,
+          otherUserId: otherUserId,
+        );
+        cubit.initialize();
+        return cubit;
+      },
+      child: ChattingViewBody(otherUserName: otherUserName),
     );
   }
 }
