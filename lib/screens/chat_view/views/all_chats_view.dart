@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/widgets/chats_builder.dart';
 import 'package:unishare/screens/chat_view/widgets/custom_appbar.dart';
+import 'package:unishare/screens/chat_view/widgets/search_textfield.dart';
 
 class AllChatsView extends StatelessWidget {
   AllChatsView({Key? key}) : super(key: key);
 
   static String id = '/allChats';
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class AllChatsView extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            return Center(child: Text("Error Loading Chats"));
+            return const Center(child: Text("Error Loading Chats"));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -43,10 +45,31 @@ class AllChatsView extends StatelessWidget {
 
           final chats = snapshot.data!.docs;
 
-          return ChatsBuilder(
-            chats: chats,
-            currentUserId: currentUserId,
-            cubit: cubit,
+          return Column(
+            children: [
+              SearchTextField(
+                searchController: searchController,
+                cubit: cubit,
+                chats: chats,
+              ),
+              Expanded(
+                child: BlocBuilder<AllChatsViewCubit, AllChatsViewState>(
+                  builder: (context, state) {
+                    List<QueryDocumentSnapshot> displayChats = chats;
+
+                    if (state is ChatsSearched) {
+                      displayChats = state.filteredChats;
+                    }
+
+                    return ChatsBuilder(
+                      chats: displayChats,
+                      currentUserId: currentUserId,
+                      cubit: cubit,
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),

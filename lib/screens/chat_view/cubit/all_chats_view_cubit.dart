@@ -125,4 +125,37 @@ class AllChatsViewCubit extends Cubit<AllChatsViewState> {
       return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
     }
   }
+
+  List<QueryDocumentSnapshot> searchChatsBody(
+    List<QueryDocumentSnapshot> chats,
+    String searchQuery,
+  ) {
+    if (searchQuery.trim().isEmpty) return chats;
+
+    final lowerCaseQuery = searchQuery.toLowerCase();
+
+    return chats.where((chatDoc) {
+      final chatData = chatDoc.data() as Map<String, dynamic>;
+      final participants = List<String>.from(chatData['participants'] ?? []);
+      final otherUserId = participants.firstWhere(
+        (id) => id != currentUserId,
+        orElse: () => '',
+      );
+
+      if (otherUserId.isEmpty) return false;
+
+      final userName = _userNameCache[otherUserId] ?? "User";
+      return userName.toLowerCase().contains(lowerCaseQuery);
+    }).toList();
+  }
+
+  void searchChats(List<QueryDocumentSnapshot> chats, String searchQuery) {
+    if (searchQuery.trim().isEmpty) {
+      emit(AllChatsViewInitial());
+      return;
+    }
+
+    final filteredChats = searchChatsBody(chats, searchQuery);
+    emit(ChatsSearched(filteredChats));
+  }
 }
