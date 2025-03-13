@@ -138,7 +138,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         emit(ChatLoaded(List.from(messages)));
       }
 
-      emit(ChatError("Failed to send message: ${e.toString()}"));
+      emit(ChatError("Failed to send message"));
     }
   }
 
@@ -179,7 +179,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
             emit(ChatLoaded(List.from(messages)));
           },
           onError: (error) {
-            emit(ChatError("Error loading messages: ${error.toString()}"));
+            emit(ChatError("Error loading messages"));
           },
         );
   }
@@ -217,7 +217,7 @@ class ChattingViewCubit extends Cubit<ChattingViewState> {
         emit(ChatLoaded(List.from(messages)));
       }
     } catch (e) {
-      emit(ChatError("Error loading more messages: ${e.toString()}"));
+      emit(ChatError("Error loading more messages"));
     }
   }
 

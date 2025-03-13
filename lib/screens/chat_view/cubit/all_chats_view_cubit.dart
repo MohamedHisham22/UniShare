@@ -16,7 +16,8 @@ class AllChatsViewCubit extends Cubit<AllChatsViewState> {
 
   Future<String?> createOrGetChat(String otherUserId) async {
     if (currentUserId.isEmpty) {
-      throw Exception("User not authenticated");
+      emit(DisplayingChatsFailed(errorMessage: "User not authenticated"));
+      return null;
     }
 
     try {

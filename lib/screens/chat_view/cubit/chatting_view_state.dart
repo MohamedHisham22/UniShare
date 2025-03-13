@@ -14,7 +14,7 @@ class ChatLoaded extends ChattingViewState {
 }
 
 class ChatError extends ChattingViewState {
-  final String message;
+  String message;
 
   ChatError(this.message);
 }
