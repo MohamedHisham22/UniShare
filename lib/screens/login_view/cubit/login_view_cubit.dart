@@ -98,10 +98,18 @@ class LoginViewCubit extends Cubit<LoginViewState> {
 
   void signOut({required BuildContext context}) async {
     emit(SigningOutLoading());
-    GoogleSignIn().disconnect();
-    FirebaseAuth.instance.signOut();
-    emit(SigningOutSuccess());
-    Navigator.pushNamedAndRemoveUntil(context, LoginView.id, (route) => false);
+    try {
+      GoogleSignIn().disconnect();
+      await FirebaseAuth.instance.signOut();
+      emit(SigningOutSuccess());
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        LoginView.id,
+        (route) => false,
+      );
+    } catch (e) {
+      emit(SigningOutFailed(errorMessage: 'Couldn\'t sign out'));
+    }
   }
 
   String? validateEmail(String? value) {

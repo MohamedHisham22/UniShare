@@ -5,6 +5,8 @@ import 'package:unishare/firebase_options.dart';
 import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
+import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
+import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AddItemsCubit()),
         BlocProvider(create: (context) => GetItemsCubit()..getItems()),
         BlocProvider(create: (context) => CarouselSliderCubit()),
+        BlocProvider(create: (context) => AllChatsViewCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -57,8 +60,9 @@ class MyApp extends StatelessWidget {
           ListingView.id: (context) => ListingView(),
           AddItemView.id: (context) => AddItemView(),
           SavedView.id: (context) => SavedView(),
-         ToolDetailsViewClient.id:(context)=>ToolDetailsViewClient(),
-         ToolDetailsViewUser.id: (context)=>ToolDetailsViewUser(),
+          ToolDetailsViewClient.id: (context) => ToolDetailsViewClient(),
+          ToolDetailsViewUser.id: (context) => ToolDetailsViewUser(),
+          AllChatsView.id: (context) => AllChatsView(),
         },
       ),
     );
