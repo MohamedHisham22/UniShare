@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:unishare/constants.dart';
 import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
 
@@ -14,7 +13,7 @@ class GetItemsCubit extends Cubit<GetItemsCubitState> {
   Future<void> getItems() async {
     emit(GetItemsCubitLoading());
     try {
-      final response = await DioHelper.getData(path: kUrl);
+      final response = await DioHelper.getData(path: 'items/latest');
       print("API Response: ${response.data}");
       // Ensure the response is a list before parsing
       if (response.data is List) {

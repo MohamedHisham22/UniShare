@@ -5,7 +5,6 @@ import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
 import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
 import 'package:unishare/screens/home_view/widgets/new_tools.dart';
 import 'package:unishare/screens/tool_details_client_view/views/tool_details_view_client.dart';
-import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
 
 class NewToolsListView extends StatelessWidget {
   const NewToolsListView({super.key});

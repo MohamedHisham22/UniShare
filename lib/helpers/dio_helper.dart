@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:unishare/constants.dart';
 
 class DioHelper {
   static late Dio _dio;
@@ -6,7 +7,9 @@ class DioHelper {
   DioHelper._();
 
   static inint() {
-    _dio = Dio(BaseOptions(receiveTimeout: const Duration(seconds: 60)));
+    _dio = Dio(
+      BaseOptions(baseUrl: kUrl, receiveTimeout: const Duration(seconds: 60)),
+    );
   }
 
   //-------------------Get-----------------------//
