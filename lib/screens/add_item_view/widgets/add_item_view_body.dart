@@ -9,7 +9,7 @@ import 'package:unishare/screens/add_item_view/widgets/drop_down_menu_category.d
 import 'package:unishare/screens/add_item_view/widgets/drop_down_menu_condition.dart';
 import 'package:unishare/screens/add_item_view/widgets/drop_down_menu_listing_options.dart';
 import 'package:unishare/screens/add_item_view/widgets/title_name.dart';
-import 'package:unishare/screens/add_item_view/widgets/upload_image_botton.dart';
+import 'package:unishare/screens/add_item_view/widgets/upload_image_button.dart';
 
 class AddItemViewBody extends StatelessWidget {
   const AddItemViewBody({super.key});
@@ -20,7 +20,7 @@ class AddItemViewBody extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<AddItemsCubit>();
         return Padding(
-          padding: const EdgeInsets.only(right: 25, left: 25, top: 40),
+          padding: const EdgeInsets.only(right: 25, left: 25),
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,6 +30,7 @@ class AddItemViewBody extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 40),
                         TitleName(text: 'Item Name:'),
                         SizedBox(height: 5),
                         CustomTextFieldItemName(),
@@ -40,7 +41,7 @@ class AddItemViewBody extends StatelessWidget {
                         SizedBox(height: 20),
                         TitleName(text: 'Upload Images:'),
                         SizedBox(height: 5),
-                        UploadImageBotton(),
+                        UploadingImage(),
                         SizedBox(height: 20),
                         TitleName(text: 'Choose Category'),
                         SizedBox(height: 5),
