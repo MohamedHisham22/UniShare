@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
 
@@ -17,6 +18,7 @@ class LoginViewCubit extends Cubit<LoginViewState> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  UserModel? userModel;
 
   void signIn({
     required BuildContext context,
@@ -29,6 +31,8 @@ class LoginViewCubit extends Cubit<LoginViewState> {
         email: email,
         password: password,
       );
+      await getUserData();
+
       emit(LoginSuccess());
       Navigator.pushNamedAndRemoveUntil(context, MainView.id, (route) => false);
     } on FirebaseAuthException catch (ex) {
@@ -83,7 +87,7 @@ class LoginViewCubit extends Cubit<LoginViewState> {
           );
           //! sent user id to backend complete normally...
         }
-
+        await getUserData();
         emit(LoginSuccess());
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -109,6 +113,24 @@ class LoginViewCubit extends Cubit<LoginViewState> {
       );
     } catch (e) {
       emit(SigningOutFailed(errorMessage: 'Couldn\'t sign out'));
+    }
+  }
+
+  Future<void> getUserData() async {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+
+    final userDoc = await firestore.collection('users').doc(userID).get();
+    if (userDoc.exists && userDoc.data() != null) {
+      userModel = UserModel.fromSnapshot(
+        userDoc.data() as Map<String, dynamic>,
+      );
+      emit(GettingDataSuccess());
+    }
+  }
+
+  void startAppWithUserData() async {
+    if (FirebaseAuth.instance.currentUser != null && userModel == null) {
+      await getUserData();
     }
   }
 

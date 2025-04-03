@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
@@ -10,7 +11,7 @@ import 'package:unishare/screens/update_profile/models/upload_image_model.dart';
 part 'update_profile_state.dart';
 
 class UpdateProfileCubit extends Cubit<UpdateProfileState> {
-  UpdateProfileCubit() : super(UpdateProfileInitial());
+  UpdateProfileCubit() : super(UpdateProfileInitial()) {}
 
   File? selectedImage;
   bool? isImageChanged = false;
@@ -39,19 +40,22 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(ProfilePicUpdateCanceled());
   }
 
-  void submitingProfilePictureChangesToDataBase(File profileImage) async {
+  void submitingProfilePictureChangesToDataBase(
+    File profileImage,
+    String userID,
+  ) async {
     emit(UpdatingImageLoading());
     try {
       FormData formData = FormData.fromMap({
         'ProfileImage': await MultipartFile.fromFile(profileImage.path),
       });
       final response = await DioHelper.putFormData(
-        path: 'users/1test',
+        path: 'users/$userID',
         body: formData,
       );
       uploadImage = UploadImage.fromJson(response.data);
       if (response.statusCode == 200) {
-        await getProfilePicture();
+        await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
         isImageChanged = false;
         selectedImage = null;
         emit(UpdatingImageSuccess());
@@ -63,10 +67,10 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     }
   }
 
-  Future<void> getProfilePicture() async {
+  Future<void> getProfilePicture(String userID) async {
     emit(GettingProfileImageLoading());
     try {
-      final response = await DioHelper.getData(path: 'users/1test');
+      final response = await DioHelper.getData(path: 'users/$userID');
       gettingImage = GettingImage.fromJson(response.data);
       if (response.statusCode == 200) {
         emit(GettingProfileImageSuccess());
@@ -78,5 +82,9 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     } catch (e) {
       emit(GettingProfileImageFailed());
     }
+  }
+
+  void startAppWithProfileImage() async {
+    await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
   }
 }

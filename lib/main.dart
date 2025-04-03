@@ -41,7 +41,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LoginViewCubit()),
+        BlocProvider(
+          create: (context) => LoginViewCubit()..startAppWithUserData(),
+        ),
         BlocProvider(create: (context) => SignupViewCubit()),
         BlocProvider(create: (context) => MainViewCubit()),
         BlocProvider(create: (context) => AddItemsCubit()),
@@ -49,7 +51,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CarouselSliderCubit()),
         BlocProvider(create: (context) => AllChatsViewCubit()),
         BlocProvider(
-          create: (context) => UpdateProfileCubit()..getProfilePicture(),
+          create: (context) => UpdateProfileCubit()..startAppWithProfileImage(),
         ),
       ],
       child: MaterialApp(

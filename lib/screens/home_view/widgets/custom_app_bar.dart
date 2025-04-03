@@ -11,45 +11,49 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final cubit = context.read<UpdateProfileCubit>();
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: width * 0.12,
-          backgroundImage:
-              cubit.gettingImage.profileImage != null
-                  ? NetworkImage(cubit.gettingImage.profileImage!)
-                  : AssetImage(imagePath + 'User image.png'),
-        ),
-        SizedBox(width: 15),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
+      builder: (context, state) {
+        return Row(
           children: [
-            Text(
-              'Hey Alice',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: kPrimaryColor,
-              ),
+            CircleAvatar(
+              radius: width * 0.12,
+              backgroundImage:
+                  cubit.gettingImage.profileImage != null
+                      ? NetworkImage(cubit.gettingImage.profileImage!)
+                      : AssetImage(imagePath + 'User image.png'),
             ),
-            Text(
-              'Welcome back!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.normal,
-                color: Color(0xffFF5A5F),
-              ),
+            SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hey Alice',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: kPrimaryColor,
+                  ),
+                ),
+                Text(
+                  'Welcome back!',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.normal,
+                    color: Color(0xffFF5A5F),
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+              child: Icon(Icons.menu, size: 33),
             ),
           ],
-        ),
-        Spacer(),
-        GestureDetector(
-          onTap: () {
-            Scaffold.of(context).openDrawer();
-          },
-          child: Icon(Icons.menu, size: 33),
-        ),
-      ],
+        );
+      },
     );
   }
 }

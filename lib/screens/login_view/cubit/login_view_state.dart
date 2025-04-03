@@ -22,3 +22,5 @@ final class SigningOutFailed extends LoginViewState {
   String errorMessage;
   SigningOutFailed({required this.errorMessage});
 }
+
+final class GettingDataSuccess extends LoginViewState {}
