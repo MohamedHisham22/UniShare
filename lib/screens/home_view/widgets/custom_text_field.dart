@@ -8,7 +8,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       onTapOutside: (event) {
-        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus!.unfocus();
       },
       decoration: InputDecoration(
         hintText: 'Search for tools and more...',

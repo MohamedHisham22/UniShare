@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
+import 'package:unishare/screens/home_view/cubit/home_cubit_cubit.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -9,13 +11,26 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<LoginViewCubit>();
+    final loginCubit = context.read<LoginViewCubit>();
+    final cubit = context.read<HomeCubit>();
     final width = MediaQuery.of(context).size.width;
     return Row(
       children: [
-        CircleAvatar(
-          radius: width * 0.12,
-          backgroundImage: AssetImage('assets/images/User image.png'),
+        GestureDetector(
+          onTap: () {
+            cubit.getImageFromGallery();
+          },
+          child: BlocBuilder<HomeCubit, HomeCubitState>(
+            builder: (context, state) {
+              return CircleAvatar(
+                radius: width * 0.12,
+                backgroundImage:
+                    cubit.selectedImage == null
+                        ? AssetImage(imagePath + 'User image.png')
+                        : FileImage(cubit.selectedImage!),
+              );
+            },
+          ),
         ),
         SizedBox(width: 15),
         Column(
@@ -42,9 +57,9 @@ class CustomAppBar extends StatelessWidget {
         Spacer(),
         GestureDetector(
           onTap: () {
-            cubit.signOut(context: context);
+            Scaffold.of(context).openDrawer();
           },
-          child: Icon(Icons.logout_outlined, size: 33),
+          child: Icon(Icons.menu, size: 33),
         ),
       ],
     );

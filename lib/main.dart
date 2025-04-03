@@ -9,6 +9,7 @@ import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
+import 'package:unishare/screens/home_view/cubit/home_cubit_cubit.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
@@ -16,6 +17,7 @@ import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
 import 'package:unishare/screens/saved_view/views/saved_view.dart';
+import 'package:unishare/screens/settings_view/views/settings_view.dart';
 import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 import 'package:unishare/screens/signup_view/views/signup_view.dart';
 import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => GetItemsCubit()..getItems()),
         BlocProvider(create: (context) => CarouselSliderCubit()),
         BlocProvider(create: (context) => AllChatsViewCubit()),
+        BlocProvider(create: (context) => HomeCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -63,6 +66,7 @@ class MyApp extends StatelessWidget {
           ToolDetailsViewClient.id: (context) => ToolDetailsViewClient(),
           ToolDetailsViewUser.id: (context) => ToolDetailsViewUser(),
           AllChatsView.id: (context) => AllChatsView(),
+          SettingsView.id: (context) => SettingsView(),
         },
       ),
     );
