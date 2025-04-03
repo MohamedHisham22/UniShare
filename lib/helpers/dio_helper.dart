@@ -6,7 +6,7 @@ class DioHelper {
 
   DioHelper._();
 
-  static inint() {
+  static init() {
     _dio = Dio(
       BaseOptions(baseUrl: kUrl, receiveTimeout: const Duration(seconds: 60)),
     );
@@ -98,5 +98,18 @@ class DioHelper {
       data: body,
     );
     return response;
+  }
+
+  //-------------------PutForm-----------------------//
+
+  static Future<Response> putFormData({
+    required String path,
+    required dynamic body,
+  }) async {
+    return await _dio.put(
+      path,
+      data: body,
+      options: Options(headers: {"Content-Type": "multipart/form-data"}),
+    );
   }
 }

@@ -9,7 +9,6 @@ import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
-import 'package:unishare/screens/home_view/cubit/home_cubit_cubit.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
@@ -25,11 +24,13 @@ import 'package:unishare/screens/splash_view/views/splash_view.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/carousel_slider_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/views/tool_details_view_client.dart';
 import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
+import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
+import 'package:unishare/screens/update_profile/views/update_profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  DioHelper.inint();
+  DioHelper.init();
   runApp(const MyApp());
 }
 
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => GetItemsCubit()..getItems()),
         BlocProvider(create: (context) => CarouselSliderCubit()),
         BlocProvider(create: (context) => AllChatsViewCubit()),
-        BlocProvider(create: (context) => HomeCubit()),
+        BlocProvider(create: (context) => UpdateProfileCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
           ToolDetailsViewUser.id: (context) => ToolDetailsViewUser(),
           AllChatsView.id: (context) => AllChatsView(),
           SettingsView.id: (context) => SettingsView(),
+          UpdateProfile.id: (context) => UpdateProfile(),
         },
       ),
     );
