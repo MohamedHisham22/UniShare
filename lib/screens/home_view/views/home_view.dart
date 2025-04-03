@@ -4,6 +4,7 @@ import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/home_view/widgets/home_view_body.dart';
 import 'package:unishare/screens/home_view/widgets/menu_drawer.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
+import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -12,9 +13,10 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<AllChatsViewCubit>();
     final loginCubit = context.read<LoginViewCubit>();
+    final profileCubit = context.read<UpdateProfileCubit>();
 
     return Scaffold(
-      drawer: menuDrawer(cubit, context, loginCubit),
+      drawer: menuDrawer(cubit, context, loginCubit, profileCubit),
       body: SafeArea(child: HomeViewBody()),
     );
   }

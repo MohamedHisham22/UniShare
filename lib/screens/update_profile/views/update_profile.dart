@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -33,7 +32,7 @@ class UpdateProfile extends StatelessWidget {
       },
       builder: (context, state) {
         return ModalProgressHUD(
-          inAsyncCall: state is Loading,
+          inAsyncCall: state is UpdatingImageLoading,
           child: Scaffold(
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -46,9 +45,13 @@ class UpdateProfile extends StatelessWidget {
                       CircleAvatar(
                         radius: 55,
                         backgroundImage:
-                            cubit.selectedImage == null
-                                ? AssetImage(imagePath + 'User image.png')
-                                : FileImage(cubit.selectedImage!),
+                            cubit.selectedImage != null
+                                ? FileImage(cubit.selectedImage!)
+                                : (cubit.gettingImage.profileImage != null
+                                    ? NetworkImage(
+                                      cubit.gettingImage.profileImage!,
+                                    )
+                                    : AssetImage(imagePath + 'User image.png')),
                       ),
                       Positioned(
                         bottom: 0,

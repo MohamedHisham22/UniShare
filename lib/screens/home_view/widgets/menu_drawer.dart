@@ -4,11 +4,13 @@ import 'package:unishare/constants.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/settings_view/views/settings_view.dart';
+import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 Drawer menuDrawer(
   AllChatsViewCubit cubit,
   BuildContext context,
   LoginViewCubit loginCubit,
+  UpdateProfileCubit profileCubit,
 ) {
   return Drawer(
     child: ListView(
@@ -22,8 +24,11 @@ Drawer menuDrawer(
             ),
           ),
           currentAccountPictureSize: Size(68, 68),
-          currentAccountPicture: const CircleAvatar(
-            backgroundImage: AssetImage(imagePath + 'User image.png'),
+          currentAccountPicture: CircleAvatar(
+            backgroundImage:
+                profileCubit.gettingImage.profileImage != null
+                    ? NetworkImage(profileCubit.gettingImage.profileImage!)
+                    : AssetImage(imagePath + 'User image.png'),
           ),
           accountName: Text('username'),
           accountEmail: Text('email'),

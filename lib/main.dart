@@ -48,7 +48,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => GetItemsCubit()..getItems()),
         BlocProvider(create: (context) => CarouselSliderCubit()),
         BlocProvider(create: (context) => AllChatsViewCubit()),
-        BlocProvider(create: (context) => UpdateProfileCubit()),
+        BlocProvider(
+          create: (context) => UpdateProfileCubit()..getProfilePicture(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

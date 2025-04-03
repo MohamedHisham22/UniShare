@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -8,11 +10,15 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final cubit = context.read<UpdateProfileCubit>();
     return Row(
       children: [
         CircleAvatar(
           radius: width * 0.12,
-          backgroundImage: AssetImage(imagePath + 'User image.png'),
+          backgroundImage:
+              cubit.gettingImage.profileImage != null
+                  ? NetworkImage(cubit.gettingImage.profileImage!)
+                  : AssetImage(imagePath + 'User image.png'),
         ),
         SizedBox(width: 15),
         Column(
