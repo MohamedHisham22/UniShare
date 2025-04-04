@@ -6,12 +6,13 @@ import 'package:unishare/constants.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 class UpdateProfile extends StatelessWidget {
-  const UpdateProfile({super.key});
+  UpdateProfile({super.key});
   static String id = 'updateProfile';
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<UpdateProfileCubit>();
-
+    final String userID = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final String? profileImage = cubit.gettingImage.profileImage;
     return BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
       listener: (context, state) {
         if (state is UpdatingImageFailed) {
@@ -26,14 +27,27 @@ class UpdateProfile extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: const Color.fromARGB(255, 44, 102, 46),
-              content: Text('Image Updated Successfully!'),
+              content: Text(state.messege),
+            ),
+          );
+        } else if (state is DeletingProfileImageFailed) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.messege)));
+        } else if (state is DeletingProfileImageSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: const Color.fromARGB(255, 44, 102, 46),
+              content: Text(state.messege),
             ),
           );
         }
       },
       builder: (context, state) {
         return ModalProgressHUD(
-          inAsyncCall: state is UpdatingImageLoading,
+          inAsyncCall:
+              state is UpdatingImageLoading ||
+              state is DeletingProfileImageLoading,
           child: Scaffold(
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -48,7 +62,7 @@ class UpdateProfile extends StatelessWidget {
                         backgroundImage:
                             cubit.selectedImage != null
                                 ? FileImage(cubit.selectedImage!)
-                                : (cubit.gettingImage.profileImage != null
+                                : (profileImage != null
                                     ? NetworkImage(
                                       cubit.gettingImage.profileImage!,
                                     )
@@ -80,6 +94,57 @@ class UpdateProfile extends StatelessWidget {
                       ),
                     ],
                   ),
+                  if (cubit.isImageChanged == false)
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Remove Profile Picture'),
+                              content: const Text(
+                                'Are you sure you want to remove your profile picture?',
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Remove'),
+                                  onPressed: () {
+                                    cubit.deleteProfilePicture(userID: userID);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Container(
+                          width: 170,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'remove picture',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   if (cubit.isImageChanged != false)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -89,7 +154,7 @@ class UpdateProfile extends StatelessWidget {
                             onTap: () {
                               cubit.submitingProfilePictureChangesToDataBase(
                                 cubit.selectedImage!,
-                                FirebaseAuth.instance.currentUser?.uid ?? '',
+                                userID,
                               );
                             },
                             child: Container(
