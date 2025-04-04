@@ -85,7 +85,9 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
   }
 
   void startAppWithProfileImage() async {
-    await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
+    if (FirebaseAuth.instance.currentUser != null) {
+      await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
+    }
   }
 
   void deleteProfilePicture({required String userID}) async {
