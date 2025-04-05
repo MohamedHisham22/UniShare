@@ -22,9 +22,10 @@ class ProfilePicture extends StatelessWidget {
           backgroundImage:
               cubit.selectedImage != null
                   ? FileImage(cubit.selectedImage!)
-                  : (profileImage != null
-                      ? NetworkImage(cubit.gettingImage.profileImage!)
-                      : AssetImage(imagePath + 'User image.png')),
+                  : (profileImage != null && profileImage!.isNotEmpty
+                      ? NetworkImage(profileImage!) as ImageProvider
+                      : AssetImage(imagePath + 'User image.png')
+                          as ImageProvider),
         ),
         EditPictureButton(cubit: cubit),
       ],

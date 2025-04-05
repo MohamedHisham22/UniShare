@@ -12,7 +12,6 @@ class UpdateProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<UpdateProfileCubit>();
     final String userID = FirebaseAuth.instance.currentUser?.uid ?? '';
-    final String? profileImage = cubit.gettingImage.profileImage;
     return BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
       listener: (context, state) {
         if (state is UpdatingImageFailed) {
@@ -44,6 +43,8 @@ class UpdateProfile extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        final String? profileImage = cubit.gettingImage.profileImage;
+
         return ModalProgressHUD(
           inAsyncCall:
               state is UpdatingImageLoading ||
