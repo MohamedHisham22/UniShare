@@ -85,6 +85,25 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
   }
 
   void startAppWithProfileImage() async {
-    await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
+    if (FirebaseAuth.instance.currentUser != null) {
+      await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
+    }
+  }
+
+  void deleteProfilePicture({required String userID}) async {
+    emit(DeletingProfileImageLoading());
+    try {
+      final response = await DioHelper.deleteData(
+        path: 'users/$userID/profile-image',
+      );
+      if (response.statusCode == 200) {
+        await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
+        emit(DeletingProfileImageSuccess());
+      } else {
+        emit(DeletingProfileImageFailed());
+      }
+    } catch (e) {
+      emit(DeletingProfileImageFailed());
+    }
   }
 }

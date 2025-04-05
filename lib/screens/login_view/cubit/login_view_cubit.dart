@@ -3,12 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
+import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 part 'login_view_state.dart';
 
@@ -32,6 +34,9 @@ class LoginViewCubit extends Cubit<LoginViewState> {
         password: password,
       );
       await getUserData();
+      await context.read<UpdateProfileCubit>().getProfilePicture(
+        FirebaseAuth.instance.currentUser?.uid ?? '',
+      );
 
       emit(LoginSuccess());
       Navigator.pushNamedAndRemoveUntil(context, MainView.id, (route) => false);
@@ -88,6 +93,9 @@ class LoginViewCubit extends Cubit<LoginViewState> {
           //! sent user id to backend complete normally...
         }
         await getUserData();
+        await context.read<UpdateProfileCubit>().getProfilePicture(
+          FirebaseAuth.instance.currentUser?.uid ?? '',
+        );
         emit(LoginSuccess());
         Navigator.pushNamedAndRemoveUntil(
           context,
