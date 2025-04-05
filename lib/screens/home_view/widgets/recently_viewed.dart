@@ -28,7 +28,7 @@ class RecentlyViewed extends StatelessWidget {
       child: Column(
         children: [
           NewToolsImageContainer(
-            imageUrl: item.imageUrl??'assets/images/tools.png',
+            imageUrl: item.imageUrl ?? 'assets/images/tools.png',
             height: height * 0.21,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(15),
@@ -43,7 +43,7 @@ class RecentlyViewed extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.itemName??'Unnamed Item',
+                      item.itemName ?? 'Unnamed Item',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,

@@ -29,18 +29,26 @@ class DioHelper {
 
   //-------------------post-----------------------//
 
-  static Future<Response> postData({
-    required String path,
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? body,
-  }) async {
+static Future<Response> postData({
+  required String path,
+  required dynamic body,
+  bool isFormData = false,
+}) async {
+  try {
     final response = await _dio.post(
       path,
-      queryParameters: queryParameters,
       data: body,
+      options: Options(
+        contentType: isFormData 
+            ? 'multipart/form-data' 
+            : 'application/json',
+      ),
     );
     return response;
+  } catch (e) {
+    rethrow;
   }
+}
 
   //-------------------postForm-----------------------//
 

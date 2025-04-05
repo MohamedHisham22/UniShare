@@ -29,6 +29,22 @@ class UploadingImage extends StatelessWidget {
           ],
         ),
         if (cubit.imagesList.isNotEmpty) ShowAllImages(cubit: cubit),
+        if (cubit.imagesList.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Row(
+              children: [
+                Text(
+                  'Please upload at least one image.',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }

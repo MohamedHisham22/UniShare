@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 
 class FullScreenImageView extends StatelessWidget {
   final String imagePath;
-  
 
   const FullScreenImageView({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, 
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           Center(
             child: InteractiveViewer(
-              panEnabled: true, 
+              panEnabled: true,
               boundaryMargin: EdgeInsets.all(0),
               minScale: 1.0,
               maxScale: 8.0,
@@ -32,7 +31,7 @@ class FullScreenImageView extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.close, color: Colors.white, size: 30),
               onPressed: () {
-                Navigator.pop(context); 
+                Navigator.pop(context);
               },
             ),
           ),

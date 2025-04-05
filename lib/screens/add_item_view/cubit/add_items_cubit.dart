@@ -1,13 +1,67 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
+import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/screens/add_item_view/models/add_item_model.dart';
+import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
 
 part 'add_items_state.dart';
 
 class AddItemsCubit extends Cubit<AddItemsState> {
+  final GetItemsCubit getItemsCubit;
+
+AddItemsCubit({required this.getItemsCubit}) : super(AddItemsInitial());
   String selectedOption = 'Donate';
-  AddItemsCubit() : super(AddItemsInitial());
+  final TextEditingController itemNameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  List<AddItemModel> itemsList = [];
+
+Future<void> addItem(String userID) async {
+  if (!formKey.currentState!.validate()) {
+    return;
+  }
+
+  emit(AddItemsLoading());
+
+  try {
+    final formData = FormData.fromMap({
+      'itemName': itemNameController.text,
+      'itemDescription': descriptionController.text,
+      'itemPrice': selectedOption == 'Donate' ? 0 : int.parse(priceController.text),
+      'itemYear': DateTime.now().year,
+      'itemBrand': 'BrandName',
+      'userId': userID,
+    });
+
+    if (selectedImage != null) {
+      formData.files.add(MapEntry(
+        'ImageFile',
+        await MultipartFile.fromFile(selectedImage!.path),
+      ));
+    }
+
+    final response = await DioHelper.postData(
+      path: 'items',
+      body: formData,
+      isFormData: true,
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      await getItemsCubit.getItems();
+      emit(AddItemsSuccess());
+    } else {
+      emit(AddItemsError("Failed to add item"));
+    }
+  } catch (e) {
+    emit(AddItemsError(e.toString()));
+  }
+}
+
 
   void onOptionSelected(String value) {
     selectedOption = value;

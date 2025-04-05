@@ -46,8 +46,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => SignupViewCubit()),
         BlocProvider(create: (context) => MainViewCubit()),
-        BlocProvider(create: (context) => AddItemsCubit()),
         BlocProvider(create: (context) => GetItemsCubit()..getItems()),
+        BlocProvider(create: (context) => AddItemsCubit(
+          getItemsCubit: context.read<GetItemsCubit>(),
+        )),
+        
         BlocProvider(create: (context) => CarouselSliderCubit()),
         BlocProvider(create: (context) => AllChatsViewCubit()),
         BlocProvider(

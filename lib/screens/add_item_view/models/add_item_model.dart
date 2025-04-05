@@ -1,4 +1,4 @@
-class GetItemsModel {
+class AddItemModel {
   String? itemId;
   String? itemName;
   String? itemDescription;
@@ -7,9 +7,10 @@ class GetItemsModel {
   String? itemBrand;
   String? imageUrl;
   String? userId;
+  DateTime? createdAt;
   dynamic imageFile;
 
-  GetItemsModel({
+  AddItemModel({
     this.itemId,
     this.itemName,
     this.itemDescription,
@@ -18,11 +19,14 @@ class GetItemsModel {
     this.itemBrand,
     this.imageUrl,
     this.userId,
+    this.createdAt,
     this.imageFile,
   });
 
-  factory GetItemsModel.fromjson(Map<String, dynamic> json) {
-    return GetItemsModel(
+  factory AddItemModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return AddItemModel(
       itemId: json['itemId'] as String?,
       itemName: json['itemName'] as String?,
       itemDescription: json['itemDescription'] as String?,
@@ -31,11 +35,16 @@ class GetItemsModel {
       itemBrand: json['itemBrand'] as String?,
       imageUrl: json['imageUrl'] as String?,
       userId: json['userId'] as String?,
+      createdAt:
+          json['createdAt'] == null
+              ? null
+              : DateTime.parse(json['createdAt'] as String),
       imageFile: json['imageFile'] as dynamic,
     );
   }
 
-  Map<String, dynamic> tojson() {
+  Map<String, dynamic>
+  toJson() {
     return {
       'itemId': itemId,
       'itemName': itemName,
@@ -45,6 +54,7 @@ class GetItemsModel {
       'itemBrand': itemBrand,
       'imageUrl': imageUrl,
       'userId': userId,
+      'createdAt': createdAt?.toIso8601String(),
       'imageFile': imageFile,
     };
   }

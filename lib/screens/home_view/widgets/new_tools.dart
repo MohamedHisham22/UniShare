@@ -5,7 +5,7 @@ import 'package:unishare/screens/home_view/widgets/new_tools_image_container.dar
 
 class NewTools extends StatelessWidget {
   const NewTools({super.key, required this.item});
-final GetItemsModel item;
+  final GetItemsModel item;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -27,7 +27,7 @@ final GetItemsModel item;
       child: Column(
         children: [
           NewToolsImageContainer(
-            imageUrl: item.imageUrl??'assets/images/tools.png',
+            imageUrl: item.imageUrl ?? 'assets/images/tools.png',
             height: height * 0.21,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(15),
@@ -42,7 +42,7 @@ final GetItemsModel item;
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.itemName??'Unnamed Item',
+                      item.itemName ?? 'Unnamed Item',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,

@@ -9,11 +9,13 @@ class ListingToolsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.separated(
-        itemBuilder: (c, i) => GestureDetector(
-          onTap: (){
-            Navigator.pushNamed(context, ToolDetailsViewUser.id);
-          },
-          child: ListingToolsDetails()),
+        itemBuilder:
+            (c, i) => GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, ToolDetailsViewUser.id);
+              },
+              child: ListingToolsDetails(),
+            ),
         separatorBuilder: (c, i) => SizedBox(height: 10),
         itemCount: 4,
       ),

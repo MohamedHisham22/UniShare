@@ -6,7 +6,7 @@ part 'carousel_slider_state.dart';
 
 class CarouselSliderCubit extends Cubit<CarousellSliderState> {
   CarouselSliderCubit() : super(CarouselSliderInitial());
-    final CarouselSliderController carouselSliderController =
+  final CarouselSliderController carouselSliderController =
       CarouselSliderController();
   int currentIndex = 0;
   void onPageChanged(int index) {
