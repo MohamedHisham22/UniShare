@@ -3,9 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
+import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 part 'signup_view_state.dart';
 
@@ -55,6 +58,10 @@ class SignupViewCubit extends Cubit<SignupViewState> {
         body: formData,
       );
       //! sent user id to backend complete normally...
+      await context.read<LoginViewCubit>().getUserData();
+      await context.read<UpdateProfileCubit>().getProfilePicture(
+        FirebaseAuth.instance.currentUser?.uid ?? '',
+      );
       emit(SignupSuccess());
       Navigator.pushNamedAndRemoveUntil(context, MainView.id, (route) => false);
     } on FirebaseAuthException catch (e) {
