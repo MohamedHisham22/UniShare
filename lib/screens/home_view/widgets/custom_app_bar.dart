@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -11,6 +12,8 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final cubit = context.read<UpdateProfileCubit>();
+    final loginCubit = context.read<LoginViewCubit>();
+
     return BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
       builder: (context, state) {
         return Row(
@@ -27,9 +30,9 @@ class CustomAppBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hey Alice',
+                  'Hey ${loginCubit.userModel?.firstName}' ?? 'N/A',
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: kPrimaryColor,
                   ),
@@ -37,7 +40,7 @@ class CustomAppBar extends StatelessWidget {
                 Text(
                   'Welcome back!',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     fontWeight: FontWeight.normal,
                     color: Color(0xffFF5A5F),
                   ),
