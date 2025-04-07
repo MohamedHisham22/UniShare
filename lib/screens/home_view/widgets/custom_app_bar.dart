@@ -31,13 +31,25 @@ class CustomAppBar extends StatelessWidget {
               children: [
                 BlocBuilder<LoginViewCubit, LoginViewState>(
                   builder: (context, state) {
-                    return Text(
-                      'Hey ${loginCubit.userModel?.firstName}' ?? 'N/A',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: kPrimaryColor,
-                      ),
+                    return Row(
+                      children: [
+                        Text(
+                          'Hey ',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                        Text(
+                          loginCubit.userModel?.firstName ?? 'Loading',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),

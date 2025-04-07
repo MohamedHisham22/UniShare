@@ -23,6 +23,7 @@ import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 import 'package:unishare/screens/signup_view/views/signup_view.dart';
 import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/carousel_slider_cubit.dart';
+import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/views/tool_details_view_client.dart';
 import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => UpdateProfileCubit()..startAppWithProfileImage(),
         ),
+        BlocProvider(create: (context) => ToolDetailesClientViewCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

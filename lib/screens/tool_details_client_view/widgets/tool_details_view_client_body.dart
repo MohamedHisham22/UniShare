@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/explore_view/widgets/back_botton.dart';
+import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/carousel_slider_images.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/listing_info.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/tool_description.dart';
@@ -10,6 +12,7 @@ class ToolDetailsViewClientBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final itemsDetailCubit = context.read<ToolDetailesClientViewCubit>();
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
       child: SingleChildScrollView(
@@ -23,7 +26,7 @@ class ToolDetailsViewClientBody extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Ruler',
+                  itemsDetailCubit.itemDetailes.itemName ?? 'Loading',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
                 ),
                 Spacer(),
@@ -40,18 +43,27 @@ class ToolDetailsViewClientBody extends StatelessWidget {
               ],
             ),
             SizedBox(height: 7),
-            ToolDescription(),
+            ToolDescription(itemsDetailCubit: itemsDetailCubit),
             SizedBox(height: 30),
             Text(
               'Listing Info',
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 8),
-            ListingInfo(text: 'Category: ', type: 'Tools'),
+            ListingInfo(
+              text: 'Category: ',
+              type: itemsDetailCubit.itemDetailes.itemBrand ?? 'Loading',
+            ),
             SizedBox(height: 5),
-            ListingInfo(text: 'Condition: ', type: 'Excellent'),
+            ListingInfo(
+              text: 'Condition: ',
+              type: itemsDetailCubit.itemDetailes.itemCondition ?? 'Loading',
+            ),
             SizedBox(height: 5),
-            ListingInfo(text: 'Listing type: ', type: 'Donate'),
+            ListingInfo(
+              text: 'Listing type: ',
+              type: itemsDetailCubit.itemDetailes.listingOption ?? 'Loading',
+            ),
             SizedBox(height: 30),
           ],
         ),
