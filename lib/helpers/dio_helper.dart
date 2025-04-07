@@ -29,26 +29,24 @@ class DioHelper {
 
   //-------------------post-----------------------//
 
-static Future<Response> postData({
-  required String path,
-  required dynamic body,
-  bool isFormData = false,
-}) async {
-  try {
-    final response = await _dio.post(
-      path,
-      data: body,
-      options: Options(
-        contentType: isFormData 
-            ? 'multipart/form-data' 
-            : 'application/json',
-      ),
-    );
-    return response;
-  } catch (e) {
-    rethrow;
+  static Future<Response> postData({
+    required String path,
+    required dynamic body,
+    bool isFormData = false,
+  }) async {
+    try {
+      final response = await _dio.post(
+        path,
+        data: body,
+        options: Options(
+          contentType: isFormData ? 'multipart/form-data' : 'application/json',
+        ),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
-}
 
   //-------------------postForm-----------------------//
 

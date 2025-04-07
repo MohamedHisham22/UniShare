@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
+import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 
 class AddItemButton extends StatelessWidget {
   const AddItemButton({super.key});
@@ -18,6 +19,8 @@ class AddItemButton extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
+          final myListingCubit = context.read<MyListingCubit>();
+          myListingCubit.getItems(FirebaseAuth.instance.currentUser?.uid);
           Navigator.pop(context);
         } else if (state is AddItemsError) {
           ScaffoldMessenger.of(context).showSnackBar(

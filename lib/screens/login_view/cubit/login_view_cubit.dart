@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
@@ -35,6 +36,9 @@ class LoginViewCubit extends Cubit<LoginViewState> {
       );
       await getUserData();
       await context.read<UpdateProfileCubit>().getProfilePicture(
+        FirebaseAuth.instance.currentUser?.uid ?? '',
+      );
+      await context.read<MyListingCubit>().getItems(
         FirebaseAuth.instance.currentUser?.uid ?? '',
       );
 

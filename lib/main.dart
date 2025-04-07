@@ -12,6 +12,7 @@ import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
+import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
@@ -65,6 +66,9 @@ class MyApp extends StatelessWidget {
           create: (context) => UpdateProfileCubit()..startAppWithProfileImage(),
         ),
         BlocProvider(create: (context) => ToolDetailesClientViewCubit()),
+        BlocProvider(
+          create: (context) => MyListingCubit()..startAppWithListing(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

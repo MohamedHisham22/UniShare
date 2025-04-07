@@ -33,9 +33,7 @@ class _DropDownMenuConditionState extends State<DropDownMenuCondition> {
         elevation: WidgetStateProperty.all(4),
         shadowColor: WidgetStateProperty.all(Colors.black26),
         shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(horizontal: 12, vertical: 8),

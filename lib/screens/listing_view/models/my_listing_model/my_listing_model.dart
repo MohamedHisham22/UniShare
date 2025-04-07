@@ -1,4 +1,4 @@
-class AddItemModel {
+class MyListingModel {
   String? itemId;
   String? itemName;
   String? itemDescription;
@@ -6,14 +6,14 @@ class AddItemModel {
   int? itemYear;
   String? itemBrand;
   String? imageUrl;
-  String? userId;
+  dynamic userId;
   String? listingOption;
-  String? itemDuration;
+  dynamic itemDuration;
   String? itemCondition;
-  DateTime? createdAt;
+  String? createdAt;
   dynamic imageFile;
 
-  AddItemModel({
+  MyListingModel({
     this.itemId,
     this.itemName,
     this.itemDescription,
@@ -29,8 +29,10 @@ class AddItemModel {
     this.imageFile,
   });
 
-  factory AddItemModel.fromJson(Map<String, dynamic> json) {
-    return AddItemModel(
+  factory MyListingModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return MyListingModel(
       itemId: json['itemId'] as String?,
       itemName: json['itemName'] as String?,
       itemDescription: json['itemDescription'] as String?,
@@ -38,19 +40,17 @@ class AddItemModel {
       itemYear: json['itemYear'] as int?,
       itemBrand: json['itemBrand'] as String?,
       imageUrl: json['imageUrl'] as String?,
-      userId: json['userId'] as String?,
+      userId: json['userId'] as dynamic,
       listingOption: json['listingOption'] as String?,
-      itemDuration: json['itemDuration'] as String?,
+      itemDuration: json['itemDuration'] as dynamic,
       itemCondition: json['itemCondition'] as String?,
-      createdAt:
-          json['createdAt'] == null
-              ? null
-              : DateTime.parse(json['createdAt'] as String),
-      imageFile: json['imageFile'],
+      createdAt: json['createdAt'] as String?,
+      imageFile: json['imageFile'] as dynamic,
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic>
+  toJson() {
     return {
       'itemId': itemId,
       'itemName': itemName,
@@ -63,7 +63,7 @@ class AddItemModel {
       'listingOption': listingOption,
       'itemDuration': itemDuration,
       'itemCondition': itemCondition,
-      'createdAt': createdAt?.toIso8601String(),
+      'createdAt': createdAt,
       'imageFile': imageFile,
     };
   }

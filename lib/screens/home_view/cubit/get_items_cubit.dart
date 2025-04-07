@@ -6,7 +6,6 @@ import 'package:unishare/screens/home_view/models/get_items_model/get_items_mode
 part 'get_items_cubit_state.dart';
 
 class GetItemsCubit extends Cubit<GetItemsCubitState> {
-  
   GetItemsCubit() : super(GetItemsCubitInitial());
 
   List<GetItemsModel> itemsList = [];

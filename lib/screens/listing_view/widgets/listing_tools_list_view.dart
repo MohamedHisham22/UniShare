@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
+import 'package:unishare/screens/listing_view/models/my_listing_model/my_listing_model.dart';
 import 'package:unishare/screens/listing_view/widgets/listing_tools_details.dart';
 import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
 
@@ -8,16 +11,34 @@ class ListingToolsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.separated(
-        itemBuilder:
-            (c, i) => GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, ToolDetailsViewUser.id);
+      child: BlocBuilder<MyListingCubit, MyListingState>(
+        builder: (context, state) {
+          if (state is MyListingLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is MyListingErorr) {
+            return Center(child: Text("No items available."));
+          } else if (state is MyListingSuccess) {
+            if (state.listing.isEmpty) {
+              return const Center(child: Text("No items available."));
+            }
+
+            return ListView.separated(
+              itemBuilder: (c, i) {
+                MyListingModel item = state.listing[i];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, ToolDetailsViewUser.id);
+                  },
+                  child: ListingToolsDetails(item: item),
+                );
               },
-              child: ListingToolsDetails(),
-            ),
-        separatorBuilder: (c, i) => SizedBox(height: 10),
-        itemCount: 4,
+              separatorBuilder: (c, i) => const SizedBox(height: 10),
+              itemCount: state.listing.length,
+            );
+          }
+
+          return const SizedBox();
+        },
       ),
     );
   }
