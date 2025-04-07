@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
@@ -20,7 +22,6 @@ import 'package:unishare/screens/settings_view/views/settings_view.dart';
 import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
 import 'package:unishare/screens/signup_view/views/signup_view.dart';
 import 'package:unishare/screens/signup_view/views/signup_view_2.dart';
-import 'package:unishare/screens/splash_view/views/splash_view.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/carousel_slider_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/views/tool_details_view_client.dart';
 import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
@@ -28,10 +29,14 @@ import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart'
 import 'package:unishare/screens/update_profile/views/update_profile.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   DioHelper.init();
+
   runApp(const MyApp());
+  await Future.delayed(Duration(seconds: 5));
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
@@ -47,10 +52,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SignupViewCubit()),
         BlocProvider(create: (context) => MainViewCubit()),
         BlocProvider(create: (context) => GetItemsCubit()..getItems()),
-        BlocProvider(create: (context) => AddItemsCubit(
-          getItemsCubit: context.read<GetItemsCubit>(),
-        )),
-        
+        BlocProvider(
+          create:
+              (context) =>
+                  AddItemsCubit(getItemsCubit: context.read<GetItemsCubit>()),
+        ),
+
         BlocProvider(create: (context) => CarouselSliderCubit()),
         BlocProvider(create: (context) => AllChatsViewCubit()),
         BlocProvider(
@@ -59,9 +66,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: SplashView.id,
+        initialRoute:
+            FirebaseAuth.instance.currentUser == null
+                ? LoginView.id
+                : MainView.id,
         routes: {
-          SplashView.id: (context) => SplashView(),
           LoginView.id: (context) => LoginView(),
           SignupView.id: (context) => SignupView(),
           SignupView2.id: (context) => SignupView2(),
