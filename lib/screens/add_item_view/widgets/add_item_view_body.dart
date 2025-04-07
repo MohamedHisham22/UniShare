@@ -47,7 +47,7 @@ class AddItemViewBody extends StatelessWidget {
                           SizedBox(height: 20),
                           TitleName(text: 'Choose Category'),
                           SizedBox(height: 5),
-                          DropDownMenuCategory(),
+                          DropDownMenuCategory(cubit: cubit),
                           SizedBox(height: 20),
                           TitleName(text: 'Condition'),
                           SizedBox(height: 5),

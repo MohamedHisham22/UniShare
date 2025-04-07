@@ -10,6 +10,8 @@ class ToolDetailesClientViewCubit extends Cubit<ToolDetailesClientViewState> {
 
   ItemDetailesModel itemDetailes = ItemDetailesModel();
   void showItemDetailes({required String itemID}) async {
+    // Reset the item details before loading new data for another item
+    itemDetailes = ItemDetailesModel();
     emit(GettingItemDetailesLoading());
     try {
       final response = await DioHelper.getData(path: 'items/$itemID');

@@ -1,12 +1,13 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 
 const List<String> list = <String>['Tools', 'Books', 'Electronics'];
 
 class DropDownMenuCategory extends StatefulWidget {
-  const DropDownMenuCategory({super.key});
-
+  const DropDownMenuCategory({super.key, required this.cubit});
+  final AddItemsCubit cubit;
   @override
   State<DropDownMenuCategory> createState() => _DropDownMenuCategoryState();
 }
@@ -21,6 +22,7 @@ class _DropDownMenuCategoryState extends State<DropDownMenuCategory> {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<String>(
+      controller: widget.cubit.categoryController,
       width: double.infinity,
       menuStyle: MenuStyle(
         backgroundColor: WidgetStateProperty.all(Colors.white), // خلفية القائمة

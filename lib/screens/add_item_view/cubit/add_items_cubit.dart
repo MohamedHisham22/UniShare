@@ -21,6 +21,8 @@ class AddItemsCubit extends Cubit<AddItemsState> {
   final TextEditingController conditionController = TextEditingController();
   final TextEditingController optionsController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<AddItemModel> itemsList = [];
 
@@ -38,7 +40,7 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         'itemPrice':
             selectedOption == 'Donate' ? 0 : int.parse(priceController.text),
         'itemYear': DateTime.now().year,
-        'itemBrand': 'BrandName',
+        'itemBrand': categoryController.text,
         'userId': userID,
         'ItemCondition': conditionController.text,
         'ListingOption': optionsController.text,

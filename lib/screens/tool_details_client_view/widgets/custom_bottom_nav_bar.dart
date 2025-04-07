@@ -11,6 +11,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chatCubit = context.read<AllChatsViewCubit>();
+    String priceText = 'Free';
+    if (itemsDetailCubit.itemDetailes.itemPrice != null &&
+        itemsDetailCubit.itemDetailes.itemPrice! > 0) {
+      priceText = '${itemsDetailCubit.itemDetailes.itemPrice}';
+    }
     return Container(
       width: double.infinity,
       height: 105,
@@ -38,7 +43,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${itemsDetailCubit.itemDetailes.itemPrice ?? 'Free'}',
+                      priceText,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
