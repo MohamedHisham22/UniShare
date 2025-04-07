@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 
 class CustomTextFieldPrice extends StatelessWidget {
   const CustomTextFieldPrice({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddItemsCubit>();
     return SizedBox(
       width: 145,
       height: 55,
       child: TextField(
+        controller: cubit.priceController,
         keyboardType: TextInputType.number,
         onTapOutside: (event) {
           FocusScope.of(context).unfocus();

@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 
 const List<String> list = <String>['Donate', 'Sell', 'Rent'];
 
@@ -23,7 +25,9 @@ class _DropDownMenuListingOptionsState
   String dropdownValue = list.first;
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddItemsCubit>();
     return DropdownMenu<String>(
+      controller: cubit.optionsController,
       width: double.infinity,
       menuStyle: MenuStyle(
         backgroundColor: WidgetStateProperty.all(Colors.white), // خلفية القائمة
@@ -56,6 +60,7 @@ class _DropDownMenuListingOptionsState
           setState(() {
             dropdownValue = value;
           });
+          cubit.optionsController.text = value;
           widget.onOptionSelected(value); // Notify parent widget
         }
       },

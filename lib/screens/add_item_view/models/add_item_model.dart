@@ -7,6 +7,9 @@ class AddItemModel {
   String? itemBrand;
   String? imageUrl;
   String? userId;
+  String? listingOption;
+  String? itemDuration;
+  String? itemCondition;
   DateTime? createdAt;
   dynamic imageFile;
 
@@ -19,13 +22,14 @@ class AddItemModel {
     this.itemBrand,
     this.imageUrl,
     this.userId,
+    this.listingOption,
+    this.itemDuration,
+    this.itemCondition,
     this.createdAt,
     this.imageFile,
   });
 
-  factory AddItemModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory AddItemModel.fromJson(Map<String, dynamic> json) {
     return AddItemModel(
       itemId: json['itemId'] as String?,
       itemName: json['itemName'] as String?,
@@ -35,16 +39,17 @@ class AddItemModel {
       itemBrand: json['itemBrand'] as String?,
       imageUrl: json['imageUrl'] as String?,
       userId: json['userId'] as String?,
-      createdAt:
-          json['createdAt'] == null
-              ? null
-              : DateTime.parse(json['createdAt'] as String),
-      imageFile: json['imageFile'] as dynamic,
+      listingOption: json['listingOption'] as String?,
+      itemDuration: json['itemDuration'] as String?,
+      itemCondition: json['itemCondition'] as String?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      imageFile: json['imageFile'],
     );
   }
 
-  Map<String, dynamic>
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'itemId': itemId,
       'itemName': itemName,
@@ -54,6 +59,9 @@ class AddItemModel {
       'itemBrand': itemBrand,
       'imageUrl': imageUrl,
       'userId': userId,
+      'listingOption': listingOption,
+      'itemDuration': itemDuration,
+      'itemCondition': itemCondition,
       'createdAt': createdAt?.toIso8601String(),
       'imageFile': imageFile,
     };

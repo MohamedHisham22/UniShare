@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 
 class CustomTextFieldDuration extends StatefulWidget {
   const CustomTextFieldDuration({super.key});
@@ -15,14 +17,21 @@ class _CustomTextFieldDurationState extends State<CustomTextFieldDuration> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddItemsCubit>();
+
     return SizedBox(
       width: 145,
       height: 55,
       child: DropdownButtonFormField<String>(
-        value: selectedMonth,
+        value:
+            cubit.durationController.text.isNotEmpty
+                ? cubit.durationController.text
+                : null,
         onChanged: (value) {
           setState(() {
             selectedMonth = value;
+            // Update the cubit's durationController with the selected value
+            cubit.durationController.text = selectedMonth!;
           });
         },
         decoration: InputDecoration(
@@ -38,7 +47,7 @@ class _CustomTextFieldDurationState extends State<CustomTextFieldDuration> {
           ),
         ),
         hint: Text(
-          'Weekly',
+          'Duration',
           style: TextStyle(fontSize: 16, color: Color(0xff656565)),
         ),
         items:

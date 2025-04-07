@@ -1,6 +1,7 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 
 const List<String> list = <String>['Excellent', 'Poor', 'Fair'];
 
@@ -17,20 +18,23 @@ class _DropDownMenuConditionState extends State<DropDownMenuCondition> {
   static final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
     list.map<MenuEntry>((String name) => MenuEntry(value: name, label: name)),
   );
+
   String dropdownValue = list.first;
+
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AddItemsCubit>();
+
     return DropdownMenu<String>(
+      controller: cubit.conditionController,
       width: double.infinity,
       menuStyle: MenuStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.white), // خلفية القائمة
-        elevation: WidgetStateProperty.all(4), // تأثير الارتفاع للظل
-        shadowColor: WidgetStateProperty.all(Colors.black26), // لون الظل
+        backgroundColor: WidgetStateProperty.all(Colors.white),
+        elevation: WidgetStateProperty.all(4),
+        shadowColor: WidgetStateProperty.all(Colors.black26),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              12,
-            ), // حواف دائرية للقائمة المنسدلة
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
         padding: WidgetStateProperty.all(
@@ -49,10 +53,12 @@ class _DropDownMenuConditionState extends State<DropDownMenuCondition> {
       ),
       initialSelection: list.first,
       onSelected: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
+        if (value != null) {
+          setState(() {
+            dropdownValue = value;
+          });
+          cubit.conditionController.text = value; // ✅ Store selected value
+        }
       },
       dropdownMenuEntries: menuEntries,
     );
