@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
+
 import 'package:unishare/screens/add_item_view/widgets/add_item_button.dart';
 import 'package:unishare/screens/add_item_view/widgets/add_item_view_body.dart';
 
@@ -9,7 +8,6 @@ class AddItemView extends StatelessWidget {
   static String id = '/addItem';
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AddItemsCubit>();
     return Scaffold(
       // appBar: AppBar(
       //   toolbarHeight: 85,
