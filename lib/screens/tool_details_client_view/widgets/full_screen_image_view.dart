@@ -17,7 +17,7 @@ class FullScreenImageView extends StatelessWidget {
               boundaryMargin: EdgeInsets.all(0),
               minScale: 1.0,
               maxScale: 8.0,
-              child: Image.asset(
+              child: Image.network(
                 imagePath,
                 width: double.infinity,
                 height: double.infinity,

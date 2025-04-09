@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/carousel_slider_cubit.dart';
+import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/full_screen_image_view.dart';
 
 class CarouselSliderImages extends StatelessWidget {
@@ -12,31 +13,39 @@ class CarouselSliderImages extends StatelessWidget {
     return BlocBuilder<CarouselSliderCubit, CarousellSliderState>(
       builder: (context, state) {
         final cubit = context.read<CarouselSliderCubit>();
+        final detailsCubit = context.read<ToolDetailesClientViewCubit>();
+        final imageUrl = detailsCubit.itemDetailes.additionalImageUrls ?? [];
         return Stack(
           alignment: Alignment.center,
           children: [
             CarouselSlider(
               items: List.generate(
-                10,
+                imageUrl.length,
                 (index) => GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder:
-                            (context) => FullScreenImageView(
-                              imagePath: 'assets/images/tools.png',
-                            ),
+                            (context) =>
+                                FullScreenImageView(imagePath: imageUrl[index]),
                       ),
                     );
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      'assets/images/tools.png',
-                      fit: BoxFit.cover,
+                    child: Image.network(
+                      imageUrl[index],
+                      fit: BoxFit.contain,
                       width: double.infinity,
                       height: 260,
+                      errorBuilder:
+                          (context, error, stackTrace) =>
+                              const Icon(Icons.broken_image),
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return const Center(child: CircularProgressIndicator());
+                      },
                     ),
                   ),
                 ),
@@ -47,7 +56,12 @@ class CarouselSliderImages extends StatelessWidget {
                 aspectRatio: 16 / 9,
                 viewportFraction: 1,
                 initialPage: 0,
-                enableInfiniteScroll: true,
+                enableInfiniteScroll: imageUrl.length > 1,
+                scrollPhysics:
+                    imageUrl.length > 1
+                        ? null
+                        : const NeverScrollableScrollPhysics(),
+
                 reverse: false,
                 autoPlay: false,
                 enlargeCenterPage: true,
@@ -77,7 +91,7 @@ class CarouselSliderImages extends StatelessWidget {
                   ),
                 ),
               ),
-            if (cubit.currentIndex < 9)
+            if (cubit.currentIndex < imageUrl.length - 1)
               Positioned(
                 right: 10,
                 child: GestureDetector(

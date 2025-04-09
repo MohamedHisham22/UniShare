@@ -12,6 +12,7 @@ class AddItemModel {
   String? itemCondition;
   DateTime? createdAt;
   dynamic imageFile;
+  List<String>? additionalImageUrls;
 
   AddItemModel({
     this.itemId,
@@ -27,6 +28,7 @@ class AddItemModel {
     this.itemCondition,
     this.createdAt,
     this.imageFile,
+    this.additionalImageUrls
   });
 
   factory AddItemModel.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,10 @@ class AddItemModel {
               ? null
               : DateTime.parse(json['createdAt'] as String),
       imageFile: json['imageFile'],
+      additionalImageUrls: (json['additionalImageUrls'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
+    
     );
   }
 
@@ -65,6 +71,7 @@ class AddItemModel {
       'itemCondition': itemCondition,
       'createdAt': createdAt?.toIso8601String(),
       'imageFile': imageFile,
+      'AdditionalImageFiles':additionalImageUrls,
     };
   }
 }

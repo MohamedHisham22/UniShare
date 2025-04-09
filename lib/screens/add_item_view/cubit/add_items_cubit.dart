@@ -55,7 +55,14 @@ class AddItemsCubit extends Cubit<AddItemsState> {
           ),
         );
       }
-
+      for (int i = 0; i < imagesList.length; i++) {
+        formData.files.add(
+          MapEntry(
+            'AdditionalImageFiles', // <-- use same key for all additional images
+            await MultipartFile.fromFile(imagesList[i].path),
+          ),
+        );
+      }
       final response = await DioHelper.postData(
         path: 'items',
         body: formData,

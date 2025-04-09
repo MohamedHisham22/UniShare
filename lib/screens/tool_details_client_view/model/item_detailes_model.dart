@@ -14,6 +14,7 @@ class ItemDetailesModel {
   String? itemCondition;
   String? createdAt;
   File? imageFile;
+  List<String>? additionalImageUrls;
 
   ItemDetailesModel({
     this.itemId,
@@ -29,6 +30,7 @@ class ItemDetailesModel {
     this.itemCondition,
     this.createdAt,
     this.imageFile,
+    this.additionalImageUrls,
   });
 
   ItemDetailesModel.fromJson(Map<String, dynamic> json) {
@@ -45,5 +47,9 @@ class ItemDetailesModel {
     itemCondition = json['itemCondition'];
     createdAt = json['createdAt'];
     imageFile = json['imageFile'];
+    additionalImageUrls =
+        (json['additionalImageUrls'] as List?)
+            ?.map((e) => e.toString())
+            .toList();
   }
 }
