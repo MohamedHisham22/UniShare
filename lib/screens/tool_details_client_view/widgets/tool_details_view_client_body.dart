@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/explore_view/widgets/back_botton.dart';
+import 'package:unishare/screens/saved_view/cubit/favorite_items_cubit_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/carousel_slider_images.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/listing_info.dart';
@@ -13,6 +15,8 @@ class ToolDetailsViewClientBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final itemsDetailCubit = context.read<ToolDetailesClientViewCubit>();
+    final cubit = context.read<FavoriteItemsCubit>();
+
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
       child: SingleChildScrollView(
@@ -35,9 +39,28 @@ class ToolDetailsViewClientBody extends StatelessWidget {
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.black, width: 1),
                   ),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(CupertinoIcons.heart, color: Colors.red),
+                  child: GestureDetector(
+                    onTap: () {
+                      cubit.toggleFavorite(
+                        userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+                        itemId: itemsDetailCubit.itemDetailes.itemId ?? '',
+                      );
+                    },
+                    child: BlocBuilder<FavoriteItemsCubit, FavoriteItemsState>(
+                      builder: (context, state) {
+                        return CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            cubit.isItemFavorited(
+                                  itemsDetailCubit.itemDetailes.itemId ?? '',
+                                )
+                                ? CupertinoIcons.heart_fill
+                                : CupertinoIcons.heart,
+                            color: Colors.red,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

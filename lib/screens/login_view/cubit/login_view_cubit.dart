@@ -11,6 +11,7 @@ import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
+import 'package:unishare/screens/saved_view/cubit/favorite_items_cubit_cubit.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 part 'login_view_state.dart';
@@ -38,8 +39,12 @@ class LoginViewCubit extends Cubit<LoginViewState> {
       await context.read<UpdateProfileCubit>().getProfilePicture(
         FirebaseAuth.instance.currentUser?.uid ?? '',
       );
+      //?????????????????
       await context.read<MyListingCubit>().getItems(
         FirebaseAuth.instance.currentUser?.uid ?? '',
+      );
+      await context.read<FavoriteItemsCubit>().getFavoriteItems(
+        userId: FirebaseAuth.instance.currentUser?.uid ?? '',
       );
 
       emit(LoginSuccess());
@@ -99,6 +104,9 @@ class LoginViewCubit extends Cubit<LoginViewState> {
         await getUserData();
         await context.read<UpdateProfileCubit>().getProfilePicture(
           FirebaseAuth.instance.currentUser?.uid ?? '',
+        );
+        await context.read<FavoriteItemsCubit>().getFavoriteItems(
+          userId: FirebaseAuth.instance.currentUser?.uid ?? '',
         );
         emit(LoginSuccess());
         Navigator.pushNamedAndRemoveUntil(

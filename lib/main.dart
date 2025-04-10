@@ -18,6 +18,7 @@ import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
+import 'package:unishare/screens/saved_view/cubit/favorite_items_cubit_cubit.dart';
 import 'package:unishare/screens/saved_view/views/saved_view.dart';
 import 'package:unishare/screens/settings_view/views/settings_view.dart';
 import 'package:unishare/screens/signup_view/cubit/signup_view_cubit.dart';
@@ -68,6 +69,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ToolDetailesClientViewCubit()),
         BlocProvider(
           create: (context) => MyListingCubit()..startAppWithListing(),
+        ),
+        BlocProvider(
+          create:
+              (context) => FavoriteItemsCubit()..startAppWithFavoriteItems(),
         ),
       ],
       child: MaterialApp(

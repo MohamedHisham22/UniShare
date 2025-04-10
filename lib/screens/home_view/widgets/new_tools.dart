@@ -63,8 +63,6 @@ class NewTools extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Spacer(),
-                  Icon(CupertinoIcons.heart, color: Colors.red),
                 ],
               ),
             ),
