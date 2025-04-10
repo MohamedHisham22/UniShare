@@ -19,3 +19,4 @@ class AddItemsError extends AddItemsState {
   final String error;
   AddItemsError(this.error);
 }
+class AddItemsClearFields extends AddItemsState {}

@@ -25,6 +25,16 @@ class AddItemsCubit extends Cubit<AddItemsState> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<AddItemModel> itemsList = [];
+  void clearFields() {
+    itemNameController.clear();
+    descriptionController.clear();
+    priceController.clear();
+    selectedImage = null;
+    optionsController.text = 'Donate';
+    imagesList.clear();
+ selectedOption = 'Donate'; 
+    emit(AddItemsClearFields());
+  }
 
   Future<void> addItem(String userID) async {
     if (!formKey.currentState!.validate()) {

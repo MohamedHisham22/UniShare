@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/listing_view/models/my_listing_model/my_listing_model.dart';
 import 'package:unishare/screens/listing_view/widgets/listing_tools_details.dart';
+import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
 
 class ListingToolsListView extends StatelessWidget {
@@ -10,6 +11,8 @@ class ListingToolsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final itemDetailesCubit = context.read<ToolDetailesClientViewCubit>();
+
     return Expanded(
       child: BlocBuilder<MyListingCubit, MyListingState>(
         builder: (context, state) {
@@ -26,7 +29,10 @@ class ListingToolsListView extends StatelessWidget {
               itemBuilder: (c, i) {
                 MyListingModel item = state.listing[i];
                 return GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    await itemDetailesCubit.showItemDetailes(
+                      itemID: item.itemId!,
+                    );
                     Navigator.pushNamed(context, ToolDetailsViewUser.id);
                   },
                   child: ListingToolsDetails(item: item),

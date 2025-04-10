@@ -9,7 +9,7 @@ class ToolDetailesClientViewCubit extends Cubit<ToolDetailesClientViewState> {
   ToolDetailesClientViewCubit() : super(ToolDetailesClientViewInitial());
 
   ItemDetailesModel itemDetailes = ItemDetailesModel();
-  void showItemDetailes({required String itemID}) async {
+  Future <void> showItemDetailes({required String itemID}) async {
     // Reset the item details before loading new data for another item
     itemDetailes = ItemDetailesModel();
     emit(GettingItemDetailesLoading());

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/tool_details_view_client_body.dart';
 
 class ToolDetailsViewUser extends StatelessWidget {
@@ -7,6 +9,12 @@ class ToolDetailsViewUser extends StatelessWidget {
   static String id = '/toolDetailsUser';
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ToolDetailesClientViewCubit>();
+    String priceText = 'Free';
+    if (cubit.itemDetailes.itemPrice != null &&
+        cubit.itemDetailes.itemPrice! > 0) {
+      priceText = '${cubit.itemDetailes.itemPrice}';
+    }
     return Scaffold(
       // appBar: AppBar(
       //   title: BackBotton(),
@@ -40,7 +48,7 @@ class ToolDetailsViewUser extends StatelessWidget {
                 children: [
                   Text('Price', style: TextStyle(fontSize: 20)),
                   Text(
-                    '150 EGP/Month',
+                    priceText,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
