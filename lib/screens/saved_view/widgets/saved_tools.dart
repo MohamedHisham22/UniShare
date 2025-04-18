@@ -22,7 +22,10 @@ class SavedTools extends StatelessWidget {
         height: 114,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Color(0xffdcedef),
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey
+                  : Color(0xffdcedef),
         ),
         child: Padding(
           padding: const EdgeInsets.all(12),

@@ -35,6 +35,7 @@ class LoginView extends StatelessWidget {
       builder: (context, state) {
         return ModalProgressHUD(
           inAsyncCall: state is LoginLoading,
+          progressIndicator: CircularProgressIndicator(color: Colors.black),
           child: Scaffold(
             body: Form(
               key: _formKey,

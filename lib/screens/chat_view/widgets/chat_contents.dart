@@ -15,13 +15,19 @@ class ChatContents extends StatelessWidget {
       messages: messages,
       onSendPressed: (partialText) => cubit.sendMessage(partialText.text),
       user: types.User(id: cubit.currentUserId),
-      theme: const DefaultChatTheme(
+      theme: DefaultChatTheme(
         backgroundColor: Color.fromARGB(212, 223, 222, 222),
         inputBackgroundColor: Colors.white,
         inputTextColor: Colors.black87,
         primaryColor: Colors.blue,
         secondaryColor: Colors.white,
-        sendButtonIcon: Icon(Icons.send),
+        sendButtonIcon: Icon(
+          Icons.send,
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Colors.black,
+        ),
         sendingIcon: Icon(Icons.access_time, size: 18, color: Colors.grey),
         deliveredIcon: Icon(Icons.done, size: 18, color: Colors.grey),
         seenIcon: Icon(Icons.done_all, size: 18, color: Colors.blue),

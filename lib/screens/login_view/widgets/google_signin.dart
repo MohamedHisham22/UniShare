@@ -13,7 +13,12 @@ class GoogleSignIn extends StatelessWidget {
       width: double.infinity,
       height: height * 0.055,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
+        border: Border.all(
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+        ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

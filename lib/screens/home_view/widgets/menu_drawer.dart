@@ -38,8 +38,24 @@ Drawer menuDrawer(
                             : AssetImage(imagePath + 'User image.png')
                                 as ImageProvider,
                   ),
-                  accountName: Text(loginCubit.userModel?.firstName ?? 'N/A'),
-                  accountEmail: Text(loginCubit.userModel?.email ?? 'N/A'),
+                  accountName: Text(
+                    loginCubit.userModel?.firstName ?? 'N/A',
+                    style: TextStyle(
+                      color:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.white,
+                    ),
+                  ),
+                  accountEmail: Text(
+                    loginCubit.userModel?.email ?? 'N/A',
+                    style: TextStyle(
+                      color:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.white,
+                    ),
+                  ),
                 );
               },
             );

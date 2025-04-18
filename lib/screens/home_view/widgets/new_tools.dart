@@ -30,7 +30,10 @@ class NewTools extends StatelessWidget {
               offset: Offset(4, 4), // Changes position of shadow (X, Y)
             ),
           ],
-          color: Colors.white,
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(

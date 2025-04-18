@@ -24,9 +24,19 @@ class ChattingViewBody extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(Icons.arrow_back, color: Colors.black),
+          ),
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.transparent,
-          title: Text(otherUserName ?? "User"),
+          title: Text(
+            otherUserName ?? "User",
+            style: TextStyle(color: Colors.black),
+          ),
           elevation: 1,
         ),
         body: GestureDetector(

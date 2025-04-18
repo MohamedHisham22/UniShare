@@ -23,7 +23,19 @@ class SearchTextField extends StatelessWidget {
         controller: searchController,
         decoration: InputDecoration(
           hintText: 'Search Chats',
-          prefixIcon: const Icon(Icons.search),
+          hintStyle: TextStyle(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey
+                    : Colors.black,
+          ),
+          prefixIcon: Icon(
+            Icons.search,
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey
+                    : Colors.black,
+          ),
           suffixIcon: BlocBuilder<AllChatsViewCubit, AllChatsViewState>(
             builder: (context, state) {
               return searchController.text.isNotEmpty

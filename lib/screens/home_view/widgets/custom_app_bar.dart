@@ -38,7 +38,10 @@ class CustomAppBar extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: kPrimaryColor,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : kPrimaryColor,
                           ),
                         ),
                         Text(
@@ -46,7 +49,10 @@ class CustomAppBar extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: kPrimaryColor,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : kPrimaryColor,
                           ),
                         ),
                       ],

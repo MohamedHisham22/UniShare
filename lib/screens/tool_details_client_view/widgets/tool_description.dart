@@ -9,7 +9,13 @@ class ToolDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       itemsDetailCubit.itemDetailes.itemDescription ?? 'Loading',
-      style: const TextStyle(fontSize: 14, color: Color(0xff666666)),
+      style: TextStyle(
+        fontSize: 14,
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Color(0xff666666),
+      ),
     );
   }
 }

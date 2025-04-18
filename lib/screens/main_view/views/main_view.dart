@@ -124,7 +124,10 @@ class MainView extends StatelessWidget {
             child: Wrap(
               children: [
                 BottomNavigationBar(
-                  selectedItemColor: kPrimaryColor,
+                  selectedItemColor:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : kPrimaryColor,
                   unselectedItemColor: const Color.fromARGB(255, 121, 121, 121),
                   showSelectedLabels: true,
                   showUnselectedLabels: true,
@@ -135,7 +138,10 @@ class MainView extends StatelessWidget {
                   },
                   selectedIconTheme: const IconThemeData(size: 30),
                   unselectedIconTheme: const IconThemeData(size: 30),
-                  backgroundColor: const Color.fromARGB(255, 231, 231, 231),
+                  backgroundColor:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey.shade900
+                          : const Color.fromARGB(255, 231, 231, 231),
 
                   items: const [
                     BottomNavigationBarItem(

@@ -57,17 +57,34 @@ class _AuthDropdownState extends State<AuthDropdown> {
       validator: widget.fieldValidation,
       decoration: InputDecoration(
         hintText: 'Location',
-        hintStyle: const TextStyle(color: Color.fromARGB(255, 102, 101, 101)),
+        hintStyle: TextStyle(
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Color.fromARGB(255, 102, 101, 101),
+        ),
         contentPadding: EdgeInsets.symmetric(
           vertical: widget.height * 0.02,
           horizontal: widget.width * 0.05,
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black, width: 1.5),
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+            width: 1.5,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: kPrimaryColor, width: 1.5),
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : kPrimaryColor,
+            width: 1.5,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
         border: OutlineInputBorder(

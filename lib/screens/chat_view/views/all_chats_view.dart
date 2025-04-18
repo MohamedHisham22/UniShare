@@ -27,8 +27,11 @@ class AllChatsView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: CustomAppBar(),
+        backgroundColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey.shade900
+                : Colors.white,
+        appBar: CustomAppBar(context),
         body: StreamBuilder(
           stream:
               FirebaseFirestore.instance

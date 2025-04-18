@@ -29,7 +29,10 @@ class SavedView extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
-                  color: kPrimaryColor,
+                  color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : kPrimaryColor,
                 ),
               ),
               centerTitle: true,

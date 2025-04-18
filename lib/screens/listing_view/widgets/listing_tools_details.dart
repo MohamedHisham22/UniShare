@@ -46,7 +46,10 @@ class ListingToolsDetails extends StatelessWidget {
       height: 114,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Color(0xffdcedef),
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey
+                : Color(0xffdcedef),
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -83,7 +86,13 @@ class ListingToolsDetails extends StatelessWidget {
 
                 Text(
                   _formattedDate(item.createdAt),
-                  style: TextStyle(fontSize: 18, color: Color(0xffC1839F)),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color:
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Color.fromARGB(255, 176, 110, 140)
+                            : Color(0xffC1839F),
+                  ),
                 ),
               ],
             ),
@@ -101,7 +110,16 @@ class ListingToolsDetails extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('Cancel'),
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                            ),
+                          ),
                         ),
                         TextButton(
                           onPressed: () async {
@@ -110,7 +128,16 @@ class ListingToolsDetails extends StatelessWidget {
                             await context.read<GetItemsCubit>()
                               ..getItems();
                           },
-                          child: Text('Remove'),
+                          child: Text(
+                            'Remove',
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                            ),
+                          ),
                         ),
                       ],
                     );
