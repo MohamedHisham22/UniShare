@@ -9,7 +9,7 @@ class GetItemsCubit extends Cubit<GetItemsCubitState> {
   GetItemsCubit() : super(GetItemsCubitInitial());
 
   List<GetItemsModel> itemsList = [];
-
+  final GetItemsModel getItemsModel = GetItemsModel();
   Future<void> getItems() async {
     emit(GetItemsCubitLoading());
     try {

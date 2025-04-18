@@ -14,6 +14,7 @@ class CarouselSliderImages extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<CarouselSliderCubit>();
         final detailsCubit = context.read<ToolDetailesClientViewCubit>();
+
         final imageUrl = detailsCubit.itemDetailes.additionalImageUrls ?? [];
         return Stack(
           alignment: Alignment.center,

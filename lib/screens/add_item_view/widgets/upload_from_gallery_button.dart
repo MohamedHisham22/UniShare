@@ -8,11 +8,13 @@ class UploadImageFromGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hieght = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: cubit.getImageFromGallery,
       child: Container(
-        width: 250,
-        height: 44,
+        width: width * 0.59,
+        height: hieght * 0.05,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Color(0xff062D58),
@@ -20,7 +22,7 @@ class UploadImageFromGallery extends StatelessWidget {
         child: Center(
           child: Text(
             'Choose Image From Gallery',
-            style: TextStyle(fontSize: 18, color: Colors.white),
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
         ),
       ),

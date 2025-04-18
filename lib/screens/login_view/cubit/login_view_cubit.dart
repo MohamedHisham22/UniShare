@@ -105,6 +105,9 @@ class LoginViewCubit extends Cubit<LoginViewState> {
         await context.read<UpdateProfileCubit>().getProfilePicture(
           FirebaseAuth.instance.currentUser?.uid ?? '',
         );
+              await context.read<MyListingCubit>().getItems(
+        FirebaseAuth.instance.currentUser?.uid ?? '',
+      );
         await context.read<FavoriteItemsCubit>().getFavoriteItems(
           userId: FirebaseAuth.instance.currentUser?.uid ?? '',
         );

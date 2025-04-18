@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
+import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/tool_details_view_client_body.dart';
 
@@ -70,12 +72,21 @@ class ToolDetailsViewUser extends StatelessWidget {
                         Icon(Icons.edit, color: Colors.white),
                         SizedBox(width: 20),
 
-                        Text(
-                          'Edit',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                            color: Colors.white,
+                        GestureDetector(
+                          onTap: () {
+                            final item = cubit.itemDetailes;
+                             final addCubit = context.read<AddItemsCubit>();
+
+    addCubit.populateFieldsForEditing(item);
+                            Navigator.pushNamed(context, AddItemView.id);
+                          },
+                          child: Text(
+                            'Edit',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],

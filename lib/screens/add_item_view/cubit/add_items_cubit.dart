@@ -12,6 +12,8 @@ part 'add_items_state.dart';
 
 class AddItemsCubit extends Cubit<AddItemsState> {
   final GetItemsCubit getItemsCubit;
+  bool isEditing = false;
+  String? editingItemId;
 
   AddItemsCubit({required this.getItemsCubit}) : super(AddItemsInitial());
   String selectedOption = 'Donate';
@@ -32,7 +34,7 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     selectedImage = null;
     optionsController.text = 'Donate';
     imagesList.clear();
- selectedOption = 'Donate'; 
+    selectedOption = 'Donate';
     emit(AddItemsClearFields());
   }
 
@@ -61,26 +63,37 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         formData.files.add(
           MapEntry(
             'ImageFile',
-            await MultipartFile.fromFile(selectedImage!.path),
+            await MultipartFile.fromFile(imagesList[0].path),
           ),
         );
       }
       for (int i = 0; i < imagesList.length; i++) {
         formData.files.add(
           MapEntry(
-            'AdditionalImageFiles', // <-- use same key for all additional images
+            'AdditionalImageFiles',
             await MultipartFile.fromFile(imagesList[i].path),
           ),
         );
       }
-      final response = await DioHelper.postData(
-        path: 'items',
-        body: formData,
-        isFormData: true,
-      );
+
+      Response response;
+      if (isEditing && editingItemId != null) {
+        response = await DioHelper.putFormData(
+          path: 'items/$editingItemId',
+          body: formData,
+        );
+      } else {
+        response = await DioHelper.postData(
+          path: 'items',
+          body: formData,
+          isFormData: true,
+        );
+      }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         await getItemsCubit.getItems();
+        isEditing = false;
+        editingItemId = null;
         emit(AddItemsSuccess());
       } else {
         emit(AddItemsError("Failed to add item"));
@@ -131,5 +144,22 @@ class AddItemsCubit extends Cubit<AddItemsState> {
   void removeImageFromImageList(int index) {
     imagesList.removeAt(index);
     emit(ImageRemoved());
+  }
+
+  void populateFieldsForEditing(dynamic item) {
+    isEditing = true;
+    editingItemId = item.itemId;
+    selectedImage = null;
+    imagesList.clear();
+    itemNameController.text = item.itemName ?? '';
+    descriptionController.text = item.itemDescription ?? '';
+    priceController.text = item.itemPrice?.toString() ?? '';
+    conditionController.text = item.itemCondition ?? '';
+    optionsController.text = item.listingOption ?? 'Donate';
+    durationController.text = item.itemDuration ?? '';
+    categoryController.text = item.itemBrand ?? '';
+    selectedOption = item.listingOption ?? 'Donate';
+
+    emit(AddItemsFieldsPopulated());
   }
 }

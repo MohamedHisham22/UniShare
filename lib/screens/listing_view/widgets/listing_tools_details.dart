@@ -26,6 +26,18 @@ class ListingToolsDetails extends StatelessWidget {
     return months[month - 1];
   }
 
+  String _formattedDate(String? dateStr) {
+    if (dateStr == null) return '';
+    try {
+      final date = DateTime.parse(dateStr);
+      return '${date.day.toString().padLeft(2, '0')} '
+          '${_getMonthName(date.month)} '
+          '${date.year}';
+    } catch (e) {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<MyListingCubit>();
@@ -70,9 +82,7 @@ class ListingToolsDetails extends StatelessWidget {
                 ),
 
                 Text(
-                  '${DateTime.now().day.toString().padLeft(2, '0')} '
-                  '${_getMonthName(DateTime.now().month)} '
-                  '${DateTime.now().year}',
+                  _formattedDate(item.createdAt),
                   style: TextStyle(fontSize: 18, color: Color(0xffC1839F)),
                 ),
               ],

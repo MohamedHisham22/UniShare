@@ -8,6 +8,8 @@ class GetItemsModel {
   String? imageUrl;
   String? userId;
   dynamic imageFile;
+  String? createdAt;
+  List<String>? additionalImageUrls;
 
   GetItemsModel({
     this.itemId,
@@ -19,6 +21,8 @@ class GetItemsModel {
     this.imageUrl,
     this.userId,
     this.imageFile,
+    this.createdAt,
+    this.additionalImageUrls,
   });
 
   factory GetItemsModel.fromjson(Map<String, dynamic> json) {
@@ -32,6 +36,11 @@ class GetItemsModel {
       imageUrl: json['imageUrl'] as String?,
       userId: json['userId'] as String?,
       imageFile: json['imageFile'] as dynamic,
+      createdAt: json['createdAt'] as String,
+      additionalImageUrls:
+          (json['additionalImageUrls'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList(),
     );
   }
 
@@ -46,6 +55,8 @@ class GetItemsModel {
       'imageUrl': imageUrl,
       'userId': userId,
       'imageFile': imageFile,
+      'createdAt': createdAt,
+      'AdditionalImageFiles': additionalImageUrls,
     };
   }
 }

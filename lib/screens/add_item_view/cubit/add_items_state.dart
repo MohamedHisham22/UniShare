@@ -20,3 +20,5 @@ class AddItemsError extends AddItemsState {
   AddItemsError(this.error);
 }
 class AddItemsClearFields extends AddItemsState {}
+class AddItemsFieldsPopulated extends AddItemsState {}
+

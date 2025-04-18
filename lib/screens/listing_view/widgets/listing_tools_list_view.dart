@@ -35,7 +35,7 @@ class ListingToolsListView extends StatelessWidget {
                     );
                     Navigator.pushNamed(context, ToolDetailsViewUser.id);
                   },
-                  child: ListingToolsDetails(item: item),
+                  child: ListingToolsDetails(item: item,),
                 );
               },
               separatorBuilder: (c, i) => const SizedBox(height: 10),
