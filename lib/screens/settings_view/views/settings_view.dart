@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/about_us_view/views/about_us_view.dart';
 import 'package:unishare/screens/explore_view/widgets/back_botton.dart';
 import 'package:unishare/screens/settings_view/cubit/switch_cubit.dart';
 import 'package:unishare/screens/settings_view/widgets/change_pass_and_about_us.dart';
 import 'package:unishare/screens/settings_view/widgets/dark_and_notifi.dart';
-import 'package:unishare/screens/settings_view/widgets/setting_title.dart';
+import 'package:unishare/screens/update_profile/views/update_profile.dart';
 import 'package:unishare/theme_provider.dart';
 
 class SettingsView extends StatelessWidget {
@@ -47,12 +48,15 @@ class SettingsView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SettingTitle(text: 'Account Settings'),
-                SizedBox(height: 40),
-                ChangePassAndAboutUs(text: 'Change password'),
-                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, UpdateProfile.id);
+                  },
+                  child: ChangePassAndAboutUs(text: 'Profile Settings'),
+                ),
+                SizedBox(height: 30),
                 DarkAndNotifi(
-                  text: 'Dark mode',
+                  text: 'Dark Mode',
                   value: themeProvider.themeMode == ThemeMode.dark,
                   onChanged: (value) {
                     themeProvider.toggleTheme();
@@ -60,18 +64,21 @@ class SettingsView extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 DarkAndNotifi(
-                  text: 'Notifications',
+                  text: 'Enable Notifications',
                   value: cubit.notification,
                   onChanged: (value) {
                     cubit.notifi(value);
                   },
                 ),
-                SizedBox(height: 100),
-                Divider(indent: 15, endIndent: 15),
-                SizedBox(height: 50),
-                SettingTitle(text: 'More'),
-                SizedBox(height: 40),
-                ChangePassAndAboutUs(text: 'About us'),
+                SizedBox(height: 20),
+                Divider(indent: 30, endIndent: 30),
+                SizedBox(height: 30),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, AboutUsView.id);
+                  },
+                  child: ChangePassAndAboutUs(text: 'About Us'),
+                ),
               ],
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unishare/screens/explore_view/widgets/back_botton.dart';
 import 'package:unishare/screens/explore_view/widgets/explore_tools_list_view.dart';
-import 'package:unishare/screens/home_view/widgets/custom_text_field.dart';
+import 'package:unishare/screens/explore_view/widgets/custom_text_field.dart';
 
 class ExploreViewBody extends StatelessWidget {
   const ExploreViewBody({super.key});

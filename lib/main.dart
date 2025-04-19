@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/screens/about_us_view/views/about_us_view.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
@@ -40,9 +41,12 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   DioHelper.init();
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => ThemeProvider(),
-    child: const MyApp()));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
   await Future.delayed(Duration(seconds: 5));
   FlutterNativeSplash.remove();
 }
@@ -83,9 +87,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SwitchCubit()),
       ],
       child: MaterialApp(
-         themeMode: themeProvider.themeMode,
-          theme: MyThemes.lightTheme,
-          darkTheme: MyThemes.darkTheme,
+        themeMode: themeProvider.themeMode,
+        theme: MyThemes.lightTheme,
+        darkTheme: MyThemes.darkTheme,
         debugShowCheckedModeBanner: false,
         initialRoute:
             FirebaseAuth.instance.currentUser == null
@@ -106,6 +110,7 @@ class MyApp extends StatelessWidget {
           AllChatsView.id: (context) => AllChatsView(),
           SettingsView.id: (context) => SettingsView(),
           UpdateProfile.id: (context) => UpdateProfile(),
+          AboutUsView.id: (context) => AboutUsView(),
         },
       ),
     );
