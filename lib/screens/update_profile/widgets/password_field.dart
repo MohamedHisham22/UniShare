@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatelessWidget {
-  const PasswordField({Key? key}) : super(key: key);
+  const PasswordField({Key? key, required this.text}) : super(key: key);
 
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +26,10 @@ class PasswordField extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 20),
-                child: Text('********', style: TextStyle(fontSize: 16)),
+                child: Text(
+                  text.replaceAll(RegExp(r"."), "*"),
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
               const Spacer(),
               IconButton(

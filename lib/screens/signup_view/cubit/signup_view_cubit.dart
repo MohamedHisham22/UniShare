@@ -48,6 +48,7 @@ class SignupViewCubit extends Cubit<SignupViewState> {
         'phone': phone,
         'location': location,
         'email': email,
+        'password': password,
         'type': "default account",
         'createdAt': FieldValue.serverTimestamp(),
       });

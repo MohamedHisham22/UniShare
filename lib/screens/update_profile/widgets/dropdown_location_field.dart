@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LocationDropdownField extends StatelessWidget {
-  const LocationDropdownField({Key? key}) : super(key: key);
-
+  const LocationDropdownField({Key? key, required this.text}) : super(key: key);
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +25,7 @@ class LocationDropdownField extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 20),
-                child: Text('الجيزه', style: TextStyle(fontSize: 16)),
+                child: Text(text, style: TextStyle(fontSize: 16)),
               ),
               const Spacer(),
               IconButton(

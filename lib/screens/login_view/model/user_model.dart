@@ -5,6 +5,8 @@ class UserModel {
   final String location;
   final String phoneNumber;
   final String userID;
+  final String password;
+  final String type;
 
   UserModel({
     required this.email,
@@ -13,6 +15,8 @@ class UserModel {
     required this.location,
     required this.phoneNumber,
     required this.userID,
+    required this.password,
+    required this.type,
   });
 
   factory UserModel.fromSnapshot(Map<String, dynamic> data) {
@@ -23,6 +27,8 @@ class UserModel {
       location: data['location'],
       phoneNumber: data['phone'],
       userID: data['uid'],
+      password: data['password'],
+      type: data['type'],
     );
   }
 }

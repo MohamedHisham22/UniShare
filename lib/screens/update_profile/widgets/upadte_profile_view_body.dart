@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 import 'package:unishare/screens/update_profile/widgets/changing_pictures.dart';
 import 'package:unishare/screens/update_profile/widgets/dropdown_location_field.dart';
@@ -21,6 +23,8 @@ class UpdateProfileViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profileCubit = context.read<LoginViewCubit>();
+    final isGoogleAccount = profileCubit.userModel?.type == "google account";
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Column(
@@ -37,29 +41,38 @@ class UpdateProfileViewBody extends StatelessWidget {
 
           Row(
             children: [
-              ProfileField(title: 'First Name', text: 'Mohamed', size: 170),
+              ProfileField(
+                title: 'First Name',
+                text: profileCubit.userModel?.firstName ?? '',
+                size: 170,
+              ),
               Spacer(),
-              ProfileField(title: 'Last Name', text: 'Hisham', size: 170),
+              ProfileField(
+                title: 'Last Name',
+                text: profileCubit.userModel?.lastName ?? '',
+                size: 170,
+              ),
             ],
           ),
 
           SizedBox(height: 16),
           ProfileField(
             title: 'Email',
-            text: 'mohamedd@gmail.com',
+            text: profileCubit.userModel?.email ?? "",
             size: double.infinity,
           ),
           SizedBox(height: 16),
           ProfileField(
             title: 'Phone Number',
-            text: '01023793349',
+            text: profileCubit.userModel?.phoneNumber ?? '',
             keyboardType: TextInputType.number,
             size: double.infinity,
           ),
           SizedBox(height: 16),
-          LocationDropdownField(),
+          LocationDropdownField(text: profileCubit.userModel?.location ?? ''),
           SizedBox(height: 16),
-          PasswordField(),
+          if (!isGoogleAccount)
+            PasswordField(text: profileCubit.userModel?.password ?? ''),
         ],
       ),
     );
