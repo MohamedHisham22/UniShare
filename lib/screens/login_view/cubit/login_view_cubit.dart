@@ -87,9 +87,10 @@ class LoginViewCubit extends Cubit<LoginViewState> {
             'uid': user.uid,
             'firstName': user.displayName?.split(" ").first ?? "",
             'lastName': user.displayName?.split(" ").last ?? "",
-            'phone': "",
-            'location': "",
+            'phone': "Not Determined",
+            'location': "Not Determined",
             'email': user.email,
+            'password': 'no password for a google account',
             'type': "google account",
             'createdAt': FieldValue.serverTimestamp(),
           });
@@ -105,9 +106,9 @@ class LoginViewCubit extends Cubit<LoginViewState> {
         await context.read<UpdateProfileCubit>().getProfilePicture(
           FirebaseAuth.instance.currentUser?.uid ?? '',
         );
-              await context.read<MyListingCubit>().getItems(
-        FirebaseAuth.instance.currentUser?.uid ?? '',
-      );
+        await context.read<MyListingCubit>().getItems(
+          FirebaseAuth.instance.currentUser?.uid ?? '',
+        );
         await context.read<FavoriteItemsCubit>().getFavoriteItems(
           userId: FirebaseAuth.instance.currentUser?.uid ?? '',
         );
