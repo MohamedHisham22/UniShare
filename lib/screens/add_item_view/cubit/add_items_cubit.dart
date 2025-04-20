@@ -151,14 +151,35 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     editingItemId = item.itemId;
     selectedImage = null;
     imagesList.clear();
+
     itemNameController.text = item.itemName ?? '';
     descriptionController.text = item.itemDescription ?? '';
     priceController.text = item.itemPrice?.toString() ?? '';
     conditionController.text = item.itemCondition ?? '';
-    optionsController.text = item.listingOption ?? 'Donate';
     durationController.text = item.itemDuration ?? '';
     categoryController.text = item.itemBrand ?? '';
-    selectedOption = item.listingOption ?? 'Donate';
+
+    final allowedOptions = ['Donate', 'Sell', 'Rent'];
+
+    if (item.itemPrice != null && item.itemPrice != 0) {
+      if(item.itemDuration!= null){
+        optionsController.text = 'Rent';
+      selectedOption = 'Rent';
+      }else{
+optionsController.text = 'Sell';
+      selectedOption = 'Sell';
+      }
+      
+    } else {
+      final value = item.listingOption ?? 'Donate';
+      if (allowedOptions.contains(value)) {
+        optionsController.text = value;
+        selectedOption = value;
+      } else {
+        optionsController.text = 'Donate';
+        selectedOption = 'Donate';
+      }
+    }
 
     emit(AddItemsFieldsPopulated());
   }

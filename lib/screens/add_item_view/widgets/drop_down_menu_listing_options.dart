@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
@@ -22,23 +21,38 @@ class _DropDownMenuListingOptionsState
   static final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
     list.map<MenuEntry>((String name) => MenuEntry(value: name, label: name)),
   );
-  String dropdownValue = list.first;
+
+  late String dropdownValue;
+
+  @override
+  void initState() {
+    super.initState();
+    final cubit = context.read<AddItemsCubit>();
+
+
+    final valueFromCubit = cubit.optionsController.text.trim();
+
+    if (list.contains(valueFromCubit)) {
+      dropdownValue = valueFromCubit;
+    } else {
+      dropdownValue = list.first;
+      cubit.optionsController.text = list.first;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AddItemsCubit>();
+
     return DropdownMenu<String>(
       controller: cubit.optionsController,
       width: double.infinity,
       menuStyle: MenuStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.white), // خلفية القائمة
-        elevation: WidgetStateProperty.all(4), // تأثير الارتفاع للظل
-        shadowColor: WidgetStateProperty.all(Colors.black26), // لون الظل
+        backgroundColor: WidgetStateProperty.all(Colors.white),
+        elevation: WidgetStateProperty.all(4),
+        shadowColor: WidgetStateProperty.all(Colors.black26),
         shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              12,
-            ), // حواف دائرية للقائمة المنسدلة
-          ),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -54,14 +68,15 @@ class _DropDownMenuListingOptionsState
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-      initialSelection: list.first,
+      initialSelection: dropdownValue,
       onSelected: (String? value) {
         if (value != null) {
           setState(() {
             dropdownValue = value;
           });
           cubit.optionsController.text = value;
-          widget.onOptionSelected(value); // Notify parent widget
+
+          widget.onOptionSelected(value); 
         }
       },
       dropdownMenuEntries: menuEntries,

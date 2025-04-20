@@ -49,9 +49,30 @@ class ToolDetailsViewUser extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Price', style: TextStyle(fontSize: 20)),
-                  Text(
-                    priceText,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      Text(
+                        priceText,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        cubit.itemDetailes.itemDuration == null ? '' : '/',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        cubit.itemDetailes.itemDuration ?? '',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -75,9 +96,9 @@ class ToolDetailsViewUser extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             final item = cubit.itemDetailes;
-                             final addCubit = context.read<AddItemsCubit>();
+                            final addCubit = context.read<AddItemsCubit>();
 
-    addCubit.populateFieldsForEditing(item);
+                            addCubit.populateFieldsForEditing(item);
                             Navigator.pushNamed(context, AddItemView.id);
                           },
                           child: Text(

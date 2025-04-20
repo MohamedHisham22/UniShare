@@ -8,38 +8,53 @@ class CustomTextFieldPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AddItemsCubit>();
-    return SizedBox(
-      width: 145,
-      height: 55,
-      child: TextField(
-        controller: cubit.priceController,
-        keyboardType: TextInputType.number,
-        onTapOutside: (event) {
-          FocusScope.of(context).unfocus();
-        },
-        decoration: InputDecoration(
-          suffixIcon: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Text(
-              'EGP',
-              style: TextStyle(fontSize: 18, color: Color(0xff656565)),
-            ),
-          ),
-          hintText: '150',
-          hintStyle: TextStyle(fontSize: 18, color: Color(0xff656565)),
+    return BlocBuilder<AddItemsCubit, AddItemsState>(
+      builder: (context, state) {
+        bool isDonate = cubit.optionsController.text == 'Donate';
 
-          fillColor: Color(0xffEAEAEA),
-          filled: true,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
+        return isDonate
+            ? SizedBox.shrink() 
+            : SizedBox(
+                width: 145,
+                height: 55,
+                child: TextField(
+                  controller: cubit.priceController,
+                  keyboardType: TextInputType.number,
+                  onTapOutside: (event) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  decoration: InputDecoration(
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(top: 14.0, right: 12),
+                      child: Text(
+                        'EGP',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff656565),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    hintText: '150',
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xff656565),
+                    ),
+                    fillColor: Color(0xffEAEAEA),
+                    filled: true,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              );
+      },
     );
   }
 }
