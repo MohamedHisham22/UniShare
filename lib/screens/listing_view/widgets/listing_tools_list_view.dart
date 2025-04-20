@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
@@ -12,6 +13,7 @@ class ListingToolsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final itemDetailesCubit = context.read<ToolDetailesClientViewCubit>();
+    String userID = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     return Expanded(
       child: BlocBuilder<MyListingCubit, MyListingState>(
@@ -32,10 +34,11 @@ class ListingToolsListView extends StatelessWidget {
                   onTap: () async {
                     await itemDetailesCubit.showItemDetailes(
                       itemID: item.itemId!,
+                      userID: userID,
                     );
                     Navigator.pushNamed(context, ToolDetailsViewUser.id);
                   },
-                  child: ListingToolsDetails(item: item,),
+                  child: ListingToolsDetails(item: item),
                 );
               },
               separatorBuilder: (c, i) => const SizedBox(height: 10),

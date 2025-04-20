@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +12,14 @@ class SavedTools extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final itemDetailesCubit = context.read<ToolDetailesClientViewCubit>();
+    String userID = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     return GestureDetector(
       onTap: () {
-        itemDetailesCubit.showItemDetailes(itemID: item.itemId ?? '');
+        itemDetailesCubit.showItemDetailes(
+          itemID: item.itemId ?? '',
+          userID: userID,
+        );
         Navigator.pushNamed(context, ToolDetailsViewClient.id);
       },
       child: Container(

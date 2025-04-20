@@ -9,12 +9,18 @@ class ToolDetailesClientViewCubit extends Cubit<ToolDetailesClientViewState> {
   ToolDetailesClientViewCubit() : super(ToolDetailesClientViewInitial());
 
   ItemDetailesModel itemDetailes = ItemDetailesModel();
-  Future <void> showItemDetailes({required String itemID}) async {
+  Future<void> showItemDetailes({
+    required String itemID,
+    required String userID,
+  }) async {
     // Reset the item details before loading new data for another item
     itemDetailes = ItemDetailesModel();
     emit(GettingItemDetailesLoading());
     try {
-      final response = await DioHelper.getData(path: 'items/$itemID');
+      final response = await DioHelper.getData(
+        path: 'items/$itemID',
+        queryParameters: {"userId": userID},
+      );
       itemDetailes = ItemDetailesModel.fromJson(response.data);
       if (response.statusCode == 200) {
         emit(GettingItemDetailesSuccess());
