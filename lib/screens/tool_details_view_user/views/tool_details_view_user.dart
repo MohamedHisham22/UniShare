@@ -79,29 +79,29 @@ class ToolDetailsViewUser extends StatelessWidget {
               Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30.0),
-                child: Container(
-                  width: 130,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: kPrimaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.edit, color: Colors.white),
-                        SizedBox(width: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    final item = cubit.itemDetailes;
+                    final addCubit = context.read<AddItemsCubit>();
 
-                        GestureDetector(
-                          onTap: () {
-                            final item = cubit.itemDetailes;
-                            final addCubit = context.read<AddItemsCubit>();
+                    addCubit.populateFieldsForEditing(item);
+                    Navigator.pushNamed(context, AddItemView.id);
+                  },
+                  child: Container(
+                    width: 130,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: kPrimaryColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.edit, color: Colors.white),
+                          SizedBox(width: 20),
 
-                            addCubit.populateFieldsForEditing(item);
-                            Navigator.pushNamed(context, AddItemView.id);
-                          },
-                          child: Text(
+                          Text(
                             'Edit',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -109,8 +109,8 @@ class ToolDetailsViewUser extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

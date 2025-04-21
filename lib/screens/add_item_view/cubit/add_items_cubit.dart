@@ -25,7 +25,7 @@ class AddItemsCubit extends Cubit<AddItemsState> {
   final TextEditingController durationController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  
   List<AddItemModel> itemsList = [];
   void clearFields() {
     itemNameController.clear();
@@ -35,17 +35,19 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     optionsController.text = 'Donate';
     imagesList.clear();
     selectedOption = 'Donate';
+    isEditing = false;
     emit(AddItemsClearFields());
   }
 
   Future<void> addItem(String userID) async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
+    // if (!formKey.currentState!.validate()) {
+    //   return;
+    // }
 
     emit(AddItemsLoading());
 
     try {
+      final wasEditing = isEditing;
       final formData = FormData.fromMap({
         'itemName': itemNameController.text,
         'itemDescription': descriptionController.text,
@@ -94,7 +96,7 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         await getItemsCubit.getItems();
         isEditing = false;
         editingItemId = null;
-        emit(AddItemsSuccess());
+        emit(AddItemsSuccess(wasEditing));
       } else {
         emit(AddItemsError("Failed to add item"));
       }

@@ -18,7 +18,7 @@ class AddItemButton extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                cubit.isEditing
+                state.wasEditing
                     ? 'Item updated successfully!'
                     : 'Item added successfully!',
               ),
@@ -27,7 +27,7 @@ class AddItemButton extends StatelessWidget {
           );
           final myListingCubit = context.read<MyListingCubit>();
           myListingCubit.getItems(FirebaseAuth.instance.currentUser?.uid);
-          context.read<AddItemsCubit>().clearFields();
+          cubit.clearFields();
           Navigator.pushNamed(context, MainView.id);
         } else if (state is AddItemsError) {
           ScaffoldMessenger.of(context).showSnackBar(

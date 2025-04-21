@@ -96,6 +96,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
@@ -192,6 +193,7 @@ class MainView extends StatelessWidget {
           child: FloatingActionButton(
             backgroundColor: kPrimaryColor,
             onPressed: () {
+              context.read<AddItemsCubit>().clearFields();
               Navigator.pushNamed(context, AddItemView.id);
             },
             shape: const CircleBorder(),
