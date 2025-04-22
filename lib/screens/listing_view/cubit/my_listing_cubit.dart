@@ -9,7 +9,6 @@ part 'my_listing_state.dart';
 class MyListingCubit extends Cubit<MyListingState> {
   MyListingCubit() : super(MyListingInitial());
 
-
   List<MyListingModel> myListing = [];
 
   Future<void> getItems(String? userId) async {
@@ -23,7 +22,6 @@ class MyListingCubit extends Cubit<MyListingState> {
                 .map((item) => MyListingModel.fromJson(item))
                 .toList();
         emit(MyListingSuccess(myListing));
-        
       } else {
         emit(MyListingErorr('Invalid response format'));
       }
@@ -40,12 +38,10 @@ class MyListingCubit extends Cubit<MyListingState> {
     }
   }
 
-    void deleteitem({required String itemId}) async {
+  void deleteitem({required String itemId}) async {
     emit(DeleteItemLoading());
     try {
-      final response = await DioHelper.deleteData(
-        path: 'items/$itemId',
-      );
+      final response = await DioHelper.deleteData(path: 'items/$itemId');
       if (response.statusCode == 200) {
         myListing.removeWhere((item) => item.itemId == itemId);
         emit(MyListingSuccess(myListing));

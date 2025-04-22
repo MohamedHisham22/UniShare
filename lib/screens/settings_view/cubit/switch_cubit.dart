@@ -13,7 +13,7 @@ class SwitchCubit extends Cubit<SwitchState> {
     emit(SwitchDarkMode());
   }
 
-    void notifi(value) {
+  void notifi(value) {
     notification = value;
     emit(SwitchNotification());
   }

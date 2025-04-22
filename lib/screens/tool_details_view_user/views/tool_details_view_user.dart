@@ -87,7 +87,7 @@ class ToolDetailsViewUser extends StatelessWidget {
                         final addCubit = context.read<AddItemsCubit>();
 
                         addCubit.populateFieldsForEditing(item);
-                        
+
                         Navigator.pushNamed(context, AddItemView.id);
                       },
                       child: Container(

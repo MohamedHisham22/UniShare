@@ -43,114 +43,111 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     emit(AddItemsClearFields());
   }
 
-Future<void> addItem(String userID) async {
-  emit(AddItemsLoading());
+  Future<void> addItem(String userID) async {
+    emit(AddItemsLoading());
 
-  try {
-    final wasEditing = isEditing;
-    final formData = FormData.fromMap({
-      'itemName': itemNameController.text,
-      'itemDescription': descriptionController.text,
-      'itemPrice':
-          selectedOption == 'Donate' ? 0 : int.parse(priceController.text),
-      'itemYear': DateTime.now().year,
-      'itemBrand': categoryController.text,
-      'userId': userID,
-      'ItemCondition': conditionController.text,
-      'ListingOption': optionsController.text,
-      'ItemDuration': durationController.text,
-    });
+    try {
+      final wasEditing = isEditing;
+      final formData = FormData.fromMap({
+        'itemName': itemNameController.text,
+        'itemDescription': descriptionController.text,
+        'itemPrice':
+            selectedOption == 'Donate' ? 0 : int.parse(priceController.text),
+        'itemYear': DateTime.now().year,
+        'itemBrand': categoryController.text,
+        'userId': userID,
+        'ItemCondition': conditionController.text,
+        'ListingOption': optionsController.text,
+        'ItemDuration': durationController.text,
+      });
 
-    // Add old images (including the cover image as the first one)
-    for (int i = 0; i < oldImagesUrls.length; i++) {
-      final imageUrl = oldImagesUrls[i];
-      try {
-        final response = await Dio().get<List<int>>(
-          imageUrl,
-          options: Options(responseType: ResponseType.bytes),
-        );
+      // Add old images (including the cover image as the first one)
+      for (int i = 0; i < oldImagesUrls.length; i++) {
+        final imageUrl = oldImagesUrls[i];
+        try {
+          final response = await Dio().get<List<int>>(
+            imageUrl,
+            options: Options(responseType: ResponseType.bytes),
+          );
 
-        final tempDir = Directory.systemTemp;
-        final tempFile = await File('${tempDir.path}/image_$i.jpg').create();
-        await tempFile.writeAsBytes(response.data!);
+          final tempDir = Directory.systemTemp;
+          final tempFile = await File('${tempDir.path}/image_$i.jpg').create();
+          await tempFile.writeAsBytes(response.data!);
 
+          formData.files.add(
+            MapEntry(
+              'AdditionalImageFiles',
+              await MultipartFile.fromFile(
+                tempFile.path,
+                filename: 'old_image_$i.jpg',
+              ),
+            ),
+          );
+        } catch (e) {
+          print("Error $imageUrl - ${e.toString()}");
+        }
+      }
+
+      // Add new images
+      for (int i = 0; i < imagesList.length; i++) {
         formData.files.add(
           MapEntry(
             'AdditionalImageFiles',
-            await MultipartFile.fromFile(
-              tempFile.path,
-              filename: 'old_image_$i.jpg',
-            ),
+            await MultipartFile.fromFile(imagesList[i].path),
           ),
         );
-      } catch (e) {
-        print("Error $imageUrl - ${e.toString()}");
       }
-    }
 
-    // Add new images
-    for (int i = 0; i < imagesList.length; i++) {
-      formData.files.add(
-        MapEntry(
-          'AdditionalImageFiles',
-          await MultipartFile.fromFile(imagesList[i].path),
-        ),
-      );
-    }
+      // Set the first image as the cover image (imageFile)
+      if (oldImagesUrls.isNotEmpty) {
+        // Use the first old image as cover
+        final firstImageUrl = oldImagesUrls[0];
+        final response = await Dio().get<List<int>>(
+          firstImageUrl,
+          options: Options(responseType: ResponseType.bytes),
+        );
+        final tempDir = Directory.systemTemp;
+        final tempFile = await File('${tempDir.path}/cover_image.jpg').create();
+        await tempFile.writeAsBytes(response.data!);
+        formData.files.add(
+          MapEntry('imageFile', await MultipartFile.fromFile(tempFile.path)),
+        );
+      } else if (imagesList.isNotEmpty) {
+        // Use the first new image as cover
+        formData.files.add(
+          MapEntry(
+            'imageFile',
+            await MultipartFile.fromFile(imagesList[0].path),
+          ),
+        );
+      }
 
-    // Set the first image as the cover image (imageFile)
-    if (oldImagesUrls.isNotEmpty) {
-      // Use the first old image as cover
-      final firstImageUrl = oldImagesUrls[0];
-      final response = await Dio().get<List<int>>(
-        firstImageUrl,
-        options: Options(responseType: ResponseType.bytes),
-      );
-      final tempDir = Directory.systemTemp;
-      final tempFile = await File('${tempDir.path}/cover_image.jpg').create();
-      await tempFile.writeAsBytes(response.data!);
-      formData.files.add(
-        MapEntry(
-          'imageFile',
-          await MultipartFile.fromFile(tempFile.path),
-        ),
-      );
-    } else if (imagesList.isNotEmpty) {
-      // Use the first new image as cover
-      formData.files.add(
-        MapEntry(
-          'imageFile',
-          await MultipartFile.fromFile(imagesList[0].path),
-        ),
-      );
-    }
+      Response response;
+      if (isEditing && editingItemId != null) {
+        response = await DioHelper.putFormData(
+          path: 'items/$editingItemId',
+          body: formData,
+        );
+      } else {
+        response = await DioHelper.postData(
+          path: 'items',
+          body: formData,
+          isFormData: true,
+        );
+      }
 
-    Response response;
-    if (isEditing && editingItemId != null) {
-      response = await DioHelper.putFormData(
-        path: 'items/$editingItemId',
-        body: formData,
-      );
-    } else {
-      response = await DioHelper.postData(
-        path: 'items',
-        body: formData,
-        isFormData: true,
-      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        await getItemsCubit.getItems();
+        isEditing = false;
+        editingItemId = null;
+        emit(AddItemsSuccess(wasEditing));
+      } else {
+        emit(AddItemsError("Failed to add item"));
+      }
+    } catch (e) {
+      emit(AddItemsError(e.toString()));
     }
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      await getItemsCubit.getItems();
-      isEditing = false;
-      editingItemId = null;
-      emit(AddItemsSuccess(wasEditing));
-    } else {
-      emit(AddItemsError("Failed to add item"));
-    }
-  } catch (e) {
-    emit(AddItemsError(e.toString()));
   }
-}
 
   void onOptionSelected(String value) {
     selectedOption = value;
@@ -208,51 +205,51 @@ Future<void> addItem(String userID) async {
     emit(ImageRemoved());
   }
 
- void populateFieldsForEditing(dynamic item) {
-  isEditing = true;
-  editingItemId = item.itemId;
+  void populateFieldsForEditing(dynamic item) {
+    isEditing = true;
+    editingItemId = item.itemId;
 
-  itemNameController.text = item.itemName ?? '';
-  descriptionController.text = item.itemDescription ?? '';
-  priceController.text = item.itemPrice?.toString() ?? '';
-  conditionController.text = item.itemCondition ?? '';
-  durationController.text = item.itemDuration ?? '';
-  categoryController.text = item.itemBrand ?? '';
+    itemNameController.text = item.itemName ?? '';
+    descriptionController.text = item.itemDescription ?? '';
+    priceController.text = item.itemPrice?.toString() ?? '';
+    conditionController.text = item.itemCondition ?? '';
+    durationController.text = item.itemDuration ?? '';
+    categoryController.text = item.itemBrand ?? '';
 
-  // Clear old images and add new ones
-  oldImagesUrls.clear();
-  
-  // Add the cover image (imageUrl) as the first image
-  if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
-    oldImagesUrls.add(item.imageUrl!);
-  }
-  
-  // Add additional images
-  oldImagesUrls.addAll(item.additionalImageUrls ?? []);
+    // Clear old images and add new ones
+    oldImagesUrls.clear();
 
-  // Clear new images (optional)
-  imagesList.clear();
-
-  final allowedOptions = ['Donate', 'Sell', 'Rent'];
-  if (item.itemPrice != null && item.itemPrice != 0) {
-    if (item.itemDuration != null) {
-      optionsController.text = 'Rent';
-      selectedOption = 'Rent';
-    } else {
-      optionsController.text = 'Sell';
-      selectedOption = 'Sell';
+    // Add the cover image (imageUrl) as the first image
+    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+      oldImagesUrls.add(item.imageUrl!);
     }
-  } else {
-    final value = item.listingOption ?? 'Donate';
-    if (allowedOptions.contains(value)) {
-      optionsController.text = value;
-      selectedOption = value;
-    } else {
-      optionsController.text = 'Donate';
-      selectedOption = 'Donate';
-    }
-  }
 
-  emit(AddItemsFieldsPopulated());
-}
+    // Add additional images
+    oldImagesUrls.addAll(item.additionalImageUrls ?? []);
+
+    // Clear new images (optional)
+    imagesList.clear();
+
+    final allowedOptions = ['Donate', 'Sell', 'Rent'];
+    if (item.itemPrice != null && item.itemPrice != 0) {
+      if (item.itemDuration != null) {
+        optionsController.text = 'Rent';
+        selectedOption = 'Rent';
+      } else {
+        optionsController.text = 'Sell';
+        selectedOption = 'Sell';
+      }
+    } else {
+      final value = item.listingOption ?? 'Donate';
+      if (allowedOptions.contains(value)) {
+        optionsController.text = value;
+        selectedOption = value;
+      } else {
+        optionsController.text = 'Donate';
+        selectedOption = 'Donate';
+      }
+    }
+
+    emit(AddItemsFieldsPopulated());
+  }
 }

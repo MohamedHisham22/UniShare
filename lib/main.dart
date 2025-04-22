@@ -12,6 +12,7 @@ import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
+import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
@@ -50,7 +51,6 @@ void main() async {
   await Future.delayed(Duration(seconds: 5));
   FlutterNativeSplash.remove();
 }
-         
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -69,8 +69,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create:
               (context) =>
-                  AddItemsCubit(getItemsCubit: context.read<GetItemsCubit>())
-                   ,
+                  AddItemsCubit(getItemsCubit: context.read<GetItemsCubit>()),
         ),
 
         BlocProvider(create: (context) => CarouselSliderCubit()),
@@ -87,6 +86,7 @@ class MyApp extends StatelessWidget {
               (context) => FavoriteItemsCubit()..startAppWithFavoriteItems(),
         ),
         BlocProvider(create: (context) => SwitchCubit()),
+        BlocProvider(create: (context) => RecentlyViewedCubit()),
       ],
       child: MaterialApp(
         themeMode: themeProvider.themeMode,

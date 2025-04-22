@@ -16,3 +16,4 @@ class GetItemsCubitError extends GetItemsCubitState {
   final String error;
   GetItemsCubitError(this.error);
 }
+

@@ -20,19 +20,20 @@ class FullScreenFileImageView extends StatelessWidget {
               boundaryMargin: EdgeInsets.zero,
               minScale: 1.0,
               maxScale: 8.0,
-              child: isFile
-                  ? Image.file(
-                      imagePath,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.contain,
-                    )
-                  : Image.network(
-                      imagePath,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.contain,
-                    ),
+              child:
+                  isFile
+                      ? Image.file(
+                        imagePath,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.contain,
+                      )
+                      : Image.network(
+                        imagePath,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.contain,
+                      ),
             ),
           ),
           Positioned(

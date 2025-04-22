@@ -33,29 +33,36 @@ class ImagesListView extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FullScreenFileImageView(
-                            imagePath: isOldImage
-                                ? cubit.oldImagesUrls[index]
-                                : cubit.imagesList[index - cubit.oldImagesUrls.length].path,
-                          ),
+                          builder:
+                              (context) => FullScreenFileImageView(
+                                imagePath:
+                                    isOldImage
+                                        ? cubit.oldImagesUrls[index]
+                                        : cubit
+                                            .imagesList[index -
+                                                cubit.oldImagesUrls.length]
+                                            .path,
+                              ),
                         ),
                       );
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: isOldImage
-                          ? Image.network(
-                              cubit.oldImagesUrls[index],
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.file(
-                              cubit.imagesList[index - cubit.oldImagesUrls.length],
-                              height: 100,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            ),
+                      child:
+                          isOldImage
+                              ? Image.network(
+                                cubit.oldImagesUrls[index],
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              )
+                              : Image.file(
+                                cubit.imagesList[index -
+                                    cubit.oldImagesUrls.length],
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
                     ),
                   ),
                   Padding(
@@ -65,7 +72,9 @@ class ImagesListView extends StatelessWidget {
                         if (isOldImage) {
                           cubit.removeOldImage(index);
                         } else {
-                          cubit.removeImageFromImageList(index - cubit.oldImagesUrls.length);
+                          cubit.removeImageFromImageList(
+                            index - cubit.oldImagesUrls.length,
+                          );
                         }
                       },
                       child: Icon(

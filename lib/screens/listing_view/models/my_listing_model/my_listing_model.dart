@@ -29,9 +29,7 @@ class MyListingModel {
     this.imageFile,
   });
 
-  factory MyListingModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory MyListingModel.fromJson(Map<String, dynamic> json) {
     return MyListingModel(
       itemId: json['itemId'] as String?,
       itemName: json['itemName'] as String?,
@@ -49,8 +47,7 @@ class MyListingModel {
     );
   }
 
-  Map<String, dynamic>
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'itemId': itemId,
       'itemName': itemName,

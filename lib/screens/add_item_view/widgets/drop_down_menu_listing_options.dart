@@ -29,7 +29,6 @@ class _DropDownMenuListingOptionsState
     super.initState();
     final cubit = context.read<AddItemsCubit>();
 
-
     final valueFromCubit = cubit.optionsController.text.trim();
 
     if (list.contains(valueFromCubit)) {
@@ -76,7 +75,7 @@ class _DropDownMenuListingOptionsState
           });
           cubit.optionsController.text = value;
 
-          widget.onOptionSelected(value); 
+          widget.onOptionSelected(value);
         }
       },
       dropdownMenuEntries: menuEntries,

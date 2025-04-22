@@ -18,10 +18,10 @@ final class MyListingErorr extends MyListingState {
 }
 
 final class DeleteItemLoading extends MyListingState {}
+
 final class DeleteItemSuccess extends MyListingState {
   final List<MyListingModel> listing;
   DeleteItemSuccess(this.listing);
 }
 
 final class DeleteItemErorr extends MyListingState {}
-

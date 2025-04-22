@@ -19,7 +19,7 @@ class AddItemViewBody extends StatefulWidget {
 }
 
 class _AddItemViewBodyState extends State<AddItemViewBody> {
-final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
