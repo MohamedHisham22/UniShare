@@ -14,7 +14,7 @@ final class ImageRemoved extends AddItemsState {}
 class AddItemsLoading extends AddItemsState {}
 
 class AddItemsSuccess extends AddItemsState {
-    final bool wasEditing;
+  final bool wasEditing;
 
   AddItemsSuccess(this.wasEditing);
 }
@@ -23,6 +23,9 @@ class AddItemsError extends AddItemsState {
   final String error;
   AddItemsError(this.error);
 }
+
 class AddItemsClearFields extends AddItemsState {}
+
 class AddItemsFieldsPopulated extends AddItemsState {}
 
+class AddItemsImage extends AddItemsState {}

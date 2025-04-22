@@ -118,6 +118,7 @@ class MainView extends StatelessWidget {
     ];
 
     return Scaffold(
+      
       bottomNavigationBar: BlocBuilder<MainViewCubit, int>(
         builder: (context, selectedIndex) {
           return SizedBox(
@@ -125,6 +126,7 @@ class MainView extends StatelessWidget {
             child: Wrap(
               children: [
                 BottomNavigationBar(
+                  
                   selectedItemColor:
                       Theme.of(context).brightness == Brightness.dark
                           ? Colors.white

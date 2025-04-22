@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/widgets/images_list_view.dart';
 
@@ -20,7 +21,11 @@ class ShowAllImages extends StatelessWidget {
           color: Color(0xffEAEAEA),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: ImagesListView(cubit: cubit),
+        child: BlocBuilder<AddItemsCubit, AddItemsState>(
+          builder: (context, state) {
+            return ImagesListView(cubit: cubit);
+          },
+        ),
       ),
     );
   }

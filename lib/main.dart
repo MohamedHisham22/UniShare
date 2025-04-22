@@ -50,6 +50,7 @@ void main() async {
   await Future.delayed(Duration(seconds: 5));
   FlutterNativeSplash.remove();
 }
+         
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create:
               (context) =>
-                  AddItemsCubit(getItemsCubit: context.read<GetItemsCubit>()),
+                  AddItemsCubit(getItemsCubit: context.read<GetItemsCubit>())
+                   ,
         ),
 
         BlocProvider(create: (context) => CarouselSliderCubit()),

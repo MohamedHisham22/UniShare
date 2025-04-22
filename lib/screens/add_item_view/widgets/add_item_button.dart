@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,10 +32,7 @@ class AddItemButton extends StatelessWidget {
           Navigator.pushNamed(context, MainView.id);
         } else if (state is AddItemsError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Please fill all fields'),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.error), backgroundColor: Colors.red),
           );
         }
       },
