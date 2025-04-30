@@ -23,7 +23,7 @@ class HomeViewBody extends StatelessWidget {
             SizedBox(height: 13),
             NewToolsListView(),
             SizedBox(height: 15),
-            ToolsTitle(text: 'Recently viewed', route: ''),
+            ToolsTitle(text: 'Recently viewed', route:ExploreView.id),
             SizedBox(height: 10),
             RecentlyViewedListView(),
             SizedBox(height: 10),
