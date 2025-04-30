@@ -96,6 +96,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/refresh_app.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
@@ -143,7 +144,7 @@ class MainView extends StatelessWidget {
                       Theme.of(context).brightness == Brightness.dark
                           ? Colors.grey.shade900
                           : const Color.fromARGB(255, 231, 231, 231),
-
+          
                   items: const [
                     BottomNavigationBarItem(
                       icon: Padding(

@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/refresh_app.dart';
 import 'package:unishare/screens/about_us_view/views/about_us_view.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
@@ -43,9 +44,11 @@ void main() async {
   DioHelper.init();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
+    RefreshApp(
+      child: ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        child: const MyApp(),
+      ),
     ),
   );
   await Future.delayed(Duration(seconds: 5));
