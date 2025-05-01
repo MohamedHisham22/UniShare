@@ -20,6 +20,10 @@ class CustomTextFieldDescription extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       minLines: 1,
       maxLines: null,
+      cursorColor:
+          Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
       onTapOutside: (event) {
         FocusScope.of(context).unfocus();
       },
@@ -38,17 +42,35 @@ class CustomTextFieldDescription extends StatelessWidget {
           borderSide: BorderSide.none,
         ),
         hintText: 'Item Description',
-        hintStyle: TextStyle(fontSize: 18, color: Color(0xff656565)),
-
-        fillColor: Color(0xffEAEAEA),
+        hintStyle: TextStyle(
+          fontSize: 18,
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Color(0xff656565),
+        ),
+        fillColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Color(0xffEAEAEA),
         filled: true,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xffEAEAEA),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xffEAEAEA),
+          ),
         ),
       ),
     );

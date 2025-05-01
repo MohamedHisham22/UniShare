@@ -28,7 +28,11 @@ class AddItemButton extends StatelessWidget {
           final myListingCubit = context.read<MyListingCubit>();
           myListingCubit.getItems(FirebaseAuth.instance.currentUser?.uid);
           cubit.clearFields();
-          Navigator.pushNamed(context, MainView.id);
+          Navigator.pushNamedAndRemoveUntil(
+  context,
+  MainView.id,
+  (Route<dynamic> route) => false,
+);
         } else if (state is AddItemsError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error), backgroundColor: Colors.red),

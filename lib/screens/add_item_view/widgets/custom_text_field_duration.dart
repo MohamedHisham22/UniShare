@@ -23,6 +23,14 @@ class _CustomTextFieldDurationState extends State<CustomTextFieldDuration> {
       width: 145,
       height: 55,
       child: DropdownButtonFormField<String>(
+        iconEnabledColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+        iconDisabledColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
         value:
             cubit.durationController.text.isNotEmpty
                 ? cubit.durationController.text
@@ -35,20 +43,39 @@ class _CustomTextFieldDurationState extends State<CustomTextFieldDuration> {
           });
         },
         decoration: InputDecoration(
-          fillColor: Color(0xffEAEAEA),
+          fillColor:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Color(0xffEAEAEA),
           filled: true,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(
+              color:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Color(0xffEAEAEA),
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(
+              color:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Color(0xffEAEAEA),
+            ),
           ),
         ),
         hint: Text(
           'Duration',
-          style: TextStyle(fontSize: 16, color: Color(0xff656565)),
+          style: TextStyle(
+            fontSize: 16,
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xff656565),
+          ),
         ),
         items:
             months.map((month) {
@@ -56,7 +83,13 @@ class _CustomTextFieldDurationState extends State<CustomTextFieldDuration> {
                 value: month,
                 child: Text(
                   month,
-                  style: TextStyle(fontSize: 16, color: Color(0xff656565)),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color:
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Color(0xff656565),
+                  ),
                 ),
               );
             }).toList(),

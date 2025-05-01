@@ -15,19 +15,50 @@ class DropDownMenuCategory extends StatefulWidget {
 typedef MenuEntry = DropdownMenuEntry<String>;
 
 class _DropDownMenuCategoryState extends State<DropDownMenuCategory> {
-  static final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
-    list.map<MenuEntry>((String name) => MenuEntry(value: name, label: name)),
-  );
   String dropdownValue = list.first;
   @override
   Widget build(BuildContext context) {
+    final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
+      list.map<MenuEntry>(
+        (String name) => MenuEntry(
+          value: name,
+          label: name,
+          style: MenuItemButton.styleFrom(
+            foregroundColor:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+            textStyle: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ),
+    );
     return DropdownMenu<String>(
       controller: widget.cubit.categoryController,
       width: double.infinity,
+      trailingIcon: Icon(
+        Icons.arrow_drop_down,
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+      ),
+      selectedTrailingIcon: Icon(
+        Icons.arrow_drop_up,
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+      ),
       menuStyle: MenuStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.white), // خلفية القائمة
+        backgroundColor: WidgetStateProperty.all(
+          Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
+        ), // خلفية القائمة
         elevation: WidgetStateProperty.all(4), // تأثير الارتفاع للظل
         shadowColor: WidgetStateProperty.all(Colors.black26), // لون الظل
+
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
@@ -39,13 +70,27 @@ class _DropDownMenuCategoryState extends State<DropDownMenuCategory> {
           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
       ),
-      textStyle: TextStyle(fontSize: 18, color: Color(0xff656565)),
+      textStyle: TextStyle(
+        fontSize: 18,
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Color(0xff656565),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         constraints: BoxConstraints(maxHeight: 55, minHeight: 55),
-        fillColor: Color(0xffEAEAEA),
+        fillColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Color(0xffEAEAEA),
         filled: true,
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xffEAEAEA),
+          ),
           borderRadius: BorderRadius.circular(12),
         ),
       ),

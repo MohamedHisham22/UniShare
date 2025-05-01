@@ -21,18 +21,28 @@ class CustomTextFieldItemName extends StatelessWidget {
               return null;
             },
             controller: cubit.itemNameController,
-
+            cursorColor:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
             onTapOutside: (event) {
               FocusScope.of(context).unfocus();
             },
             decoration: InputDecoration(
               hintText: 'Item Name',
-              hintStyle: const TextStyle(
+              hintStyle: TextStyle(
                 fontSize: 18,
-                color: Color(0xff656565),
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Color(0xff656565),
               ),
-              fillColor: const Color(0xffEAEAEA),
+              fillColor:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black
+                      : Color(0xffEAEAEA),
               filled: true,
+
               errorStyle: const TextStyle(
                 color: Colors.red,
                 fontSize: 12,
@@ -48,11 +58,21 @@ class CustomTextFieldItemName extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Color(0xffEAEAEA),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+                borderSide: BorderSide(
+                  color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Color(0xffEAEAEA),
+                ),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
