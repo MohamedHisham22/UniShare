@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/helpers/dio_helper.dart';
@@ -42,7 +44,8 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   DioHelper.init();
-
+ await Hive.initFlutter();
+  await Hive.openBox('settings');
   runApp(
     RefreshApp(
       child: ChangeNotifierProvider(
