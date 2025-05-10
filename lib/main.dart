@@ -14,6 +14,7 @@ import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
+import 'package:unishare/screens/explore_recently_view/views/explore_recently_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
@@ -119,6 +120,7 @@ class MyApp extends StatelessWidget {
           SettingsView.id: (context) => SettingsView(),
           UpdateProfile.id: (context) => UpdateProfile(),
           AboutUsView.id: (context) => AboutUsView(),
+          ExploreRecentlyView.id:(context)=>ExploreRecentlyView(),
         },
       ),
     );

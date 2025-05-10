@@ -12,20 +12,45 @@ class CustomTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: 'Search for tools and more...',
-        hintStyle: TextStyle(fontSize: 18, color: Color(0xff828282)),
+        hintStyle: TextStyle(
+          fontSize: 18,
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Color(0xff828282),
+        ),
         suffixIcon: Padding(
           padding: const EdgeInsets.only(right: 10.0),
-          child: Icon(CupertinoIcons.search, color: Color(0xff999999)),
+          child: Icon(
+            CupertinoIcons.search,
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xff828282),
+          ),
         ),
-        fillColor: Color(0xffDEDEDE),
+        fillColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Color(0xffDEDEDE),
         filled: true,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(22),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xffDEDEDE),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(22),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xffDEDEDE),
+          ),
         ),
       ),
     );
