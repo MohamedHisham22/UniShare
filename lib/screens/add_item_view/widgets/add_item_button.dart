@@ -29,13 +29,16 @@ class AddItemButton extends StatelessWidget {
           myListingCubit.getItems(FirebaseAuth.instance.currentUser?.uid);
           cubit.clearFields();
           Navigator.pushNamedAndRemoveUntil(
-  context,
-  MainView.id,
-  (Route<dynamic> route) => false,
-);
+            context,
+            MainView.id,
+            (Route<dynamic> route) => false,
+          );
         } else if (state is AddItemsError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text('Please fill all fields'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       },

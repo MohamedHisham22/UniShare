@@ -14,7 +14,9 @@ import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
+import 'package:unishare/screens/explore_recently_view/cubit/search_explore_recently_view_cubit.dart';
 import 'package:unishare/screens/explore_recently_view/views/explore_recently_view.dart';
+import 'package:unishare/screens/explore_view/cubit/search_cubit.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
@@ -94,6 +96,8 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => SwitchCubit()),
         BlocProvider(create: (context) => RecentlyViewedCubit()),
+        BlocProvider(create: (context) => SearchCubit()),
+        BlocProvider(create: (context) => SearchExploreRecentlyViewCubit()),
       ],
       child: MaterialApp(
         themeMode: themeProvider.themeMode,
