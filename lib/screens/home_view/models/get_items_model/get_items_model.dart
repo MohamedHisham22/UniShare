@@ -1,14 +1,30 @@
-class GetItemsModel {
+import 'package:hive/hive.dart';
+
+part 'get_items_model.g.dart';
+
+@HiveType(typeId: 0)
+class GetItemsModel extends HiveObject{
+  @HiveField(0)
   String? itemId;
+  @HiveField(1)
   String? itemName;
+  @HiveField(2)
   String? itemDescription;
+  @HiveField(3)
   int? itemPrice;
+  @HiveField(4)
   int? itemYear;
+  @HiveField(5)
   String? itemBrand;
+  @HiveField(6)
   String? imageUrl;
+  @HiveField(7)
   String? userId;
+  @HiveField(8)
   dynamic imageFile;
+  @HiveField(9)
   String? createdAt;
+  @HiveField(10)
   List<String>? additionalImageUrls;
 
   GetItemsModel({

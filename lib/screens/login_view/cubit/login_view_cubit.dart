@@ -5,8 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/helpers/hive_helper.dart';
+import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
@@ -36,6 +39,10 @@ class LoginViewCubit extends Cubit<LoginViewState> {
         password: password,
       );
       await getUserData();
+      final userBox = Hive.box<UserModel>('userBox');
+      if (userModel != null) {
+        userBox.put('user', userModel!);
+      }
       await context.read<UpdateProfileCubit>().getProfilePicture(
         FirebaseAuth.instance.currentUser?.uid ?? '',
       );
@@ -45,6 +52,9 @@ class LoginViewCubit extends Cubit<LoginViewState> {
       );
       await context.read<FavoriteItemsCubit>().getFavoriteItems(
         userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+      );
+      await context.read<RecentlyViewedCubit>().recentlyView(
+        FirebaseAuth.instance.currentUser?.uid ?? '',
       );
 
       emit(LoginSuccess());
@@ -103,6 +113,10 @@ class LoginViewCubit extends Cubit<LoginViewState> {
           //! sent user id to backend complete normally...
         }
         await getUserData();
+        final userBox = Hive.box<UserModel>('userBox');
+        if (userModel != null) {
+          userBox.put('user', userModel!);
+        }
         await context.read<UpdateProfileCubit>().getProfilePicture(
           FirebaseAuth.instance.currentUser?.uid ?? '',
         );
@@ -129,12 +143,15 @@ class LoginViewCubit extends Cubit<LoginViewState> {
     try {
       GoogleSignIn().disconnect();
       await FirebaseAuth.instance.signOut();
+      await HiveHelper.clearHive();
+
       emit(SigningOutSuccess());
       Navigator.pushNamedAndRemoveUntil(
         context,
         LoginView.id,
         (route) => false,
       );
+      context.read<RecentlyViewedCubit>().clearRecentlyItems();
     } catch (e) {
       emit(SigningOutFailed(errorMessage: 'Couldn\'t sign out'));
     }

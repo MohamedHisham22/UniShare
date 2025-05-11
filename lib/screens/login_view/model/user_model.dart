@@ -1,22 +1,35 @@
+import 'package:hive/hive.dart';
+
+part 'user_model.g.dart';
+
+@HiveType(typeId: 2)
 class UserModel {
-  final String email;
-  final String firstName;
-  final String lastName;
-  final String location;
-  final String phoneNumber;
-  final String userID;
-  final String password;
-  final String type;
+  @HiveField(0)
+  final String? email;
+  @HiveField(1)
+  final String? firstName;
+  @HiveField(2)
+  final String? lastName;
+  @HiveField(3)
+  final String? location;
+  @HiveField(4)
+  final String? phoneNumber;
+  @HiveField(5)
+  final String? userID;
+  @HiveField(6)
+  final String? password;
+  @HiveField(7)
+  final String? type;
 
   UserModel({
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.location,
-    required this.phoneNumber,
-    required this.userID,
-    required this.password,
-    required this.type,
+     this.email,
+     this.firstName,
+     this.lastName,
+     this.location,
+     this.phoneNumber,
+     this.userID,
+     this.password,
+     this.type,
   });
 
   factory UserModel.fromSnapshot(Map<String, dynamic> data) {

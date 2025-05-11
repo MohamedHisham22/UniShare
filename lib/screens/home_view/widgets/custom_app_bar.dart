@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:unishare/constants.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
+import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -10,9 +12,14 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userBox = Hive.box<UserModel>('userBox');
+    final storedUser = userBox.get('user'); 
+
+    if (storedUser != null) {
+      context.read<LoginViewCubit>().userModel = storedUser;
+    }
     final width = MediaQuery.of(context).size.width;
     final cubit = context.read<UpdateProfileCubit>();
-    final loginCubit = context.read<LoginViewCubit>();
 
     return BlocBuilder<UpdateProfileCubit, UpdateProfileState>(
       builder: (context, state) {
@@ -45,7 +52,7 @@ class CustomAppBar extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          loginCubit.userModel?.firstName ?? 'Loading',
+                          storedUser?.firstName ?? 'Loading',
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,

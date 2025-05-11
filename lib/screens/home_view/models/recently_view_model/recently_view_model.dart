@@ -1,8 +1,19 @@
-class RecentlyViewModel {
+
+import 'package:hive/hive.dart';
+
+part 'recently_view_model.g.dart';
+
+@HiveType(typeId: 1)
+class RecentlyViewModel extends HiveObject{
+  @HiveField(0)
   String? itemId;
+  @HiveField(1)
   String? itemName;
+  @HiveField(2)
   String? imageUrl;
+  @HiveField(3)
   dynamic userId;
+  @HiveField(4)
   DateTime? viewedAt;
 
   RecentlyViewModel({

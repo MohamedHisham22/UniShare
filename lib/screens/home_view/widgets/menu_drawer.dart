@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/constants.dart';
+import 'package:unishare/helpers/hive_helper.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
+import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/settings_view/views/settings_view.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
@@ -72,7 +74,11 @@ Drawer menuDrawer(
         ListTile(
           leading: Icon(Icons.logout),
           title: Text('Logout'),
-          onTap: () {
+          onTap: () async {
+            print("Logout tapped");
+            await HiveHelper.clearHive();
+             
+            print("Boxes should be cleared");
             loginCubit.signOut(context: context);
           },
         ),

@@ -20,10 +20,13 @@ import 'package:unishare/screens/explore_view/cubit/search_cubit.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
+import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
+import 'package:unishare/screens/home_view/models/recently_view_model/recently_view_model.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
+import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
@@ -47,8 +50,16 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   DioHelper.init();
- await Hive.initFlutter();
+  await Hive.initFlutter();
   await Hive.openBox('settings');
+  Hive.registerAdapter(GetItemsModelAdapter());
+  Hive.registerAdapter(RecentlyViewModelAdapter());
+  Hive.registerAdapter(UserModelAdapter());
+
+  await Hive.openBox<UserModel>('userBox');
+  
+  await Hive.openBox<GetItemsModel>('itemsBox');
+  await Hive.openBox<RecentlyViewModel>('recentlyViewItemsBox');
   runApp(
     RefreshApp(
       child: ChangeNotifierProvider(
@@ -124,7 +135,7 @@ class MyApp extends StatelessWidget {
           SettingsView.id: (context) => SettingsView(),
           UpdateProfile.id: (context) => UpdateProfile(),
           AboutUsView.id: (context) => AboutUsView(),
-          ExploreRecentlyView.id:(context)=>ExploreRecentlyView(),
+          ExploreRecentlyView.id: (context) => ExploreRecentlyView(),
         },
       ),
     );

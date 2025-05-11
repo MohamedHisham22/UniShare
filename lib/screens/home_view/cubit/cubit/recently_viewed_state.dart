@@ -6,6 +6,7 @@ sealed class RecentlyViewedState {}
 final class RecentlyViewedInitial extends RecentlyViewedState {}
 
 class RecentlyCubitLoading extends RecentlyViewedState {}
+class RecentlyCubitClear extends RecentlyViewedState {}
 
 class RecentlyCubitSuccess extends RecentlyViewedState {
   final List<RecentlyViewModel> recentlyItems;
