@@ -3,21 +3,31 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:unishare/firebase_options.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/refresh_app.dart';
 import 'package:unishare/screens/about_us_view/views/about_us_view.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
+import 'package:unishare/screens/explore_recently_view/cubit/search_explore_recently_view_cubit.dart';
+import 'package:unishare/screens/explore_recently_view/views/explore_recently_view.dart';
+import 'package:unishare/screens/explore_view/cubit/search_cubit.dart';
 import 'package:unishare/screens/confirm_update_screens/views/confirming_password_update_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
+import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
+import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
+import 'package:unishare/screens/home_view/models/recently_view_model/recently_view_model.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
 import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/listing_view/views/listing_view.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
+import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/login_view/views/login_view.dart';
 import 'package:unishare/screens/main_view/cubit/main_view_cubit.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
@@ -42,11 +52,22 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   DioHelper.init();
+  await Hive.initFlutter();
+  await Hive.openBox('settings');
+  Hive.registerAdapter(GetItemsModelAdapter());
+  Hive.registerAdapter(RecentlyViewModelAdapter());
+  Hive.registerAdapter(UserModelAdapter());
 
+  await Hive.openBox<UserModel>('userBox');
+
+  await Hive.openBox<GetItemsModel>('itemsBox');
+  await Hive.openBox<RecentlyViewModel>('recentlyViewItemsBox');
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
+    RefreshApp(
+      child: ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        child: const MyApp(),
+      ),
     ),
   );
   await Future.delayed(Duration(seconds: 5));
@@ -90,6 +111,9 @@ class MyApp extends StatelessWidget {
               (context) => FavoriteItemsCubit()..startAppWithFavoriteItems(),
         ),
         BlocProvider(create: (context) => SwitchCubit()),
+        BlocProvider(create: (context) => RecentlyViewedCubit()),
+        BlocProvider(create: (context) => SearchCubit()),
+        BlocProvider(create: (context) => SearchExploreRecentlyViewCubit()),
       ],
       child: MaterialApp(
         themeMode: themeProvider.themeMode,
@@ -116,6 +140,7 @@ class MyApp extends StatelessWidget {
           SettingsView.id: (context) => SettingsView(),
           UpdateProfile.id: (context) => UpdateProfile(),
           AboutUsView.id: (context) => AboutUsView(),
+          ExploreRecentlyView.id: (context) => ExploreRecentlyView(),
           ConfirmingEmailUpdateView.id:
               (context) => ConfirmingEmailUpdateView(),
           ConfirmingPasswordUpdateView.id:

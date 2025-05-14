@@ -1,14 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class FullScreenFileImageView extends StatelessWidget {
-  final File imagePath;
+  final dynamic imagePath; // can be File or String (URL)
 
   const FullScreenFileImageView({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
+    final bool isFile = imagePath is File;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -16,15 +17,23 @@ class FullScreenFileImageView extends StatelessWidget {
           Center(
             child: InteractiveViewer(
               panEnabled: true,
-              boundaryMargin: EdgeInsets.all(0),
+              boundaryMargin: EdgeInsets.zero,
               minScale: 1.0,
               maxScale: 8.0,
-              child: Image.file(
-                imagePath,
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.contain,
-              ),
+              child:
+                  isFile
+                      ? Image.file(
+                        imagePath,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.contain,
+                      )
+                      : Image.network(
+                        imagePath,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.contain,
+                      ),
             ),
           ),
           Positioned(
@@ -32,9 +41,7 @@ class FullScreenFileImageView extends StatelessWidget {
             left: 20,
             child: IconButton(
               icon: Icon(Icons.close, color: Colors.white, size: 30),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
             ),
           ),
         ],

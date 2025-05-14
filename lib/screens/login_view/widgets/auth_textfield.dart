@@ -34,6 +34,9 @@ class _AuthTextFieldState extends State<AuthTextField> {
     return SizedBox(
       width: widget.textFieldWidth,
       child: TextFormField(
+        cursorColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
         keyboardType:
             widget.isThisAPhoneNumber
                 ? TextInputType.numberWithOptions()

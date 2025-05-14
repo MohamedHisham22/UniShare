@@ -11,41 +11,45 @@ class UploadingImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AddItemsCubit>();
-
-    return Column(
-      children: [
-        Row(
+    return BlocBuilder<AddItemsCubit, AddItemsState>(
+      builder: (context, state) {
+        final cubit = context.read<AddItemsCubit>();
+        return Column(
           children: [
-            UploadImageFromGallery(cubit: cubit),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                'Or',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-            ),
-            UploadImageFromCamera(cubit: cubit),
-          ],
-        ),
-        if (cubit.imagesList.isNotEmpty) ShowAllImages(cubit: cubit),
-        if (cubit.imagesList.isEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
+            Row(
               children: [
-                Text(
-                  'Please upload at least one image.',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                UploadImageFromGallery(cubit: cubit),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'Or',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                 ),
+                UploadImageFromCamera(cubit: cubit),
               ],
             ),
-          ),
-      ],
+            if (cubit.oldImagesUrls.isNotEmpty || cubit.imagesList.isNotEmpty)
+              ShowAllImages(cubit: cubit),
+            if (cubit.oldImagesUrls.isEmpty && cubit.imagesList.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  children: [
+                    Text(
+                      'Please upload at least one image.',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

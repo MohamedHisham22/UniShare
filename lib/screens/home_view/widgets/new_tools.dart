@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
 import 'package:unishare/screens/home_view/widgets/new_tools_image_container.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
@@ -22,7 +23,9 @@ class NewTools extends StatelessWidget {
           itemID: item.itemId!,
           userID: userID,
         );
+        
         Navigator.pushNamed(context, ToolDetailsViewClient.id);
+        context.read<RecentlyViewedCubit>().recentlyView(userID);
       },
       child: Container(
         width: width * 0.65,
@@ -66,7 +69,7 @@ class NewTools extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${item.itemYear ?? "Unknown Year"} | ${item.itemBrand ?? "Unknown Brand"}',
+                        'Price / ${item.itemPrice}',
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ],

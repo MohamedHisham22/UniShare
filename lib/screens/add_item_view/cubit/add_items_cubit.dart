@@ -14,8 +14,11 @@ class AddItemsCubit extends Cubit<AddItemsState> {
   final GetItemsCubit getItemsCubit;
   bool isEditing = false;
   String? editingItemId;
+  List<String> oldImagesUrls = [];
+  String? imageUrl;
 
   AddItemsCubit({required this.getItemsCubit}) : super(AddItemsInitial());
+
   String selectedOption = 'Donate';
   final TextEditingController itemNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -25,8 +28,8 @@ class AddItemsCubit extends Cubit<AddItemsState> {
   final TextEditingController durationController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<AddItemModel> itemsList = [];
+
   void clearFields() {
     itemNameController.clear();
     descriptionController.clear();
@@ -34,18 +37,17 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     selectedImage = null;
     optionsController.text = 'Donate';
     imagesList.clear();
+    oldImagesUrls.clear();
     selectedOption = 'Donate';
+    isEditing = false;
     emit(AddItemsClearFields());
   }
 
   Future<void> addItem(String userID) async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
-
     emit(AddItemsLoading());
 
     try {
+      final wasEditing = isEditing;
       final formData = FormData.fromMap({
         'itemName': itemNameController.text,
         'itemDescription': descriptionController.text,
@@ -59,19 +61,63 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         'ItemDuration': durationController.text,
       });
 
-      if (selectedImage != null) {
-        formData.files.add(
-          MapEntry(
-            'ImageFile',
-            await MultipartFile.fromFile(imagesList[0].path),
-          ),
-        );
+      // Add old images (including the cover image as the first one)
+      for (int i = 0; i < oldImagesUrls.length; i++) {
+        final imageUrl = oldImagesUrls[i];
+        try {
+          final response = await Dio().get<List<int>>(
+            imageUrl,
+            options: Options(responseType: ResponseType.bytes),
+          );
+
+          final tempDir = Directory.systemTemp;
+          final tempFile = await File('${tempDir.path}/image_$i.jpg').create();
+          await tempFile.writeAsBytes(response.data!);
+
+          formData.files.add(
+            MapEntry(
+              'AdditionalImageFiles',
+              await MultipartFile.fromFile(
+                tempFile.path,
+                filename: 'old_image_$i.jpg',
+              ),
+            ),
+          );
+        } catch (e) {
+          print("Error $imageUrl - ${e.toString()}");
+        }
       }
+
+      // Add new images
       for (int i = 0; i < imagesList.length; i++) {
         formData.files.add(
           MapEntry(
             'AdditionalImageFiles',
             await MultipartFile.fromFile(imagesList[i].path),
+          ),
+        );
+      }
+
+      // Set the first image as the cover image (imageFile)
+      if (oldImagesUrls.isNotEmpty) {
+        // Use the first old image as cover
+        final firstImageUrl = oldImagesUrls[0];
+        final response = await Dio().get<List<int>>(
+          firstImageUrl,
+          options: Options(responseType: ResponseType.bytes),
+        );
+        final tempDir = Directory.systemTemp;
+        final tempFile = await File('${tempDir.path}/cover_image.jpg').create();
+        await tempFile.writeAsBytes(response.data!);
+        formData.files.add(
+          MapEntry('imageFile', await MultipartFile.fromFile(tempFile.path)),
+        );
+      } else if (imagesList.isNotEmpty) {
+        // Use the first new image as cover
+        formData.files.add(
+          MapEntry(
+            'imageFile',
+            await MultipartFile.fromFile(imagesList[0].path),
           ),
         );
       }
@@ -94,7 +140,7 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         await getItemsCubit.getItems();
         isEditing = false;
         editingItemId = null;
-        emit(AddItemsSuccess());
+        emit(AddItemsSuccess(wasEditing));
       } else {
         emit(AddItemsError("Failed to add item"));
       }
@@ -108,23 +154,17 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     emit(AddItemsOnOptionSelected());
   }
 
-  File? selectedImage; // lw h3rd image w7da
-  List<File> imagesList = [];
-  //lw 3ayz a3rd kza image yb2a lazm a7ot kol selected image fe el list
+  File? selectedImage;
+  List<dynamic> imagesList = [];
 
-  // String? _selectedImagename; //lw h7tag azhr esm el image
   void getImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
-
     final XFile? imageGallery = await picker.pickImage(
       source: ImageSource.gallery,
     );
     if (imageGallery != null) {
       selectedImage = File(imageGallery.path);
       imagesList.add(selectedImage!);
-      //b7ot el selected image fe el list 3shad a3rd el list be kol el selcted images
-      // _selectedImagename = imageGallery.name; //lw 3ayz atl3 esm el image
-      // imageController.text = _selectedImagename!; //lw 3ayz azhr esm el image
     }
     emit(ImagePicked());
   }
@@ -146,19 +186,69 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     emit(ImageRemoved());
   }
 
+  void removeOldImage(int index) {
+    final removedImage = oldImagesUrls[index];
+    oldImagesUrls.removeAt(index);
+
+    if (index == 0 || removedImage == imageUrl) {
+      if (oldImagesUrls.isNotEmpty) {
+        imageUrl = oldImagesUrls.first;
+      } else if (imagesList.isNotEmpty) {
+        imageUrl = null;
+        selectedImage = imagesList.first;
+      } else {
+        imageUrl = null;
+        selectedImage = null;
+      }
+    }
+
+    emit(ImageRemoved());
+  }
+
   void populateFieldsForEditing(dynamic item) {
     isEditing = true;
     editingItemId = item.itemId;
-    selectedImage = null;
-    imagesList.clear();
+
     itemNameController.text = item.itemName ?? '';
     descriptionController.text = item.itemDescription ?? '';
     priceController.text = item.itemPrice?.toString() ?? '';
     conditionController.text = item.itemCondition ?? '';
-    optionsController.text = item.listingOption ?? 'Donate';
     durationController.text = item.itemDuration ?? '';
     categoryController.text = item.itemBrand ?? '';
-    selectedOption = item.listingOption ?? 'Donate';
+
+    // Clear old images and add new ones
+    oldImagesUrls.clear();
+
+    // Add the cover image (imageUrl) as the first image
+    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+      oldImagesUrls.add(item.imageUrl!);
+    }
+
+    // Add additional images
+    oldImagesUrls.addAll(item.additionalImageUrls ?? []);
+
+    // Clear new images (optional)
+    imagesList.clear();
+
+    final allowedOptions = ['Donate', 'Sell', 'Rent'];
+    if (item.itemPrice != null && item.itemPrice != 0) {
+      if (item.itemDuration != null) {
+        optionsController.text = 'Rent';
+        selectedOption = 'Rent';
+      } else {
+        optionsController.text = 'Sell';
+        selectedOption = 'Sell';
+      }
+    } else {
+      final value = item.listingOption ?? 'Donate';
+      if (allowedOptions.contains(value)) {
+        optionsController.text = value;
+        selectedOption = value;
+      } else {
+        optionsController.text = 'Donate';
+        selectedOption = 'Donate';
+      }
+    }
 
     emit(AddItemsFieldsPopulated());
   }

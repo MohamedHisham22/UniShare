@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
@@ -10,8 +11,17 @@ class GetItemsCubit extends Cubit<GetItemsCubitState> {
 
   List<GetItemsModel> itemsList = [];
   final GetItemsModel getItemsModel = GetItemsModel();
+    void clearItems() {
+    itemsList.clear();
+    emit(GetItemsCubitInitial()); 
+  }
   Future<void> getItems() async {
     emit(GetItemsCubitLoading());
+    final box = Hive.box<GetItemsModel>('itemsBox');
+    if (box.isNotEmpty) {
+      itemsList = box.values.toList();
+      emit(GetItemsCubitSuccess(itemsList));
+    }
     try {
       final response = await DioHelper.getData(path: 'items/latest');
       print("API Response: ${response.data}");
@@ -21,12 +31,20 @@ class GetItemsCubit extends Cubit<GetItemsCubitState> {
             (response.data as List)
                 .map((item) => GetItemsModel.fromjson(item))
                 .toList();
+
+        await box.clear();
+        await box.addAll(itemsList);
         emit(GetItemsCubitSuccess(itemsList));
       } else {
         emit(GetItemsCubitError("Invalid response format"));
       }
     } catch (e) {
-      emit(GetItemsCubitError(e.toString()));
+      if (itemsList.isNotEmpty) {
+        emit(GetItemsCubitSuccess(itemsList));
+      } else {
+        emit(GetItemsCubitError(e.toString()));
+      }
     }
   }
+  
 }

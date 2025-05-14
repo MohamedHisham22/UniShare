@@ -11,8 +11,15 @@ import 'package:unishare/screens/add_item_view/widgets/drop_down_menu_listing_op
 import 'package:unishare/screens/add_item_view/widgets/title_name.dart';
 import 'package:unishare/screens/add_item_view/widgets/upload_image_button.dart';
 
-class AddItemViewBody extends StatelessWidget {
+class AddItemViewBody extends StatefulWidget {
   const AddItemViewBody({super.key});
+
+  @override
+  State<AddItemViewBody> createState() => _AddItemViewBodyState();
+}
+
+class _AddItemViewBodyState extends State<AddItemViewBody> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,7 @@ class AddItemViewBody extends StatelessWidget {
           padding: const EdgeInsets.only(right: 25, left: 25),
           child: SafeArea(
             child: Form(
-              key: cubit.formKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

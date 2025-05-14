@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
+import 'package:unishare/screens/home_view/models/recently_view_model/recently_view_model.dart';
 import 'package:unishare/screens/home_view/widgets/new_tools_image_container.dart';
 
 class RecentlyViewed extends StatelessWidget {
   const RecentlyViewed({super.key, required this.item});
-  final GetItemsModel item;
+  final RecentlyViewModel item;
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +52,12 @@ class RecentlyViewed extends StatelessWidget {
                         fontSize: 18,
                       ),
                     ),
-                    Text(
-                      '${item.itemYear ?? "Unknown Year"} | ${item.itemBrand ?? "Unknown Brand"}',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
+                    // Text(
+                    //   'Price / ${item.itemPrice}',
+                    //   style: TextStyle(fontSize: 14, color: Colors.grey),
+                    // ),
                   ],
                 ),
-                Spacer(),
-                Icon(CupertinoIcons.heart, color: Colors.red),
               ],
             ),
           ),

@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
-import 'package:unishare/screens/home_view/models/get_items_model/get_items_model.dart';
+import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
+import 'package:unishare/screens/home_view/models/recently_view_model/recently_view_model.dart';
 import 'package:unishare/screens/home_view/widgets/recently_viewed.dart';
 
 class RecentlyViewedListView extends StatelessWidget {
@@ -11,25 +12,34 @@ class RecentlyViewedListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
+
     return SizedBox(
       height: height * 0.3,
-      child: BlocBuilder<GetItemsCubit, GetItemsCubitState>(
+      child: BlocBuilder<RecentlyViewedCubit, RecentlyViewedState>(
         builder: (context, state) {
-          if (state is GetItemsCubitLoading) {
+          // Load recently viewed when widget builds
+          if (userID.isNotEmpty && state is! RecentlyCubitSuccess) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.read<RecentlyViewedCubit>().recentlyView(userID);
+            });
+          }
+
+          if (state is RecentlyCubitLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is GetItemsCubitError) {
+          } else if (state is RecentlyCubitErorr) {
             return Center(child: Text("Error: ${state.error}"));
-          } else if (state is GetItemsCubitSuccess) {
-            if (state.items.isEmpty) {
-              return const Center(child: Text("No items available."));
+          } else if (state is RecentlyCubitSuccess) {
+            if (state.recentlyItems.isEmpty) {
+              return const Center(child: Text("No recently viewed items yet."));
             }
             return ListView.separated(
               itemBuilder: (c, i) {
-                GetItemsModel item = state.items[i];
+                RecentlyViewModel item = state.recentlyItems[i];
                 return RecentlyViewed(item: item);
               },
               separatorBuilder: (c, i) => SizedBox(width: 17),
-              itemCount: state.items.length,
+              itemCount: state.recentlyItems.length,
               scrollDirection: Axis.horizontal,
             );
           }

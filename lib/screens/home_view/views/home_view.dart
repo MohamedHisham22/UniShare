@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/refresh_app.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/home_view/widgets/home_view_body.dart';
 import 'package:unishare/screens/home_view/widgets/menu_drawer.dart';
@@ -17,7 +18,12 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       drawer: menuDrawer(cubit, context, loginCubit, profileCubit),
-      body: SafeArea(child: HomeViewBody()),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          RefreshApp.restartApp(context);
+        },
+        child: SafeArea(child: HomeViewBody()),
+      ),
     );
   }
 }
