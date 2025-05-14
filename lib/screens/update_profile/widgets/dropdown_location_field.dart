@@ -29,7 +29,7 @@ class LocationDropdownField extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.arrow_drop_down_outlined, size: 32),
+                icon: const Icon(Icons.edit, size: 20),
                 onPressed: () {},
               ),
             ],

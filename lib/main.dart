@@ -11,6 +11,7 @@ import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/confirming_password_update_view.dart';
 import 'package:unishare/screens/explore_view/views/explore_view.dart';
 import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
 import 'package:unishare/screens/home_view/views/home_view.dart';
@@ -32,6 +33,7 @@ import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_cl
 import 'package:unishare/screens/tool_details_client_view/views/tool_details_view_client.dart';
 import 'package:unishare/screens/tool_details_view_user/views/tool_details_view_user.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
+import 'package:unishare/screens/confirm_update_screens/views/confirming_email_update.dart';
 import 'package:unishare/screens/update_profile/views/update_profile.dart';
 import 'package:unishare/theme_provider.dart';
 
@@ -74,7 +76,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CarouselSliderCubit()),
         BlocProvider(create: (context) => AllChatsViewCubit()),
         BlocProvider(
-          create: (context) => UpdateProfileCubit()..startAppWithProfileImage(),
+          create:
+              (context) => UpdateProfileCubit(
+                loginViewCubit: context.read<LoginViewCubit>(),
+              )..startAppWithProfileImage(),
         ),
         BlocProvider(create: (context) => ToolDetailesClientViewCubit()),
         BlocProvider(
@@ -111,6 +116,10 @@ class MyApp extends StatelessWidget {
           SettingsView.id: (context) => SettingsView(),
           UpdateProfile.id: (context) => UpdateProfile(),
           AboutUsView.id: (context) => AboutUsView(),
+          ConfirmingEmailUpdateView.id:
+              (context) => ConfirmingEmailUpdateView(),
+          ConfirmingPasswordUpdateView.id:
+              (context) => ConfirmingPasswordUpdateView(),
         },
       ),
     );

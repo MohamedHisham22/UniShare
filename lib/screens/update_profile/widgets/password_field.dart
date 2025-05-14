@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unishare/screens/confirm_update_screens/views/confirming_password_update_view.dart';
 
 class PasswordField extends StatelessWidget {
   const PasswordField({Key? key, required this.text}) : super(key: key);
@@ -34,7 +35,9 @@ class PasswordField extends StatelessWidget {
               const Spacer(),
               IconButton(
                 icon: const Icon(Icons.edit, size: 20),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, ConfirmingPasswordUpdateView.id);
+                },
               ),
             ],
           ),

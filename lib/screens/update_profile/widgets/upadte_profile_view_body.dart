@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/confirm_update_screens/views/confirming_password_update_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/confirming_email_update.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 import 'package:unishare/screens/update_profile/widgets/changing_pictures.dart';
@@ -45,12 +47,18 @@ class UpdateProfileViewBody extends StatelessWidget {
                 title: 'First Name',
                 text: profileCubit.userModel?.firstName ?? '',
                 size: 170,
+                canBeChangedInGoogleAccount: true,
+                defaultAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
+                googleAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
               ),
               Spacer(),
               ProfileField(
                 title: 'Last Name',
                 text: profileCubit.userModel?.lastName ?? '',
                 size: 170,
+                canBeChangedInGoogleAccount: true,
+                defaultAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
+                googleAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
               ),
             ],
           ),
@@ -60,6 +68,9 @@ class UpdateProfileViewBody extends StatelessWidget {
             title: 'Email',
             text: profileCubit.userModel?.email ?? "",
             size: double.infinity,
+            canBeChangedInGoogleAccount: false,
+            defaultAccNavigationrouteName: ConfirmingEmailUpdateView.id,
+            googleAccNavigationrouteName: ConfirmingEmailUpdateView.id,
           ),
           SizedBox(height: 16),
           ProfileField(
@@ -67,6 +78,9 @@ class UpdateProfileViewBody extends StatelessWidget {
             text: profileCubit.userModel?.phoneNumber ?? '',
             keyboardType: TextInputType.number,
             size: double.infinity,
+            canBeChangedInGoogleAccount: true,
+            defaultAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
+            googleAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
           ),
           SizedBox(height: 16),
           LocationDropdownField(text: profileCubit.userModel?.location ?? ''),

@@ -37,3 +37,23 @@ class DeletingProfileImageFailed extends UpdateProfileState {
   final String messege =
       'Couldnt Delete Profile Picture Please Try Again Later';
 }
+
+class ChangingPasswordLoading extends UpdateProfileState {}
+
+class ChangingPasswordSuccess extends UpdateProfileState {}
+
+class ChangingPasswordFailed extends UpdateProfileState {
+  String messege;
+  ChangingPasswordFailed({required this.messege});
+}
+
+class ChangingEmailLoading extends UpdateProfileState {}
+
+class ChangingEmailSuccess extends UpdateProfileState {}
+
+class ChangingEmailFailed extends UpdateProfileState {
+  String messege;
+  ChangingEmailFailed({required this.messege});
+}
+
+class TextFieldCleared extends UpdateProfileState {}
