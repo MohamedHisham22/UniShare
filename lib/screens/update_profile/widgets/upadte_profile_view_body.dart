@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unishare/screens/confirm_update_screens/views/confirming_password_update_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_fname_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_lname_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_location.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_number_view.dart';
 import 'package:unishare/screens/confirm_update_screens/views/confirming_email_update.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 import 'package:unishare/screens/update_profile/widgets/changing_pictures.dart';
-import 'package:unishare/screens/update_profile/widgets/dropdown_location_field.dart';
 import 'package:unishare/screens/update_profile/widgets/password_field.dart';
 import 'package:unishare/screens/update_profile/widgets/profile_field.dart';
 import 'package:unishare/screens/update_profile/widgets/profile_picture.dart';
@@ -48,8 +50,8 @@ class UpdateProfileViewBody extends StatelessWidget {
                 text: profileCubit.userModel?.firstName ?? '',
                 size: 170,
                 canBeChangedInGoogleAccount: true,
-                defaultAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
-                googleAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
+                defaultAccNavigationrouteName: ChangingFnameView.id,
+                googleAccNavigationrouteName: ChangingFnameView.id,
               ),
               Spacer(),
               ProfileField(
@@ -57,8 +59,8 @@ class UpdateProfileViewBody extends StatelessWidget {
                 text: profileCubit.userModel?.lastName ?? '',
                 size: 170,
                 canBeChangedInGoogleAccount: true,
-                defaultAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
-                googleAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
+                defaultAccNavigationrouteName: ChangingLnameView.id,
+                googleAccNavigationrouteName: ChangingLnameView.id,
               ),
             ],
           ),
@@ -76,14 +78,20 @@ class UpdateProfileViewBody extends StatelessWidget {
           ProfileField(
             title: 'Phone Number',
             text: profileCubit.userModel?.phoneNumber ?? '',
-            keyboardType: TextInputType.number,
             size: double.infinity,
             canBeChangedInGoogleAccount: true,
-            defaultAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
-            googleAccNavigationrouteName: ConfirmingPasswordUpdateView.id,
+            defaultAccNavigationrouteName: ChangingPhoneNumberView.id,
+            googleAccNavigationrouteName: ChangingPhoneNumberView.id,
           ),
           SizedBox(height: 16),
-          LocationDropdownField(text: profileCubit.userModel?.location ?? ''),
+          ProfileField(
+            title: 'Location',
+            text: profileCubit.userModel?.location ?? '',
+            size: double.infinity,
+            canBeChangedInGoogleAccount: true,
+            defaultAccNavigationrouteName: ChangingLocationView.id,
+            googleAccNavigationrouteName: ChangingLocationView.id,
+          ),
           SizedBox(height: 16),
           if (!isGoogleAccount)
             PasswordField(text: profileCubit.userModel?.password ?? ''),

@@ -17,8 +17,8 @@ UniShare was created by a team of senior Computer Science students at Misr Unive
 
 Have feedback or questions? Reach out at 
 
-- mohamed.hisham301@gmail.com /
-- omarabdoulrahman@gmail.com. 
+- mhisham0101@gmail.com /
+- omarabdoulrahman@gmail.com
 
 We’re here to help you share, save, and succeed!
 ''';

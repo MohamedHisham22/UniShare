@@ -96,6 +96,7 @@ class _AuthDropdownState extends State<AuthDropdown> {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      menuMaxHeight: 600,
       value: selectedValue,
       items:
           dropdownItems.map((String item) {

@@ -4,32 +4,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:unishare/constants.dart';
 import 'package:unishare/screens/confirm_update_screens/widgets/update_textformfield.dart';
+import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 import 'package:unishare/screens/update_profile/views/update_profile.dart';
 
-class ConfirmingEmailUpdateView extends StatelessWidget {
-  ConfirmingEmailUpdateView({super.key});
-  static final String id = 'confirmingEmailUpdate';
+class ChangingPhoneNumberView extends StatelessWidget {
+  ChangingPhoneNumberView({super.key});
+  static final String id = 'ChangingPhoneNumber';
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<UpdateProfileCubit>();
+    final profileCubit = context.read<LoginViewCubit>();
+    final isGoogleAccount = profileCubit.userModel?.type == "google account";
 
     return BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
       listener: (context, state) {
-        if (state is ChangingEmailFailed) {
+        if (state is ChangingPhoneNumberFailed) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.messege)));
-        } else if (state is ChangingEmailSuccess) {
+        } else if (state is ChangingPhoneNumberSuccess) {
           AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
             animType: AnimType.scale,
             title: 'Success!',
-            desc:
-                'An email has been sent to you Please check your inbox to verify your new email and restart the application',
+            desc: 'Your phone number Has been Updated Successfully!',
             btnOkOnPress: () {
               Navigator.pop(context);
               Navigator.pushReplacementNamed(context, UpdateProfile.id);
@@ -39,13 +41,13 @@ class ConfirmingEmailUpdateView extends StatelessWidget {
       },
       builder: (context, state) {
         return ModalProgressHUD(
-          inAsyncCall: state is ChangingEmailLoading,
+          inAsyncCall: state is ChangingPhoneNumberLoading,
           child: Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
               centerTitle: true,
               title: Text(
-                'Email',
+                'Phone Number',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -64,7 +66,7 @@ class ConfirmingEmailUpdateView extends StatelessWidget {
                   children: [
                     SizedBox(height: 20),
                     Text(
-                      'Update Your Email',
+                      'Update Your Number',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -73,7 +75,7 @@ class ConfirmingEmailUpdateView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        '''Please enter your new email and your current password''',
+                        '''Please enter your new Phone Number and your current password''',
                         style: TextStyle(fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
@@ -81,31 +83,32 @@ class ConfirmingEmailUpdateView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: UpdateTextField(
-                        fieldController: cubit.newEmailController,
-                        hintText: 'New Email',
-                        clearingFunction: cubit.clearingNewEmailTextField,
+                        fieldController: cubit.newPhoneNumberController,
+                        hintText: 'New Phone Number',
+                        clearingFunction: cubit.clearingNewPhoneNumberTextField,
                         isPassword: false,
-                        fieldValidator: cubit.validateNewEmail,
+                        isPhoneNumber: true,
+                        fieldValidator: cubit.validateNewPhoneNumber,
                       ),
                     ),
-                    UpdateTextField(
-                      fieldController: cubit.currentPasswordController,
-                      hintText: 'your password',
-                      clearingFunction: cubit.clearingPasswordTextField,
-                      isPassword: true,
-                      fieldValidator: cubit.validateCurrentPassword,
-                    ),
+                    if (!isGoogleAccount)
+                      UpdateTextField(
+                        fieldController: cubit.currentPasswordController,
+                        hintText: 'your password',
+                        clearingFunction: cubit.clearingPasswordTextField,
+                        isPassword: true,
+                        fieldValidator: cubit.validateCurrentPassword,
+                      ),
                     Padding(
                       padding: const EdgeInsets.only(top: 25, bottom: 20),
                       child: GestureDetector(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
-                            cubit.changeEmail(
-                              currentPassword:
-                                  cubit.currentPasswordController.text,
-                              newEmail: cubit.newEmailController.text,
+                            cubit.changePhoneNumber(
+                              pNumber: cubit.newPhoneNumberController.text,
+                              password: cubit.currentPasswordController.text,
                             );
-                            cubit.newEmailController.clear();
+                            cubit.newPhoneNumberController.clear();
                             cubit.currentPasswordController.clear();
                           }
                         },

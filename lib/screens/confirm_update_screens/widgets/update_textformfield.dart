@@ -8,6 +8,7 @@ class UpdateTextField extends StatelessWidget {
     required this.clearingFunction,
     required this.isPassword,
     required this.fieldValidator,
+    this.isPhoneNumber = false,
   });
 
   final TextEditingController fieldController;
@@ -15,6 +16,7 @@ class UpdateTextField extends StatelessWidget {
   final VoidCallback clearingFunction;
   final bool isPassword;
   final FormFieldValidator<String> fieldValidator;
+  final bool isPhoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,8 @@ class UpdateTextField extends StatelessWidget {
         FocusManager.instance.primaryFocus!.unfocus();
       },
       obscureText: isPassword ? true : false,
+      keyboardType:
+          isPhoneNumber == true ? TextInputType.numberWithOptions() : null,
     );
   }
 }

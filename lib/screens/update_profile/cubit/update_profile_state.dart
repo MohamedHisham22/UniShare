@@ -57,3 +57,35 @@ class ChangingEmailFailed extends UpdateProfileState {
 }
 
 class TextFieldCleared extends UpdateProfileState {}
+
+class ChangingfNameLoading extends UpdateProfileState {}
+
+class ChangingfNameSuccess extends UpdateProfileState {}
+
+class ChangingfNameFailed extends UpdateProfileState {
+  final String messege = 'Couldnt Chnage First Name Please Try Again Late';
+}
+
+class ChanginglNameLoading extends UpdateProfileState {}
+
+class ChanginglNameSuccess extends UpdateProfileState {}
+
+class ChanginglNameFailed extends UpdateProfileState {
+  final String messege = 'Couldnt Chnage Last Name Please Try Again Late';
+}
+
+class ChangingPhoneNumberLoading extends UpdateProfileState {}
+
+class ChangingPhoneNumberSuccess extends UpdateProfileState {}
+
+class ChangingPhoneNumberFailed extends UpdateProfileState {
+  final String messege = 'Couldnt Chnage Phone Number Please Try Again Late';
+}
+
+class ChangingLocationLoading extends UpdateProfileState {}
+
+class ChangingLocationSuccess extends UpdateProfileState {}
+
+class ChangingLocationFailed extends UpdateProfileState {
+  final String messege = 'Couldnt Chnage Your Location Please Try Again Late';
+}

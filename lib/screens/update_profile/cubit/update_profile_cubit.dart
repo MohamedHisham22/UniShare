@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
@@ -27,6 +28,11 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController currentPasswordController = TextEditingController();
   TextEditingController confirmNewPasswordController = TextEditingController();
+  TextEditingController newFirstNameController = TextEditingController();
+  TextEditingController newLastNameController = TextEditingController();
+  TextEditingController newPhoneNumberController = TextEditingController();
+  String? selectedLocation;
+
   void updateProfilePicture() async {
     final ImagePicker picker = ImagePicker();
 
@@ -121,6 +127,21 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(TextFieldCleared());
   }
 
+  void clearingNewFirstNameTextField() {
+    newFirstNameController.clear();
+    emit(TextFieldCleared());
+  }
+
+  void clearingNewLastNameTextField() {
+    newLastNameController.clear();
+    emit(TextFieldCleared());
+  }
+
+  void clearingNewPhoneNumberTextField() {
+    newPhoneNumberController.clear();
+    emit(TextFieldCleared());
+  }
+
   void clearingNewPasswordTextField() {
     newPasswordController.clear();
     emit(TextFieldCleared());
@@ -145,6 +166,38 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
       return "Please enter a valid email";
     }
     return null;
+  }
+
+  String? validateNewFirstName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your first name";
+    }
+    return null;
+  }
+
+  String? validateNewLastName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your last name";
+    }
+    return null;
+  }
+
+  String? validateNewPhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your phone number";
+    }
+    return null;
+  }
+
+  String? validateNewLocation(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your location";
+    }
+    return null;
+  }
+
+  void setLocation(String location) {
+    selectedLocation = location;
   }
 
   String? validateCurrentPassword(String? value) {
@@ -271,6 +324,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
             .collection('users')
             .doc(user.uid)
             .update({'password': newPassword});
+
         emit(ChangingPasswordSuccess());
       }
     } on FirebaseAuthException catch (e) {
@@ -293,6 +347,100 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
           messege: 'Couldnt Change Password Please Try Again Later',
         ),
       );
+    }
+  }
+
+  void changefName({required String fName, required String password}) async {
+    emit(ChangingfNameLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({'firstName': fName});
+        await loginViewCubit.getUserData();
+        final userBox = Hive.box<UserModel>('userBox');
+        if (loginViewCubit.userModel != null) {
+          userBox.put('user', loginViewCubit.userModel!);
+        }
+
+        emit(ChangingfNameSuccess());
+      }
+    } catch (e) {
+      emit(ChangingfNameFailed());
+    }
+  }
+
+  void changelName({required String lName, required String password}) async {
+    emit(ChanginglNameLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({'lastName': lName});
+        await loginViewCubit.getUserData();
+        final userBox = Hive.box<UserModel>('userBox');
+        if (loginViewCubit.userModel != null) {
+          userBox.put('user', loginViewCubit.userModel!);
+        }
+
+        emit(ChanginglNameSuccess());
+      }
+    } catch (e) {
+      emit(ChanginglNameFailed());
+    }
+  }
+
+  void changePhoneNumber({
+    required String pNumber,
+    required String password,
+  }) async {
+    emit(ChangingPhoneNumberLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({'phone': pNumber});
+        await loginViewCubit.getUserData();
+        final userBox = Hive.box<UserModel>('userBox');
+        if (loginViewCubit.userModel != null) {
+          userBox.put('user', loginViewCubit.userModel!);
+        }
+
+        emit(ChangingPhoneNumberSuccess());
+      }
+    } catch (e) {
+      emit(ChangingPhoneNumberFailed());
+    }
+  }
+
+  void changeLocation({
+    required String location,
+    required String password,
+  }) async {
+    emit(ChangingLocationLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({'location': location});
+        await loginViewCubit.getUserData();
+        final userBox = Hive.box<UserModel>('userBox');
+        if (loginViewCubit.userModel != null) {
+          userBox.put('user', loginViewCubit.userModel!);
+        }
+
+        emit(ChangingLocationSuccess());
+      }
+    } catch (e) {
+      emit(ChangingLocationFailed());
     }
   }
 }

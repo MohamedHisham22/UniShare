@@ -14,6 +14,10 @@ import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_fname_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_lname_view.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_location.dart';
+import 'package:unishare/screens/confirm_update_screens/views/changing_number_view.dart';
 import 'package:unishare/screens/explore_recently_view/cubit/search_explore_recently_view_cubit.dart';
 import 'package:unishare/screens/explore_recently_view/views/explore_recently_view.dart';
 import 'package:unishare/screens/explore_view/cubit/search_cubit.dart';
@@ -145,6 +149,10 @@ class MyApp extends StatelessWidget {
               (context) => ConfirmingEmailUpdateView(),
           ConfirmingPasswordUpdateView.id:
               (context) => ConfirmingPasswordUpdateView(),
+          ChangingFnameView.id: (context) => ChangingFnameView(),
+          ChangingLnameView.id: (context) => ChangingLnameView(),
+          ChangingPhoneNumberView.id: (context) => ChangingPhoneNumberView(),
+          ChangingLocationView.id: (context) => ChangingLocationView(),
         },
       ),
     );

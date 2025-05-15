@@ -6,7 +6,6 @@ import 'package:unishare/constants.dart';
 import 'package:unishare/screens/confirm_update_screens/widgets/update_textformfield.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
-import 'package:unishare/screens/update_profile/views/update_profile.dart';
 
 class ConfirmingPasswordUpdateView extends StatelessWidget {
   ConfirmingPasswordUpdateView({super.key});
@@ -28,7 +27,7 @@ class ConfirmingPasswordUpdateView extends StatelessWidget {
             context: context,
             dialogType: DialogType.success,
             animType: AnimType.scale,
-            title: 'Password Changed Successfully!',
+            title: 'Success!',
             desc: 'Your Password Has Been Changed Successfully!',
             btnOkOnPress: () {
               loginCubit.signOut(context: context);
