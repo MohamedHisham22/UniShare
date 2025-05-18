@@ -43,6 +43,7 @@ class SignupViewCubit extends Cubit<SignupViewState> {
       String uid = credential.user!.uid;
       await firestore.collection('users').doc(uid).set({
         'uid': uid,
+        'profileImageUrl': '',
         'firstName': firstName,
         'lastName': lastName,
         'phone': phone,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/explore_view/widgets/explore_tools.dart';
@@ -9,6 +10,7 @@ class ExploreToolsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserUid = FirebaseAuth.instance.currentUser?.uid;
     return BlocBuilder<GetItemsCubit, GetItemsCubitState>(
       builder: (context, state) {
         if (state is GetItemsCubitLoading) {
@@ -16,18 +18,23 @@ class ExploreToolsListView extends StatelessWidget {
         } else if (state is GetItemsCubitError) {
           return Center(child: Text("Error: ${state.error}"));
         } else if (state is GetItemsCubitSuccess) {
-          if (state.items.isEmpty) {
+          final filteredItems =
+              state.items
+                  .where((item) => item.userId != currentUserUid)
+                  .toList();
+
+          if (filteredItems.isEmpty) {
             return const Center(child: Text("No items available."));
           }
           return ListView.separated(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (c, i) {
-              GetItemsModel item = state.items[i];
+              GetItemsModel item = filteredItems[i];
               return ExploreTools(item: item);
             },
             separatorBuilder: (c, i) => SizedBox(height: 10),
-            itemCount: state.items.length,
+            itemCount: filteredItems.length,
           );
         }
         return const Center(child: Text("No data available."));

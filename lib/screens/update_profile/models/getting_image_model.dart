@@ -1,11 +1,20 @@
 class GettingImage {
-  String? userId;
-  String? profileImage;
+  final String? userId;
+  final String? profileImage;
 
-  GettingImage({this.userId, this.profileImage});
+  GettingImage({ this.userId, this.profileImage});
 
-  GettingImage.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'];
-    profileImage = json['profileImage'];
+  factory GettingImage.fromJson(Map<String, dynamic> json) {
+    return GettingImage(
+      userId: json['userId'] ?? '',
+      profileImage: json['profileImage'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'profileImage': profileImage,
+    };
   }
 }

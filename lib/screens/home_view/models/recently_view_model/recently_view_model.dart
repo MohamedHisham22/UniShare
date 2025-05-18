@@ -15,6 +15,8 @@ class RecentlyViewModel extends HiveObject{
   dynamic userId;
   @HiveField(4)
   DateTime? viewedAt;
+  @HiveField(5)
+  String? createdUserId;
 
   RecentlyViewModel({
     this.itemId,
@@ -22,6 +24,7 @@ class RecentlyViewModel extends HiveObject{
     this.imageUrl,
     this.userId,
     this.viewedAt,
+    this.createdUserId,
   });
 
   factory RecentlyViewModel.fromJson(
@@ -36,6 +39,7 @@ class RecentlyViewModel extends HiveObject{
           json['viewedAt'] == null
               ? null
               : DateTime.parse(json['viewedAt'] as String),
+      createdUserId: json['createdByUserId'] as String?,        
     );
   }
 
@@ -47,6 +51,7 @@ class RecentlyViewModel extends HiveObject{
       'imageUrl': imageUrl,
       'userId': userId,
       'viewedAt': viewedAt?.toIso8601String(),
+      'createdByUserId':createdUserId,
     };
   }
 }
