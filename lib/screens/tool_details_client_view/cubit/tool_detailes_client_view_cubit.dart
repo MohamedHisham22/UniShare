@@ -13,7 +13,6 @@ class ToolDetailesClientViewCubit extends Cubit<ToolDetailesClientViewState> {
     required String itemID,
     required String userID,
   }) async {
-    // Reset the item details before loading new data for another item
     itemDetailes = ItemDetailesModel();
     emit(GettingItemDetailesLoading());
     try {

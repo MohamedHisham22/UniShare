@@ -12,6 +12,8 @@ import 'package:unishare/refresh_app.dart';
 import 'package:unishare/screens/about_us_view/views/about_us_view.dart';
 import 'package:unishare/screens/add_item_view/cubit/add_items_cubit.dart';
 import 'package:unishare/screens/add_item_view/views/add_item_view.dart';
+import 'package:unishare/screens/admin_interface/views/admin_home_view.dart';
+import 'package:unishare/screens/admin_interface/views/tool_details_view_admin.dart';
 import 'package:unishare/screens/chat_view/cubit/all_chats_view_cubit.dart';
 import 'package:unishare/screens/chat_view/views/all_chats_view.dart';
 import 'package:unishare/screens/confirm_update_screens/views/changing_fname_view.dart';
@@ -153,6 +155,8 @@ class MyApp extends StatelessWidget {
           ChangingLnameView.id: (context) => ChangingLnameView(),
           ChangingPhoneNumberView.id: (context) => ChangingPhoneNumberView(),
           ChangingLocationView.id: (context) => ChangingLocationView(),
+          AdminHomeView.id: (cobtext) => AdminHomeView(),
+          ToolDetailsViewAdmin.id: (cobtext) => ToolDetailsViewAdmin(),
         },
       ),
     );

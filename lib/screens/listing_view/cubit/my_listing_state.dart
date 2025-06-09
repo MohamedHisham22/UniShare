@@ -25,3 +25,9 @@ final class DeleteItemSuccess extends MyListingState {
 }
 
 final class DeleteItemErorr extends MyListingState {}
+
+final class DeleteItem2Loading extends MyListingState {}
+
+final class DeleteItem2Success extends MyListingState {}
+
+final class Delete2ItemErorr extends MyListingState {}

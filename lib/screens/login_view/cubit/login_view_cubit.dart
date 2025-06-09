@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/helpers/hive_helper.dart';
+import 'package:unishare/screens/admin_interface/views/admin_home_view.dart';
 import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/listing_view/cubit/my_listing_cubit.dart';
 import 'package:unishare/screens/login_view/model/user_model.dart';
@@ -56,9 +57,24 @@ class LoginViewCubit extends Cubit<LoginViewState> {
       await context.read<RecentlyViewedCubit>().recentlyView(
         FirebaseAuth.instance.currentUser?.uid ?? '',
       );
-
+      String user = FirebaseAuth.instance.currentUser?.uid ?? '';
+      final DocumentSnapshot snapShot =
+          await FirebaseFirestore.instance.collection('users').doc(user).get();
+      String role = snapShot['role'];
       emit(LoginSuccess());
-      Navigator.pushNamedAndRemoveUntil(context, MainView.id, (route) => false);
+      if (role == 'admin') {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AdminHomeView.id,
+          (route) => false,
+        );
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          MainView.id,
+          (route) => false,
+        );
+      }
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'invalid-credential') {
         emit(LoginFailed(errorMessage: 'Wrong email or password'));
@@ -104,6 +120,7 @@ class LoginViewCubit extends Cubit<LoginViewState> {
             'password': 'no password for a google account',
             'type': "google account",
             'createdAt': FieldValue.serverTimestamp(),
+            'role': 'user',
           });
           //! send user id to the backend database
           FormData formData = FormData.fromMap({"UserId": user.uid});
