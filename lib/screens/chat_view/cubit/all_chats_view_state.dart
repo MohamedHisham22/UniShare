@@ -14,3 +14,7 @@ final class ChatsSearched extends AllChatsViewState {
   final List<QueryDocumentSnapshot> filteredChats;
   ChatsSearched(this.filteredChats);
 }
+
+class CreatingChatLoading extends AllChatsViewState {}
+
+class ChatCreatedSuccessfully extends AllChatsViewState {}
