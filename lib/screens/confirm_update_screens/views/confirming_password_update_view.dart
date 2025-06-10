@@ -47,7 +47,10 @@ class ConfirmingPasswordUpdateView extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
+                  color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : kPrimaryColor,
                 ),
               ),
             ),
@@ -56,112 +59,128 @@ class ConfirmingPasswordUpdateView extends StatelessWidget {
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
 
-                  children: [
-                    SizedBox(height: 20),
-                    Text(
-                      'Update Your Password',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      SizedBox(height: 20),
+                      Text(
+                        'Update Your Password',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        '''Please enter your new password and your current password''',
-                        style: TextStyle(fontSize: 16),
-                        textAlign: TextAlign.center,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          '''Please enter your new password and your current password''',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: UpdateTextField(
-                        fieldController: cubit.currentPasswordController,
-                        hintText: 'Current Password',
-                        clearingFunction: cubit.clearingPasswordTextField,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: UpdateTextField(
+                          fieldController: cubit.currentPasswordController,
+                          hintText: 'Current Password',
+                          clearingFunction: cubit.clearingPasswordTextField,
+                          isPassword: true,
+                          fieldValidator: cubit.validateCurrentPassword,
+                        ),
+                      ),
+                      UpdateTextField(
+                        fieldController: cubit.newPasswordController,
+                        hintText: 'New Password',
+                        clearingFunction: cubit.clearingNewPasswordTextField,
                         isPassword: true,
-                        fieldValidator: cubit.validateCurrentPassword,
+                        fieldValidator: cubit.validateNewPassword,
                       ),
-                    ),
-                    UpdateTextField(
-                      fieldController: cubit.newPasswordController,
-                      hintText: 'New Password',
-                      clearingFunction: cubit.clearingNewPasswordTextField,
-                      isPassword: true,
-                      fieldValidator: cubit.validateNewPassword,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: UpdateTextField(
-                        fieldController: cubit.confirmNewPasswordController,
-                        hintText: 'Confirm Password',
-                        clearingFunction:
-                            cubit.clearingConfirmNewPasswordTextField,
-                        isPassword: true,
-                        fieldValidator: cubit.validateConfirmPassword,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: UpdateTextField(
+                          fieldController: cubit.confirmNewPasswordController,
+                          hintText: 'Confirm Password',
+                          clearingFunction:
+                              cubit.clearingConfirmNewPasswordTextField,
+                          isPassword: true,
+                          fieldValidator: cubit.validateConfirmPassword,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 25, bottom: 20),
-                      child: GestureDetector(
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25, bottom: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (_formKey.currentState!.validate()) {
+                              cubit.changePassword(
+                                currentPassword:
+                                    cubit.currentPasswordController.text,
+                                newPassword: cubit.newPasswordController.text,
+                              );
+                              cubit.currentPasswordController.clear();
+                              cubit.newPasswordController.clear();
+                              cubit.confirmNewPasswordController.clear();
+                            }
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: kPrimaryColor,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Submit Change',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      GestureDetector(
                         onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            cubit.changePassword(
-                              currentPassword:
-                                  cubit.currentPasswordController.text,
-                              newPassword: cubit.newPasswordController.text,
-                            );
-                            cubit.currentPasswordController.clear();
-                            cubit.newPasswordController.clear();
-                            cubit.confirmNewPasswordController.clear();
-                          }
+                          Navigator.pop(context);
+                          cubit.currentPasswordController.clear();
+                          cubit.newPasswordController.clear();
+                          cubit.confirmNewPasswordController.clear();
                         },
                         child: Container(
                           width: double.infinity,
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: kPrimaryColor,
+                            border: Border.all(
+                              color:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                              width: 1.5,
+                            ),
                           ),
                           child: Center(
                             child: Text(
-                              'Submit Change',
+                              'Cancel',
                               style: TextStyle(
-                                color: Colors.white,
+                                color:
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
                                 fontSize: 18,
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        cubit.currentPasswordController.clear();
-                        cubit.newPasswordController.clear();
-                        cubit.confirmNewPasswordController.clear();
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black, width: 1.5),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.black, fontSize: 18),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
