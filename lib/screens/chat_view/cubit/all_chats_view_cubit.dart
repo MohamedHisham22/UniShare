@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:unishare/screens/chat_view/views/chatting_view.dart';
 
 part 'all_chats_view_state.dart';
 
@@ -14,40 +15,63 @@ class AllChatsViewCubit extends Cubit<AllChatsViewState> {
   String get currentUserId => _auth.currentUser?.uid ?? '';
   final Map<String, String> _userNameCache = {};
 
-  Future<String?> createOrGetChat(String otherUserId) async {
+  Future<void> createOrGetChatAndNavigate(
+    BuildContext context,
+    String otherUserId,
+  ) async {
     if (currentUserId.isEmpty) {
       emit(DisplayingChatsFailed(errorMessage: "User not authenticated"));
-      return null;
+      return;
     }
 
     try {
+      emit(CreatingChatLoading());
+
       final query =
           await _firestore
               .collection('chats')
               .where('participants', arrayContains: currentUserId)
               .get();
 
+      String? chatId;
+
       for (var doc in query.docs) {
         final participants = List<String>.from(doc['participants'] ?? []);
         if (participants.contains(otherUserId)) {
-          return doc.id;
+          chatId = doc.id;
+          break;
         }
       }
 
-      final chatRef = _firestore.collection('chats').doc();
+      if (chatId == null) {
+        final chatRef = _firestore.collection('chats').doc();
+        await chatRef.set({
+          'participants': [currentUserId, otherUserId],
+          'createdAt': FieldValue.serverTimestamp(),
+          'latestMessageTimestamp': FieldValue.serverTimestamp(),
+          'unreadCount_$currentUserId': 0,
+          'unreadCount_$otherUserId': 0,
+        });
+        chatId = chatRef.id;
+      }
 
-      await chatRef.set({
-        'participants': [currentUserId, otherUserId],
-        'createdAt': FieldValue.serverTimestamp(),
-        'latestMessageTimestamp': FieldValue.serverTimestamp(),
-        'unreadCount_$currentUserId': 0,
-        'unreadCount_$otherUserId': 0,
-      });
+      final userName = await getUserName(otherUserId);
 
-      return chatRef.id;
+      emit(ChatCreatedSuccessfully());
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) => ChattingView(
+                chatId: chatId ?? '',
+                otherUserId: otherUserId,
+                otherUserName: userName,
+              ),
+        ),
+      );
     } catch (e) {
       emit(DisplayingChatsFailed(errorMessage: 'Error creating chat'));
-      return null;
     }
   }
 
