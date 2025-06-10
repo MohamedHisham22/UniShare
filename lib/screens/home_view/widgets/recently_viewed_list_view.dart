@@ -30,16 +30,20 @@ class RecentlyViewedListView extends StatelessWidget {
           } else if (state is RecentlyCubitErorr) {
             return Center(child: Text("Error: ${state.error}"));
           } else if (state is RecentlyCubitSuccess) {
+            final filteredItems =
+                state.recentlyItems
+                    .where((recentlyItems) => recentlyItems.userId != userID)
+                    .toList();
             if (state.recentlyItems.isEmpty) {
               return const Center(child: Text("No recently viewed items yet."));
             }
             return ListView.separated(
               itemBuilder: (c, i) {
-                RecentlyViewModel item = state.recentlyItems[i];
+                RecentlyViewModel item = filteredItems[i];
                 return RecentlyViewed(item: item);
               },
               separatorBuilder: (c, i) => SizedBox(width: 17),
-              itemCount: state.recentlyItems.length,
+              itemCount: filteredItems.length,
               scrollDirection: Axis.horizontal,
             );
           }

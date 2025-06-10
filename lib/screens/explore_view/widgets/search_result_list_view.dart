@@ -15,10 +15,15 @@ class SearchResultListView extends StatelessWidget {
         } else if (state is SearchSuccess) {
           final items = context.read<SearchCubit>().itemsList;
           if (items.isEmpty) {
-            return const Center(child: Text("No items found."));
+            return const Center(
+              child: Text(
+                "No items found.",
+                style: TextStyle(fontSize: 16),
+              ),
+            );
           }
           return ListView.separated(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: items.length,
             itemBuilder: (context, index) {
@@ -27,7 +32,12 @@ class SearchResultListView extends StatelessWidget {
             separatorBuilder: (context, index) => const SizedBox(height: 10),
           );
         } else if (state is SearchErorr) {
-          return const Center(child: Text("Error occurred while searching."));
+          return Center(
+            child: Text(
+              "Error occurred while searching",
+              style: const TextStyle(fontSize: 16),
+            ),
+          );
         }
         return const SizedBox(); // Show nothing initially
       },

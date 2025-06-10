@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userBox = Hive.box<UserModel>('userBox');
-    final storedUser = userBox.get('user'); 
+    final storedUser = userBox.get('user');
 
     if (storedUser != null) {
       context.read<LoginViewCubit>().userModel = storedUser;
@@ -52,7 +52,8 @@ class CustomAppBar extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          storedUser?.firstName ?? 'Loading',
+                          context.read<LoginViewCubit>().userModel?.firstName ??
+                              'Loading',
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,

@@ -95,7 +95,7 @@ class LoginViewCubit extends Cubit<LoginViewState> {
         if (!userDoc.exists) {
           await firestore.collection('users').doc(user.uid).set({
             'uid': user.uid,
-            'profileImageUrl': '',
+            'profileImageUrl': 'http://unishare.runasp.net/images/a7c1eadb-dda0-4c8d-ae25-f3c8e78c229f_37.png',
             'firstName': user.displayName?.split(" ").first ?? "",
             'lastName': user.displayName?.split(" ").last ?? "",
             'phone': "Not Determined",
@@ -113,11 +113,11 @@ class LoginViewCubit extends Cubit<LoginViewState> {
           );
           //! sent user id to backend complete normally...
         }
-        await getUserData();
-        final userBox = Hive.box<UserModel>('userBox');
-        if (userModel != null) {
-          userBox.put('user', userModel!);
-        }
+       await getUserData(); // ده بيجيب البيانات من Firestore
+if (userModel != null) {
+  final userBox = Hive.box<UserModel>('userBox');
+  await userBox.put('user', userModel!); // حفظ البيانات الجديدة
+}
         await context.read<UpdateProfileCubit>().getProfilePicture(
           FirebaseAuth.instance.currentUser?.uid ?? '',
         );

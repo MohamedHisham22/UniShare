@@ -1,9 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unishare/screens/home_view/cubit/cubit/recently_viewed_cubit.dart';
 import 'package:unishare/screens/home_view/models/recently_view_model/recently_view_model.dart';
 import 'package:unishare/screens/home_view/widgets/new_tools_image_container.dart';
+import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
+import 'package:unishare/screens/tool_details_client_view/views/tool_details_view_client.dart';
 
 class ExploreRecentlyTools extends StatelessWidget {
   const ExploreRecentlyTools({super.key, required this.recentlyItem});
@@ -40,84 +45,96 @@ class ExploreRecentlyTools extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
+    final itemDetailesCubit = context.read<ToolDetailesClientViewCubit>();
+    String userID = FirebaseAuth.instance.currentUser?.uid ?? '';
     print(
       'Building ExploreRecentlyTools for user: ${recentlyItem.createdUserId}',
     );
 
-    return Container(
-      width: double.infinity,
-      height: height * 0.4,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        children: [
-          FutureBuilder<Map<String, dynamic>>(
-            future: getUserData(recentlyItem.createdUserId ?? ''),
-            builder: (context, snapshot) {
-              final userData = snapshot.data ?? {};
-              print('User Data: $userData');
-
-              final firstName = userData['firstName'] ?? '';
-              final lastName = userData['lastName'] ?? '';
-              final userName = '$firstName $lastName'.trim();
-              final displayName =
-                  userName.isNotEmpty ? userName : 'Unknown User';
-              final profileImageUrl = userData['profileImageUrl'];
-
-              print('Profile Image URL: $profileImageUrl');
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
+    return GestureDetector(
+       onTap: () {
+        itemDetailesCubit.showItemDetailes(
+          itemID: recentlyItem.itemId!,
+          userID: userID,
+        );
+        
+        Navigator.pushNamed(context, ToolDetailsViewClient.id);
+        context.read<RecentlyViewedCubit>().recentlyView(userID);
+      },
+      child: Container(
+        width: double.infinity,
+        height: height * 0.4,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          children: [
+            FutureBuilder<Map<String, dynamic>>(
+              future: getUserData(recentlyItem.createdUserId ?? ''),
+              builder: (context, snapshot) {
+                final userData = snapshot.data ?? {};
+                print('User Data: $userData');
+      
+                final firstName = userData['firstName'] ?? '';
+                final lastName = userData['lastName'] ?? '';
+                final userName = '$firstName $lastName'.trim();
+                final displayName =
+                    userName.isNotEmpty ? userName : 'Unknown User';
+                final profileImageUrl = userData['profileImageUrl'];
+      
+                print('Profile Image URL: $profileImageUrl');
+      
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return _buildUserRow(
+                    width,
+                    AssetImage('assets/images/User image.png'),
+                    'Loading...',
+                  );
+                }
+      
+                if (snapshot.hasError) {
+                  return _buildUserRow(
+                    width,
+                    AssetImage('assets/images/User image.png'),
+                    'Error loading user',
+                  );
+                }
+      
                 return _buildUserRow(
                   width,
-                  AssetImage('assets/images/User image.png'),
-                  'Loading...',
+                  profileImageUrl != null
+                      ? CachedNetworkImageProvider(profileImageUrl)
+                      : AssetImage('assets/images/User image.png'),
+                  displayName,
                 );
-              }
-
-              if (snapshot.hasError) {
-                return _buildUserRow(
-                  width,
-                  AssetImage('assets/images/User image.png'),
-                  'Error loading user',
-                );
-              }
-
-              return _buildUserRow(
-                width,
-                profileImageUrl != null
-                    ? CachedNetworkImageProvider(profileImageUrl)
-                    : AssetImage('assets/images/User image.png'),
-                displayName,
-              );
-            },
-          ),
-          SizedBox(height: 10),
-          NewToolsImageContainer(
-            imageUrl: recentlyItem.imageUrl ?? 'assets/images/tools.png',
-            height: height * 0.25,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      recentlyItem.itemName ?? 'Unnamed Item',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-                // Spacer(),
-                // Icon(CupertinoIcons.heart, color: Colors.red),
-              ],
+              },
             ),
-          ),
-        ],
+            SizedBox(height: 10),
+            NewToolsImageContainer(
+              imageUrl: recentlyItem.imageUrl ?? 'assets/images/tools.png',
+              height: height * 0.25,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        recentlyItem.itemName ?? 'Unnamed Item',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Spacer(),
+                  // Icon(CupertinoIcons.heart, color: Colors.red),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

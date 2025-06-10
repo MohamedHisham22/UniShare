@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
 import 'package:unishare/screens/login_view/cubit/login_view_cubit.dart';
+import 'package:unishare/screens/login_view/model/user_model.dart';
 import 'package:unishare/screens/main_view/views/main_view.dart';
 import 'package:unishare/screens/update_profile/cubit/update_profile_cubit.dart';
 
@@ -20,6 +22,7 @@ class SignupViewCubit extends Cubit<SignupViewState> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   String? selectedLocation;
+  UserModel? userModel;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -43,7 +46,8 @@ class SignupViewCubit extends Cubit<SignupViewState> {
       String uid = credential.user!.uid;
       await firestore.collection('users').doc(uid).set({
         'uid': uid,
-        'profileImageUrl': '',
+        'profileImageUrl':
+            'http://unishare.runasp.net/images/a7c1eadb-dda0-4c8d-ae25-f3c8e78c229f_37.png',
         'firstName': firstName,
         'lastName': lastName,
         'phone': phone,
@@ -61,6 +65,10 @@ class SignupViewCubit extends Cubit<SignupViewState> {
       );
       //! sent user id to backend complete normally...
       await context.read<LoginViewCubit>().getUserData();
+      if (userModel != null) {
+        final userBox = Hive.box<UserModel>('userBox');
+        await userBox.put('user', userModel!); 
+      }
       await context.read<UpdateProfileCubit>().getProfilePicture(
         FirebaseAuth.instance.currentUser?.uid ?? '',
       );

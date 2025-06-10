@@ -30,6 +30,7 @@ class SignupView2 extends StatelessWidget {
       },
       builder: (context, state) {
         return ModalProgressHUD(
+          progressIndicator: CircularProgressIndicator(color: Colors.black),
           inAsyncCall: state is SignupLoading,
           child: Scaffold(
             body: Form(
