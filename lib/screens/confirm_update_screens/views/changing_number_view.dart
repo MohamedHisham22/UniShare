@@ -51,7 +51,10 @@ class ChangingPhoneNumberView extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
+                  color:
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : kPrimaryColor,
                 ),
               ),
             ),
@@ -143,12 +146,25 @@ class ChangingPhoneNumberView extends StatelessWidget {
                         height: 50,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black, width: 1.5),
+                          border: Border.all(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                            width: 1.5,
+                          ),
                         ),
                         child: Center(
                           child: Text(
                             'Cancel',
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),

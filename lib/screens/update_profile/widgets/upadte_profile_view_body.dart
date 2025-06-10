@@ -31,71 +31,73 @@ class UpdateProfileViewBody extends StatelessWidget {
     final isGoogleAccount = profileCubit.userModel?.type == "google account";
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: 100),
-          ProfilePicture(cubit: cubit, profileImage: profileImage),
-          if (cubit.isImageChanged == false)
-            RemovePictureButton(cubit: cubit, userID: userID),
-          if (cubit.isImageChanged != false)
-            ChangingPictureButtons(cubit: cubit, userID: userID),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 100),
+            ProfilePicture(cubit: cubit, profileImage: profileImage),
+            if (cubit.isImageChanged == false)
+              RemovePictureButton(cubit: cubit, userID: userID),
+            if (cubit.isImageChanged != false)
+              ChangingPictureButtons(cubit: cubit, userID: userID),
 
-          SizedBox(height: 15),
+            SizedBox(height: 15),
 
-          Row(
-            children: [
-              ProfileField(
-                title: 'First Name',
-                text: profileCubit.userModel?.firstName ?? '',
-                size: 170,
-                canBeChangedInGoogleAccount: true,
-                defaultAccNavigationrouteName: ChangingFnameView.id,
-                googleAccNavigationrouteName: ChangingFnameView.id,
-              ),
-              Spacer(),
-              ProfileField(
-                title: 'Last Name',
-                text: profileCubit.userModel?.lastName ?? '',
-                size: 170,
-                canBeChangedInGoogleAccount: true,
-                defaultAccNavigationrouteName: ChangingLnameView.id,
-                googleAccNavigationrouteName: ChangingLnameView.id,
-              ),
-            ],
-          ),
+            Row(
+              children: [
+                ProfileField(
+                  title: 'First Name',
+                  text: profileCubit.userModel?.firstName ?? '',
+                  size: 170,
+                  canBeChangedInGoogleAccount: true,
+                  defaultAccNavigationrouteName: ChangingFnameView.id,
+                  googleAccNavigationrouteName: ChangingFnameView.id,
+                ),
+                Spacer(),
+                ProfileField(
+                  title: 'Last Name',
+                  text: profileCubit.userModel?.lastName ?? '',
+                  size: 170,
+                  canBeChangedInGoogleAccount: true,
+                  defaultAccNavigationrouteName: ChangingLnameView.id,
+                  googleAccNavigationrouteName: ChangingLnameView.id,
+                ),
+              ],
+            ),
 
-          SizedBox(height: 16),
-          ProfileField(
-            title: 'Email',
-            text: profileCubit.userModel?.email ?? "",
-            size: double.infinity,
-            canBeChangedInGoogleAccount: false,
-            defaultAccNavigationrouteName: ConfirmingEmailUpdateView.id,
-            googleAccNavigationrouteName: ConfirmingEmailUpdateView.id,
-          ),
-          SizedBox(height: 16),
-          ProfileField(
-            title: 'Phone Number',
-            text: profileCubit.userModel?.phoneNumber ?? '',
-            size: double.infinity,
-            canBeChangedInGoogleAccount: true,
-            defaultAccNavigationrouteName: ChangingPhoneNumberView.id,
-            googleAccNavigationrouteName: ChangingPhoneNumberView.id,
-          ),
-          SizedBox(height: 16),
-          ProfileField(
-            title: 'Location',
-            text: profileCubit.userModel?.location ?? '',
-            size: double.infinity,
-            canBeChangedInGoogleAccount: true,
-            defaultAccNavigationrouteName: ChangingLocationView.id,
-            googleAccNavigationrouteName: ChangingLocationView.id,
-          ),
-          SizedBox(height: 16),
-          if (!isGoogleAccount)
-            PasswordField(text: profileCubit.userModel?.password ?? ''),
-        ],
+            SizedBox(height: 16),
+            ProfileField(
+              title: 'Email',
+              text: profileCubit.userModel?.email ?? "",
+              size: double.infinity,
+              canBeChangedInGoogleAccount: false,
+              defaultAccNavigationrouteName: ConfirmingEmailUpdateView.id,
+              googleAccNavigationrouteName: ConfirmingEmailUpdateView.id,
+            ),
+            SizedBox(height: 16),
+            ProfileField(
+              title: 'Phone Number',
+              text: profileCubit.userModel?.phoneNumber ?? '',
+              size: double.infinity,
+              canBeChangedInGoogleAccount: true,
+              defaultAccNavigationrouteName: ChangingPhoneNumberView.id,
+              googleAccNavigationrouteName: ChangingPhoneNumberView.id,
+            ),
+            SizedBox(height: 16),
+            ProfileField(
+              title: 'Location',
+              text: profileCubit.userModel?.location ?? '',
+              size: double.infinity,
+              canBeChangedInGoogleAccount: true,
+              defaultAccNavigationrouteName: ChangingLocationView.id,
+              googleAccNavigationrouteName: ChangingLocationView.id,
+            ),
+            SizedBox(height: 16),
+            if (!isGoogleAccount)
+              PasswordField(text: profileCubit.userModel?.password ?? ''),
+          ],
+        ),
       ),
     );
   }

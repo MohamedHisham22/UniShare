@@ -39,7 +39,10 @@ class ProfileField extends StatelessWidget {
         Container(
           width: size,
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 210, 210, 210),
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black
+                    : Color(0xffEAEAEA),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(

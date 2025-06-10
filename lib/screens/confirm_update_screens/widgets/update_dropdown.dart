@@ -57,16 +57,34 @@ class _AuthDropdownState extends State<UpdateDropdown> {
       validator: widget.fieldValidation,
       decoration: InputDecoration(
         hintText: 'Location',
-        hintStyle: TextStyle(color: const Color.fromARGB(255, 111, 111, 111)),
+        hintStyle: TextStyle(
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Color.fromARGB(255, 111, 111, 111),
+        ),
         contentPadding: EdgeInsets.symmetric(
           vertical: widget.height * 0.02,
           horizontal: widget.width * 0.05,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(width: 0),
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color.fromARGB(255, 220, 220, 220),
+          ),
         ),
-
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color.fromARGB(255, 220, 220, 220),
+          ),
+        ),
         border: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.red, width: 1.5),
           borderRadius: BorderRadius.circular(20),
@@ -75,7 +93,10 @@ class _AuthDropdownState extends State<UpdateDropdown> {
           borderSide: const BorderSide(color: Colors.red, width: 1.5),
           borderRadius: BorderRadius.circular(20),
         ),
-        fillColor: const Color.fromARGB(255, 220, 220, 220),
+        fillColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Color.fromARGB(255, 220, 220, 220),
         filled: true,
       ),
       menuMaxHeight: 600,

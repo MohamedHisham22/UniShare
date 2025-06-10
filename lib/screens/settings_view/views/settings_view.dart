@@ -62,14 +62,14 @@ class SettingsView extends StatelessWidget {
                     themeProvider.toggleTheme();
                   },
                 ),
-                SizedBox(height: 20),
-                DarkAndNotifi(
-                  text: 'Enable Notifications',
-                  value: cubit.notification,
-                  onChanged: (value) {
-                    cubit.notifi(value);
-                  },
-                ),
+                // SizedBox(height: 20),
+                // DarkAndNotifi(
+                //   text: 'Enable Notifications',
+                //   value: cubit.notification,
+                //   onChanged: (value) {
+                //     cubit.notifi(value);
+                //   },
+                // ),
                 SizedBox(height: 20),
                 Divider(indent: 30, endIndent: 30),
                 SizedBox(height: 30),
