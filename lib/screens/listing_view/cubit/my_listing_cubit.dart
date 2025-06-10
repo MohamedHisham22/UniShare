@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:unishare/helpers/dio_helper.dart';
+import 'package:unishare/screens/home_view/cubit/get_items_cubit.dart';
 import 'package:unishare/screens/listing_view/models/my_listing_model/my_listing_model.dart';
 
 part 'my_listing_state.dart';
@@ -50,6 +53,25 @@ class MyListingCubit extends Cubit<MyListingState> {
       }
     } catch (e) {
       emit(DeleteItemErorr());
+    }
+  }
+
+  void deleteitem2({
+    required String itemId,
+    required BuildContext context,
+  }) async {
+    emit(DeleteItem2Loading());
+    try {
+      final response = await DioHelper.deleteData(path: 'items/$itemId');
+      if (response.statusCode == 200) {
+        await context.read<GetItemsCubit>()
+          ..getItems();
+        emit(DeleteItem2Success());
+      } else {
+        emit(Delete2ItemErorr());
+      }
+    } catch (e) {
+      emit(Delete2ItemErorr());
     }
   }
 }

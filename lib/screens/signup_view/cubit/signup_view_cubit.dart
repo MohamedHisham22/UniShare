@@ -56,6 +56,7 @@ class SignupViewCubit extends Cubit<SignupViewState> {
         'password': password,
         'type': "default account",
         'createdAt': FieldValue.serverTimestamp(),
+        'role': 'user',
       });
       //! send user id to the backend database
       FormData formData = FormData.fromMap({"UserId": uid});
