@@ -13,3 +13,5 @@ final class SignupFailed extends SignupViewState {
   String errorMessage;
   SignupFailed({required this.errorMessage});
 }
+
+final class ClearedFields extends SignupViewState {}

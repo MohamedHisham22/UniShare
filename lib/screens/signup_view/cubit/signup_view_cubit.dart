@@ -66,15 +66,17 @@ class SignupViewCubit extends Cubit<SignupViewState> {
       );
       //! sent user id to backend complete normally...
       await context.read<LoginViewCubit>().getUserData();
-      if (userModel != null) {
+      final loginCubit = context.read<LoginViewCubit>();
+      if (loginCubit.userModel != null) {
         final userBox = Hive.box<UserModel>('userBox');
-        await userBox.put('user', userModel!); 
+        await userBox.put('user', loginCubit.userModel!);
       }
       await context.read<UpdateProfileCubit>().getProfilePicture(
         FirebaseAuth.instance.currentUser?.uid ?? '',
       );
       emit(SignupSuccess());
       Navigator.pushNamedAndRemoveUntil(context, MainView.id, (route) => false);
+      clearFields();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         emit(SignupFailed(errorMessage: 'Weak password'));
@@ -147,5 +149,15 @@ class SignupViewCubit extends Cubit<SignupViewState> {
       return "Passwords does not match";
     }
     return null;
+  }
+
+  void clearFields() {
+    firstNameController.clear();
+    lastNameController.clear();
+    phoneNumberController.clear();
+    emailController.clear();
+    passwordController.clear();
+    selectedLocation = '';
+    emit(ClearedFields());
   }
 }
