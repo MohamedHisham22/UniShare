@@ -4,10 +4,7 @@ import 'package:unishare/constants.dart';
 AppBar CustomAppBar(BuildContext context) {
   return AppBar(
     surfaceTintColor: Colors.transparent,
-    backgroundColor:
-        Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey.shade900
-            : Colors.white,
+
     toolbarHeight: 85,
     title: Text(
       'Chats',

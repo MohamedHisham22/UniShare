@@ -118,6 +118,8 @@ class MainView extends StatelessWidget {
     ];
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
       bottomNavigationBar: BlocBuilder<MainViewCubit, int>(
         builder: (context, selectedIndex) {
           return SizedBox(
@@ -143,7 +145,7 @@ class MainView extends StatelessWidget {
                       Theme.of(context).brightness == Brightness.dark
                           ? Colors.grey.shade900
                           : const Color.fromARGB(255, 231, 231, 231),
-          
+
                   items: const [
                     BottomNavigationBarItem(
                       icon: Padding(
