@@ -46,6 +46,7 @@ class UpdateProfile extends StatelessWidget {
         final String? profileImage = cubit.gettingImage.profileImage;
 
         return ModalProgressHUD(
+          progressIndicator: CircularProgressIndicator(color: Colors.black),
           inAsyncCall:
               state is UpdatingImageLoading ||
               state is DeletingProfileImageLoading,
