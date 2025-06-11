@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/carousel_slider_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/cubit/tool_detailes_client_view_cubit.dart';
 import 'package:unishare/screens/tool_details_client_view/widgets/full_screen_image_view.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CarouselSliderImages extends StatelessWidget {
   const CarouselSliderImages({super.key});
@@ -35,18 +37,25 @@ class CarouselSliderImages extends StatelessWidget {
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      imageUrl[index],
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl[index],
                       fit: BoxFit.contain,
                       width: double.infinity,
                       height: 260,
-                      errorBuilder:
-                          (context, error, stackTrace) =>
-                              const Icon(Icons.broken_image),
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return const Center(child: CircularProgressIndicator());
-                      },
+                      errorWidget:
+                          (context, url, error) =>
+                              const Icon(Icons.error, size: 30),
+
+                      placeholder:
+                          (context, url) => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              color: Colors.white,
+                            ),
+                          ),
                     ),
                   ),
                 ),

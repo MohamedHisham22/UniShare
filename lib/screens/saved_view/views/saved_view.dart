@@ -14,7 +14,11 @@ class SavedView extends StatelessWidget {
       listener: (context, state) {
         if (state is GettingFavoritesFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(backgroundColor: Colors.red, content: Text(state.massege)),
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.red,
+              content: Text(state.massege),
+            ),
           );
         }
       },

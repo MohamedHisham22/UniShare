@@ -23,6 +23,7 @@ class AddItemButton extends StatelessWidget {
                     : 'Item added successfully!',
               ),
               backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
             ),
           );
           final myListingCubit = context.read<MyListingCubit>();
@@ -38,6 +39,7 @@ class AddItemButton extends StatelessWidget {
             SnackBar(
               content: Text('Please fill all fields'),
               backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }

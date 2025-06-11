@@ -19,7 +19,11 @@ class ToolDetailsViewClient extends StatelessWidget {
       listener: (context, state) {
         if (state is GettingItemDetailesFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(backgroundColor: Colors.red, content: Text(state.massege)),
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.red,
+              content: Text(state.massege),
+            ),
           );
         }
       },
@@ -34,6 +38,7 @@ class ToolDetailsViewClient extends StatelessWidget {
                   SnackBar(
                     backgroundColor: Colors.red,
                     content: Text(state.massege),
+                    behavior: SnackBarBehavior.floating,
                   ),
                 );
               } else if (state is AddingToFavoriteFailed) {
@@ -41,6 +46,7 @@ class ToolDetailsViewClient extends StatelessWidget {
                   SnackBar(
                     backgroundColor: Colors.red,
                     content: Text(state.massege),
+                    behavior: SnackBarBehavior.floating,
                   ),
                 );
               } else if (state is DeletingFromFavoriteSuccess) {
@@ -48,6 +54,7 @@ class ToolDetailsViewClient extends StatelessWidget {
                   SnackBar(
                     backgroundColor: Colors.green,
                     content: Text('Removed From Favorite Successfully'),
+                    behavior: SnackBarBehavior.floating,
                   ),
                 );
               } else if (state is AddingToFavoriteSuccess) {
@@ -55,6 +62,7 @@ class ToolDetailsViewClient extends StatelessWidget {
                   SnackBar(
                     backgroundColor: Colors.green,
                     content: Text('Added to Favorite Successfully'),
+                    behavior: SnackBarBehavior.floating,
                   ),
                 );
               }

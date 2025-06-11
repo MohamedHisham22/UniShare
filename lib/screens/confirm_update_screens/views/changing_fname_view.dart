@@ -22,9 +22,12 @@ class ChangingFnameView extends StatelessWidget {
     return BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
       listener: (context, state) {
         if (state is ChangingfNameFailed) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.messege)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(state.messege),
+            ),
+          );
         } else if (state is ChangingfNameSuccess) {
           AwesomeDialog(
             context: context,

@@ -17,9 +17,12 @@ class ChattingViewBody extends StatelessWidget {
     return BlocListener<ChattingViewCubit, ChattingViewState>(
       listener: (context, state) {
         if (state is ChatError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(state.message),
+            ),
+          );
         }
       },
       child: Scaffold(

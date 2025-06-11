@@ -21,9 +21,12 @@ class AllChatsView extends StatelessWidget {
     return BlocListener<AllChatsViewCubit, AllChatsViewState>(
       listener: (context, state) {
         if (state is DisplayingChatsFailed) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(state.errorMessage),
+            ),
+          );
         }
       },
       child: Scaffold(
