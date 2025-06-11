@@ -20,13 +20,29 @@ class RemovePictureAlertDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: Text(
+            'Cancel',
+            style: TextStyle(
+              color:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+            ),
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         TextButton(
-          child: const Text('Remove'),
+          child: Text(
+            'Remove',
+            style: TextStyle(
+              color:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+            ),
+          ),
           onPressed: () {
             cubit.deleteProfilePicture(userID: userID);
             Navigator.of(context).pop();

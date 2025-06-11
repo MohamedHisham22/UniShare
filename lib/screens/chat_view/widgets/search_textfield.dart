@@ -20,21 +20,25 @@ class SearchTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextField(
+        cursorColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
         controller: searchController,
         decoration: InputDecoration(
           hintText: 'Search Chats',
           hintStyle: TextStyle(
             color:
                 Theme.of(context).brightness == Brightness.dark
-                    ? Colors.grey
-                    : Colors.black,
+                    ? Colors.white
+                    : Color(0xff828282),
           ),
           prefixIcon: Icon(
             Icons.search,
             color:
                 Theme.of(context).brightness == Brightness.dark
-                    ? Colors.grey
-                    : Colors.black,
+                    ? Colors.white
+                    : Color(0xff828282),
           ),
           suffixIcon: BlocBuilder<AllChatsViewCubit, AllChatsViewState>(
             builder: (context, state) {
@@ -52,10 +56,23 @@ class SearchTextField extends StatelessWidget {
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(17),
-            borderSide: BorderSide.none,
+            borderSide:
+                Theme.of(context).brightness == Brightness.dark
+                    ? BorderSide(color: Colors.white)
+                    : BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(17),
+            borderSide:
+                Theme.of(context).brightness == Brightness.dark
+                    ? BorderSide(color: Colors.white)
+                    : BorderSide.none,
           ),
           filled: true,
-          fillColor: Colors.grey[200],
+          fillColor:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Color(0xffDEDEDE),
         ),
         onChanged: (value) {
           cubit.searchChats(chats, value);

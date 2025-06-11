@@ -18,7 +18,16 @@ class ShowAllImages extends StatelessWidget {
         height: 140,
         padding: EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
-          color: Color(0xffEAEAEA),
+          border: Border.all(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Color(0xffEAEAEA),
+          ),
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Color(0xffEAEAEA),
           borderRadius: BorderRadius.circular(20),
         ),
         child: BlocBuilder<AddItemsCubit, AddItemsState>(

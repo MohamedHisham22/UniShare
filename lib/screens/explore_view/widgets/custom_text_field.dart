@@ -30,6 +30,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor:
+          Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
       controller: _controller,
       onChanged: (value) {
         context.read<SearchCubit>().exploreView(value);

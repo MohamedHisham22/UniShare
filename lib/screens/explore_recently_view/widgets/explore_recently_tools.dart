@@ -52,12 +52,12 @@ class ExploreRecentlyTools extends StatelessWidget {
     );
 
     return GestureDetector(
-       onTap: () {
+      onTap: () {
         itemDetailesCubit.showItemDetailes(
           itemID: recentlyItem.itemId!,
           userID: userID,
         );
-        
+
         Navigator.pushNamed(context, ToolDetailsViewClient.id);
         context.read<RecentlyViewedCubit>().recentlyView(userID);
       },
@@ -72,16 +72,16 @@ class ExploreRecentlyTools extends StatelessWidget {
               builder: (context, snapshot) {
                 final userData = snapshot.data ?? {};
                 print('User Data: $userData');
-      
+
                 final firstName = userData['firstName'] ?? '';
                 final lastName = userData['lastName'] ?? '';
                 final userName = '$firstName $lastName'.trim();
                 final displayName =
                     userName.isNotEmpty ? userName : 'Unknown User';
                 final profileImageUrl = userData['profileImageUrl'];
-      
+
                 print('Profile Image URL: $profileImageUrl');
-      
+
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return _buildUserRow(
                     width,
@@ -89,7 +89,7 @@ class ExploreRecentlyTools extends StatelessWidget {
                     'Loading...',
                   );
                 }
-      
+
                 if (snapshot.hasError) {
                   return _buildUserRow(
                     width,
@@ -97,7 +97,7 @@ class ExploreRecentlyTools extends StatelessWidget {
                     'Error loading user',
                   );
                 }
-      
+
                 return _buildUserRow(
                   width,
                   profileImageUrl != null
@@ -142,14 +142,7 @@ class ExploreRecentlyTools extends StatelessWidget {
   Widget _buildUserRow(double width, ImageProvider imageProvider, String name) {
     return Row(
       children: [
-        CircleAvatar(
-          radius: width * 0.052,
-          backgroundImage: imageProvider,
-          child:
-              imageProvider is AssetImage
-                  ? null
-                  : Icon(Icons.person, color: Colors.white),
-        ),
+        CircleAvatar(radius: width * 0.052, backgroundImage: imageProvider),
         SizedBox(width: 8),
         Expanded(
           child: Text(
