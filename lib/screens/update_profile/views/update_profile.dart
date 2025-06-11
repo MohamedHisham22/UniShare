@@ -15,28 +15,39 @@ class UpdateProfile extends StatelessWidget {
     return BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
       listener: (context, state) {
         if (state is UpdatingImageFailed) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.messege)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(state.messege),
+            ),
+          );
         } else if (state is ProfilePicUpdateCanceled) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.messege)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(state.messege),
+            ),
+          );
         } else if (state is UpdatingImageSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: const Color.fromARGB(255, 44, 102, 46),
+              behavior: SnackBarBehavior.floating,
               content: Text(state.messege),
             ),
           );
         } else if (state is DeletingProfileImageFailed) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.messege)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(state.messege),
+            ),
+          );
         } else if (state is DeletingProfileImageSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: const Color.fromARGB(255, 44, 102, 46),
+              behavior: SnackBarBehavior.floating,
               content: Text(state.messege),
             ),
           );
