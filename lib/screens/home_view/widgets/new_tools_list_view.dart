@@ -15,7 +15,7 @@ class NewToolsListView extends StatelessWidget {
     final currentUserUid = FirebaseAuth.instance.currentUser?.uid;
 
     return SizedBox(
-      height: height * 0.3,
+      height: height * 0.37,
       child: BlocBuilder<GetItemsCubit, GetItemsCubitState>(
         builder: (context, state) {
           if (state is GetItemsCubitLoading) {
@@ -37,7 +37,7 @@ class NewToolsListView extends StatelessWidget {
                 GetItemsModel item = filteredItems[i];
                 return NewTools(item: item);
               },
-              separatorBuilder: (c, i) => SizedBox(width: 17),
+              separatorBuilder: (c, i) => SizedBox(width: 0),
               itemCount: filteredItems.length,
               scrollDirection: Axis.horizontal,
             );

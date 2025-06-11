@@ -32,7 +32,7 @@ class ExploreRecentlyToolsListView extends StatelessWidget {
               RecentlyViewModel item = filteredItems[i];
               return ExploreRecentlyTools(recentlyItem: item);
             },
-            separatorBuilder: (c, i) => SizedBox(height: 10),
+            separatorBuilder: (c, i) => SizedBox(height: 20),
             itemCount: filteredItems.length,
           );
         }

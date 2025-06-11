@@ -33,7 +33,7 @@ class ExploreToolsListView extends StatelessWidget {
               GetItemsModel item = filteredItems[i];
               return ExploreTools(item: item);
             },
-            separatorBuilder: (c, i) => SizedBox(height: 10),
+            separatorBuilder: (c, i) => SizedBox(height: 20),
             itemCount: filteredItems.length,
           );
         }

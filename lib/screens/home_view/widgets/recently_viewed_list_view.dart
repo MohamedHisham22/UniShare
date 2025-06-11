@@ -15,7 +15,7 @@ class RecentlyViewedListView extends StatelessWidget {
     final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     return SizedBox(
-      height: height * 0.3,
+      height: height * 0.36,
       child: BlocBuilder<RecentlyViewedCubit, RecentlyViewedState>(
         builder: (context, state) {
           // Load recently viewed when widget builds
@@ -44,7 +44,7 @@ class RecentlyViewedListView extends StatelessWidget {
                 RecentlyViewModel item = filteredItems[i];
                 return RecentlyViewed(item: item);
               },
-              separatorBuilder: (c, i) => SizedBox(width: 17),
+              separatorBuilder: (c, i) => SizedBox(width: 0),
               itemCount: filteredItems.length,
               scrollDirection: Axis.horizontal,
             );
