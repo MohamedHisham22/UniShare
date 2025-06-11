@@ -32,9 +32,11 @@ class RecentlyViewedListView extends StatelessWidget {
           } else if (state is RecentlyCubitSuccess) {
             final filteredItems =
                 state.recentlyItems
-                    .where((recentlyItems) => recentlyItems.userId != userID)
+                    .where(
+                      (recentlyItems) => recentlyItems.createdUserId != userID,
+                    )
                     .toList();
-            if (state.recentlyItems.isEmpty) {
+            if (filteredItems.isEmpty) {
               return const Center(child: Text("No recently viewed items yet."));
             }
             return ListView.separated(

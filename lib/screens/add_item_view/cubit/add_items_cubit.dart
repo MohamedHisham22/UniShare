@@ -61,7 +61,7 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         'ItemDuration': durationController.text,
       });
 
-      // Add old images (including the cover image as the first one)
+      // Add old images (excluding the first one if it's the same as the cover)
       for (int i = 0; i < oldImagesUrls.length; i++) {
         final imageUrl = oldImagesUrls[i];
         try {
@@ -84,7 +84,7 @@ class AddItemsCubit extends Cubit<AddItemsState> {
             ),
           );
         } catch (e) {
-          print("Error $imageUrl - ${e.toString()}");
+          debugPrint("Error processing image $imageUrl - ${e.toString()}");
         }
       }
 
@@ -98,27 +98,15 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         );
       }
 
-      // Set the first image as the cover image (imageFile)
-      if (oldImagesUrls.isNotEmpty) {
-        // Use the first old image as cover
-        final firstImageUrl = oldImagesUrls[0];
-        final response = await Dio().get<List<int>>(
-          firstImageUrl,
-          options: Options(responseType: ResponseType.bytes),
-        );
-        final tempDir = Directory.systemTemp;
-        final tempFile = await File('${tempDir.path}/cover_image.jpg').create();
-        await tempFile.writeAsBytes(response.data!);
+      // Set cover image - use first available image
+      if (oldImagesUrls.isNotEmpty || imagesList.isNotEmpty) {
+        final coverImagePath =
+            oldImagesUrls.isNotEmpty
+                ? await _downloadAndCacheImage(oldImagesUrls[0])
+                : imagesList[0].path;
+
         formData.files.add(
-          MapEntry('imageFile', await MultipartFile.fromFile(tempFile.path)),
-        );
-      } else if (imagesList.isNotEmpty) {
-        // Use the first new image as cover
-        formData.files.add(
-          MapEntry(
-            'imageFile',
-            await MultipartFile.fromFile(imagesList[0].path),
-          ),
+          MapEntry('imageFile', await MultipartFile.fromFile(coverImagePath)),
         );
       }
 
@@ -145,8 +133,20 @@ class AddItemsCubit extends Cubit<AddItemsState> {
         emit(AddItemsError("Failed to add item"));
       }
     } catch (e) {
+      debugPrint('Add item error: $e');
       emit(AddItemsError(e.toString()));
     }
+  }
+
+  Future<String> _downloadAndCacheImage(String imageUrl) async {
+    final response = await Dio().get<List<int>>(
+      imageUrl,
+      options: Options(responseType: ResponseType.bytes),
+    );
+    final tempDir = Directory.systemTemp;
+    final tempFile = await File('${tempDir.path}/cover_image.jpg').create();
+    await tempFile.writeAsBytes(response.data!);
+    return tempFile.path;
   }
 
   void onOptionSelected(String value) {
@@ -216,18 +216,25 @@ class AddItemsCubit extends Cubit<AddItemsState> {
     durationController.text = item.itemDuration ?? '';
     categoryController.text = item.itemBrand ?? '';
 
-    // Clear old images and add new ones
+    // Clear old images
     oldImagesUrls.clear();
 
-    // Add the cover image (imageUrl) as the first image
-    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+    // Check if we have additional images
+    final hasAdditionalImages =
+        item.additionalImageUrls != null &&
+        item.additionalImageUrls!.isNotEmpty;
+
+    // If we have additional images, the first one is already the cover image
+    // So we don't need to add imageUrl separately
+    if (hasAdditionalImages) {
+      oldImagesUrls.addAll(item.additionalImageUrls!);
+    }
+    // If we don't have additional images but have a cover image
+    else if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
       oldImagesUrls.add(item.imageUrl!);
     }
 
-    // Add additional images
-    oldImagesUrls.addAll(item.additionalImageUrls ?? []);
-
-    // Clear new images (optional)
+    // Clear new images
     imagesList.clear();
 
     final allowedOptions = ['Donate', 'Sell', 'Rent'];

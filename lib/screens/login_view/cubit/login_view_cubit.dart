@@ -130,10 +130,10 @@ class LoginViewCubit extends Cubit<LoginViewState> {
           );
           //! sent user id to backend complete normally...
         }
-       await getUserData(); // ده بيجيب البيانات من Firestore
+       await getUserData(); 
 if (userModel != null) {
   final userBox = Hive.box<UserModel>('userBox');
-  await userBox.put('user', userModel!); // حفظ البيانات الجديدة
+  await userBox.put('user', userModel!); 
 }
         await context.read<UpdateProfileCubit>().getProfilePicture(
           FirebaseAuth.instance.currentUser?.uid ?? '',

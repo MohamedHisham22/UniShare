@@ -30,6 +30,10 @@ class _SearchRecentlyViewState extends State<SearchRecentlyView> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor:
+          Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
       controller: _controller,
       onChanged: (value) {
         context.read<SearchExploreRecentlyViewCubit>().recentlyView(value);
@@ -48,22 +52,25 @@ class _SearchRecentlyViewState extends State<SearchRecentlyView> {
         ),
         suffixIcon: Padding(
           padding: const EdgeInsets.only(right: 10.0),
-          child:_controller.text.isNotEmpty?
-          GestureDetector(
+          child:
+              _controller.text.isNotEmpty
+                  ? GestureDetector(
                     onTap: () {
                       _controller.clear();
-                      context.read<SearchExploreRecentlyViewCubit>().recentlyView('');
+                      context
+                          .read<SearchExploreRecentlyViewCubit>()
+                          .recentlyView('');
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
                     child: Icon(Icons.clear, color: Colors.red),
                   )
-           : Icon(
-            CupertinoIcons.search,
-            color:
-                Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Color(0xff828282),
-          ),
+                  : Icon(
+                    CupertinoIcons.search,
+                    color:
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Color(0xff828282),
+                  ),
         ),
         fillColor:
             Theme.of(context).brightness == Brightness.dark

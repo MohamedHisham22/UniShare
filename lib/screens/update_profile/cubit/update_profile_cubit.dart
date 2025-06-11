@@ -55,81 +55,74 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(ProfilePicUpdateCanceled());
   }
 
- Future<void> submitingProfilePictureChangesToDataBase(
-  File profileImage,
-  String userID,
-) async {
-  emit(UpdatingImageLoading());
-  try {
-    // 1. Upload image to your server
-    FormData formData = FormData.fromMap({
-      'ProfileImage': await MultipartFile.fromFile(profileImage.path),
-    });
-    
-    final response = await DioHelper.putFormData(
-      path: 'users/$userID',
-      body: formData,
-    );
-    
-    // 2. Parse the response to get image URL
-    final updatedImage = GettingImage.fromJson(response.data);
-    
-    // 3. Update Firestore with the new image URL
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .update({
-      'profileImageUrl': updatedImage.profileImage,
-    });
-    
-    // 4. Update local state
-    gettingImage = updatedImage;
-    emit(UpdatingImageSuccess());
-    
-  } catch (e) {
-    emit(UpdatingImageFailed());
-  }
-}
+  Future<void> submitingProfilePictureChangesToDataBase(
+    File profileImage,
+    String userID,
+  ) async {
+    emit(UpdatingImageLoading());
+    try {
+      // 1. Upload image to your server
+      FormData formData = FormData.fromMap({
+        'ProfileImage': await MultipartFile.fromFile(profileImage.path),
+      });
 
-Future<void> getProfilePicture(String userID) async {
-  emit(GettingProfileImageLoading());
-  try {
-    // 1. Get from Firestore first (faster)
-    final userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .get();
-    
-    if (userDoc.exists && userDoc.data()?['profileImageUrl'] != null) {
-      gettingImage = GettingImage(
-        userId: userID,
-        profileImage: userDoc.data()?['profileImageUrl'],
+      final response = await DioHelper.putFormData(
+        path: 'users/$userID',
+        body: formData,
       );
-      emit(GettingProfileImageSuccess());
-      return;
+
+      // 2. Parse the response to get image URL
+      final updatedImage = GettingImage.fromJson(response.data);
+
+      // 3. Update Firestore with the new image URL
+      await FirebaseFirestore.instance.collection('users').doc(userID).update({
+        'profileImageUrl': updatedImage.profileImage,
+      });
+
+      // 4. Update local state
+
+      gettingImage = updatedImage;
+      isImageChanged = false;
+      emit(UpdatingImageSuccess());
+    } catch (e) {
+      emit(UpdatingImageFailed());
     }
-    
-    // 2. Fallback to your API if not in Firestore
-    final response = await DioHelper.getData(path: 'users/$userID');
-    gettingImage = GettingImage.fromJson(response.data);
-    emit(GettingProfileImageSuccess());
-    
-    // 3. Store in Firestore for future use
-    if (gettingImage.profileImage != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userID)
-          .set({
-        'profileImageUrl': gettingImage.profileImage,
-      }, SetOptions(merge: true));
-    }
-    
-  } catch (e) {
-    emit(GettingProfileImageFailed());
   }
-}
 
+  Future<void> getProfilePicture(String userID) async {
+    emit(GettingProfileImageLoading());
+    try {
+      // 1. Get from Firestore first (faster)
+      final userDoc =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userID)
+              .get();
 
+      if (userDoc.exists && userDoc.data()?['profileImageUrl'] != null) {
+        gettingImage = GettingImage(
+          userId: userID,
+          profileImage: userDoc.data()?['profileImageUrl'],
+        );
+        emit(GettingProfileImageSuccess());
+        return;
+      }
+
+      // 2. Fallback to your API if not in Firestore
+      final response = await DioHelper.getData(path: 'users/$userID');
+      gettingImage = GettingImage.fromJson(response.data);
+      emit(GettingProfileImageSuccess());
+
+      // 3. Store in Firestore for future use
+      if (gettingImage.profileImage != null) {
+        await FirebaseFirestore.instance.collection('users').doc(userID).set({
+          'profileImageUrl': gettingImage.profileImage,
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      emit(GettingProfileImageFailed());
+    }
+  }
 
   void startAppWithProfileImage() async {
     if (FirebaseAuth.instance.currentUser != null) {
@@ -144,7 +137,14 @@ Future<void> getProfilePicture(String userID) async {
         path: 'users/$userID/profile-image',
       );
       if (response.statusCode == 200) {
+        await FirebaseFirestore.instance.collection('users').doc(userID).update({
+          'profileImageUrl':
+              'http://unishare.runasp.net/images/a7c1eadb-dda0-4c8d-ae25-f3c8e78c229f_37.png',
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+
         await getProfilePicture(FirebaseAuth.instance.currentUser?.uid ?? '');
+
         emit(DeletingProfileImageSuccess());
       } else {
         emit(DeletingProfileImageFailed());
